@@ -243,8 +243,8 @@ public class LoginActivity extends Activity {
 					});
 				if (obj.get("result").getAsBoolean())
 				{
-					UserInfoHelper user = UserInfoHelper.getInstance();
-					user.userLogin(obj.get("user_id").getAsInt());
+					SaveSharedPreference.setUserId(context, obj.get("user_id").getAsInt());
+				//	user.userLogin(obj.get("user_id").getAsInt());
 					return true;
 				}
 			}

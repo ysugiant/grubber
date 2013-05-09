@@ -20,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class ProfileActivity extends Activity {
 	//johnzhu@ucsd.edu
 	//private ImageView userIV ;
 	//private TextView userIDTV;
+	private Context context = this;
 	private EditText firstNameET;
 	private EditText lastNameET;
 	private EditText emailET;
@@ -65,7 +67,7 @@ public class ProfileActivity extends Activity {
 		myVoteLV = (ListView)findViewById(R.id.profile_myVoteLV);
 		
 		
-		UserInfoHelper user = UserInfoHelper.getInstance();
+		//UserInfoHelper user = UserInfoHelper.getInstance();
 		
 		/*ArrayList<String> userVote_info = new ArrayList<String>();
 		for(int i = 0; i < FRUITS.length -1 ;i ++ ){
@@ -77,26 +79,14 @@ public class ProfileActivity extends Activity {
 		myVoteLV.setAdapter(arrayAdapter); */
 		
 			
-		if(!user.isSignIn()){
-			userNameET.setText(GUESTMSG);
-			lastNameET.setText(GUESTMSG);
-			firstNameET.setText(GUESTMSG);
-			emailET.setText(GUESTMSG);
-			
-			userNameET.setEnabled(false);
-			lastNameET.setEnabled(false);
-			emailET.setEnabled(false);
-			firstNameET.setEnabled(false);
-			pwdET.setEnabled(false);
-			
-		}else{
+		
 			try {
 				getUser();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}	
+			
 		
 		final Button button = (Button) findViewById(R.id.profile_updateBtn);
 		button.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +104,8 @@ public class ProfileActivity extends Activity {
 	
 	public void getUser() throws Exception {
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
-		nameValuePair.add(new BasicNameValuePair("user_id", "12"));
+		int userID = SaveSharedPreference.getUserId(context);
+		nameValuePair.add(new BasicNameValuePair("user_id", userID+""));
 				
 		// url with the post data
 		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/getUser");

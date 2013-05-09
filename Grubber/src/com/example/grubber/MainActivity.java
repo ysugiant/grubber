@@ -25,6 +25,17 @@ public class MainActivity extends Activity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        if(SaveSharedPreference.getUserId(MainActivity.this) == 0)
+        {
+             Toast.makeText(this,"No log in",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+             // Call Next Activity
+        	 Toast.makeText(this,SaveSharedPreference.getUserId(MainActivity.this) + "Logged in",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
@@ -39,8 +50,9 @@ public class MainActivity extends Activity  {
     	  profile.setOnMenuItemClickListener(new OnMenuItemClickListener() {
           	public boolean onMenuItemClick(MenuItem item) {
           		
-          		UserInfoHelper userInfo = UserInfoHelper.getInstance();
-				if(userInfo.isSignIn()){
+          		//Log.d("bug", SaveSharedPreference.getUserId(MainActivity.this)+"");
+          	//	UserInfoHelper userInfo = UserInfoHelper.getInstance();
+				if(SaveSharedPreference.getUserId(MainActivity.this) != 0){
 					Intent intent = new Intent(context, ProfileActivity.class);
 			    	startActivity(intent);   
 				}else{
@@ -62,17 +74,20 @@ public class MainActivity extends Activity  {
         	public boolean onMenuItemClick(MenuItem item) {
         		
         	
-        		UserInfoHelper userInfo = UserInfoHelper.getInstance();
-        		if(userInfo.isSignIn()){
+        		//UserInfoHelper userInfo = UserInfoHelper.getInstance();
+        		if(SaveSharedPreference.getUserId(MainActivity.this) != 0){
         			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         			alertDialogBuilder.setTitle(R.string.logout_msg);
         			alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
         				public void onClick(DialogInterface dialog,int id) {
-							UserInfoHelper userInfo = UserInfoHelper.getInstance();
-							String tempUserName = userInfo.getUserName();
-			        		userInfo.signOut();
+        					
+							
+							int tempUserName = SaveSharedPreference.getUserId(context);
+			        		
 			        		dialog.cancel();
-			        		Toast.makeText(context ,tempUserName + " already log out" , Toast.LENGTH_SHORT).show();
+			        		
+			        		SaveSharedPreference.setUserId(context, 0);
+        					Toast.makeText(context ,tempUserName + " already log out" , Toast.LENGTH_SHORT).show();
 						}
 						
 					}).setNegativeButton("No", new DialogInterface.OnClickListener() {

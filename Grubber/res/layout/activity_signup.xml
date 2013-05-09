@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SignupActivity" >
+
+ 
+    <ScrollView
+        android:id="@+id/signUp_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+          >
+
+        <LinearLayout
+            style="@style/LoginFormContainer"
+            android:layout_height="192dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:focusable="true" 
+    		 android:focusableInTouchMode="true" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/signup_username_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signup_username_TV"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/signup_username_ET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10" 
+                    android:singleLine="true"  
+                     android:hint="Required"  >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/signup_email_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signup_email_TV"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/signup_email_ET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10" 
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"  
+                     android:hint="Required"  >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+            
+             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/signup_firstname_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signup_firstname_TV"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/signup_firstname_ET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10" 
+                    android:singleLine="true"
+                    android:hint="Required"    >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+            
+             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/signup_lastname_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signup_lastname_TV"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/signup_lastname_ET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10" 
+                    android:singleLine="true" 
+                    android:hint="Required"   >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+            
+            
+            
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/signup_pwd_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signup_pwd_TV"
+                    
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/signup_pwd_ET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:password="true"
+                     android:singleLine="true" 
+                    android:ems="10" 
+                     android:hint="Required" 
+                    
+                     >
+
+                    <requestFocus />
+                </EditText>
+                
+            </LinearLayout>
+                 <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/signup_pwd_reenter_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signup_pwd_reenter_TV"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/signup_pwd_reenter_ET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                  	android:password="true" 
+                  	 android:singleLine="true"
+                    android:hint="Required" >
+
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+            
+              <Button
+                android:id="@+id/signup_confirm_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:text="@string/signup_confirm_btn" />
+
+     
+            
+        </LinearLayout>
+        
+    </ScrollView>
+    
+
+</merge>

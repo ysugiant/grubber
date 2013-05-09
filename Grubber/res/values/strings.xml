@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GrubberLayout</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search for...</string>
+    <string name="search_nearby">Find Nearby</string>
+    <string name="title_activity_results">Results</string>
+    <string name="login">Login/Register</string>
+    <string name="title_activity_food_page">FoodPageActivity</string>
+    <string name="menu_settings">Settings</string>
+    <string name="food_name">Food Name</string>
+    <string name="food_rating">9001</string>
+    <string name="comment">Comment Here!</string>
+    <string name="submit">Submit</string>
+    <string name="sample_text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ut elit ipsum, ut suscipit purus. Vestibulum lobortis facilisis posuere. Ut mollis sapien at neque gravida nec fringilla mi sollicitudin. Fusce rhoncus, leo sed dapibus dignissim, lorem dui aliquam justo, quis volutpat sem elit sit amet ligula.   "</string>
+    <string name="signout">Sign Out</string>
+    <string name="user_profile">User Profile</string>
+    <string name="about">About </string>
+    <string name="logout_msg">Are you sure you want to log out?</string>
+    <string name="title_activity_restaurant">RestaurantActivity</string>
+
+</resources>

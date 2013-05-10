@@ -2,6 +2,8 @@ package com.example.grubber;
 
 import com.example.grubber.R;
 
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,22 +21,23 @@ public class MainActivity extends Activity  {
 	
 	public final Context context = this;
 	public final static String USER_PROFILE= "View Profile";
-	public final static String ABOUT= "ABOUT";
+	public final static String ABOUT= "About Us";
 	public final static String SIGNOUT= "Sign Out";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        if(SaveSharedPreference.getUserId(MainActivity.this) == 0)
+        /* 
+        if(!SaveSharedPreference.isLogin(MainActivity.this))
         {
-             Toast.makeText(this,"No log in",Toast.LENGTH_SHORT).show();
+             Toast.makeText(this,"No login",Toast.LENGTH_SHORT).show();
         }
         else
         {
              // Call Next Activity
         	 Toast.makeText(this,SaveSharedPreference.getUserId(MainActivity.this) + "Logged in",Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
     }
 
@@ -44,29 +47,28 @@ public class MainActivity extends Activity  {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
       
-    	
-    	  // if the user already login go to profile page, otherwise go to login page
-    	  MenuItem profile  = menu.add(R.string.user_profile);
-    	  profile.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-          	public boolean onMenuItemClick(MenuItem item) {
-          		
-          		//Log.d("bug", SaveSharedPreference.getUserId(MainActivity.this)+"");
-          	//	UserInfoHelper userInfo = UserInfoHelper.getInstance();
-				if(SaveSharedPreference.getUserId(MainActivity.this) != 0){
+        menu.add(ABOUT);
+        
+   
+  	  // if the user already login go to profile page, otherwise go to login page
+  	  MenuItem profile  = menu.add(R.string.user_profile);
+  	  profile.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        	public boolean onMenuItemClick(MenuItem item) {
+        		
+        		//Log.d("bug", SaveSharedPreference.getUserId(MainActivity.this)+"");
+        	//	UserInfoHelper userInfo = UserInfoHelper.getInstance();
+				if(SaveSharedPreference.isLogin(MainActivity.this)){
 					Intent intent = new Intent(context, ProfileActivity.class);
 			    	startActivity(intent);   
 				}else{
 					Intent intent = new Intent(context, LoginActivity.class);
 			    	startActivity(intent);   
 				}
-          		
-          		return true;
-          	}
-          		
-          	});
-        menu.add(ABOUT);
-        
-        
+        		
+        		return true;
+        	}
+        		
+        	});
         
         //sign out 
         MenuItem signout = menu.add(R.string.signout);
@@ -101,7 +103,7 @@ public class MainActivity extends Activity  {
         		AlertDialog alertDialog = alertDialogBuilder.create();
         		alertDialog.show();
         	}else{ 
-        		Toast.makeText(context ,"You didn't login yet!" , Toast.LENGTH_SHORT).show();
+        		Toast.makeText(context ,"You haven't login yet!" , Toast.LENGTH_SHORT).show();
         	}
         		
         	
@@ -116,6 +118,12 @@ public class MainActivity extends Activity  {
     
     public void doSearchNearby(View view) {
     	Intent intent = new Intent(this, Results.class);
+    	//get long lat 
+    	LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
+    	Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+    	intent.putExtra("longitude", location.getLongitude());
+    	intent.putExtra("latitude", location.getLatitude());
+    	
     	startActivity(intent);   
     }
     

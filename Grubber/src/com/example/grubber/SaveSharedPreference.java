@@ -22,7 +22,20 @@ public class SaveSharedPreference
 
     public static int getUserId(Context ctx)
     {
-    	
         return getSharedPreferences(ctx).getInt(PREF_USER_ID,0);
+    }
+    
+    public static boolean isLogin(Context ctx)
+    {
+    	if (getUserId(ctx) == 0)
+    		return false;
+    	else
+    		return true;
+    }
+    
+    //logout
+    public static void setLogout(Context ctx)
+    {
+    	setUserId(ctx, 0);
     }
 }

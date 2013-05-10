@@ -80,12 +80,41 @@ public class ProfileActivity extends Activity {
 		
 			
 		
+		boolean errorCheck = false;
+		if(!isValidEmail( emailET.getText().toString())){
+			//emailET.setError(noValid);
+			errorCheck = true;
+		}
+		 if(firstNameET.length() == 0 ){
+			//firstNameET.setError(firstnameError);
+			errorCheck = true;
+		}
+		if(lastNameET.length() == 0 ){
+			//lastNameET.setError(lastnameError);
+			errorCheck = true;
+		}
+		if(userNameET.length() == 0){
+			//usernameET.setError(usernameError);
+			errorCheck = true;
+		}
+		/*if(pwdET.length() < pwdToShort ){
+			//pwdET.setError(pwdToShortError);
+			errorCheck = true;
+		}
+	    if(!pwdET.getText().toString().equals(reenterpwdET.getText().toString())){
+			//reenterpwdET.setError(pwdDiffError);
+			errorCheck = true;
+		}*/
+	   
+	   //error the input text
+		if(!errorCheck){
 			try {
 				getUser();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
 			
 		
 		final Button button = (Button) findViewById(R.id.profile_updateBtn);
@@ -101,6 +130,15 @@ public class ProfileActivity extends Activity {
 			}
 		});
 	}	
+	
+	public final static boolean isValidEmail(CharSequence target) {
+	    if (target == null) {
+	        return false;
+	    } else {
+	    	 return  android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+	    }
+	    
+	}
 	
 	public void getUser() throws Exception {
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);

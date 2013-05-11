@@ -133,7 +133,12 @@ public class MainActivity extends Activity  {
     }
     
     public void openSearchDialog(View view) {
-    	onSearchRequested();
+    	Intent intent = new Intent(this, Results.class);
+    	intent.putExtra("key", "taco");
+    	startActivity(intent);
+    	
+    	
+    	//onSearchRequested();
     }
     
 

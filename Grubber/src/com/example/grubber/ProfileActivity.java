@@ -79,8 +79,13 @@ public class ProfileActivity extends Activity {
 		myVoteLV.setAdapter(arrayAdapter); */
 		
 			
-		
-		boolean errorCheck = false;
+		try {
+			getUser();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		/*boolean errorCheck = false;
 		if(!isValidEmail( emailET.getText().toString())){
 			//emailET.setError(noValid);
 			errorCheck = true;
@@ -104,7 +109,7 @@ public class ProfileActivity extends Activity {
 	    if(!pwdET.getText().toString().equals(reenterpwdET.getText().toString())){
 			//reenterpwdET.setError(pwdDiffError);
 			errorCheck = true;
-		}*/
+		}
 	   
 	   //error the input text
 		if(!errorCheck){
@@ -114,7 +119,7 @@ public class ProfileActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}*/
 			
 		
 		final Button button = (Button) findViewById(R.id.profile_updateBtn);
@@ -143,13 +148,14 @@ public class ProfileActivity extends Activity {
 	public void getUser() throws Exception {
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 		int userID = SaveSharedPreference.getUserId(context);
-		nameValuePair.add(new BasicNameValuePair("user_id", userID+""));
+		nameValuePair.add(new BasicNameValuePair("user_id", userID + ""));
 				
 		// url with the post data
 		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/getUser");
 
 		// sets the post request as the resulting string
 		httpost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+		//Log.d("bug", (new UrlEncodedFormEntity(nameValuePair)).toString());
 		// Handles what is returned from the page
 		//ResponseHandler responseHandler = new BasicResponseHandler();
 		//Log.d("bugs", "execute request");
@@ -158,18 +164,21 @@ public class ProfileActivity extends Activity {
 	}
 	
 	public void updateUser() throws Exception {
-		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
-		nameValuePair.add(new BasicNameValuePair("user_id", "12"));
+		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
+		//int userID = SaveSharedPreference.getUserId(context);
+		nameValuePair.add(new BasicNameValuePair("username", "ysugiant"));
 		nameValuePair.add(new BasicNameValuePair("first_name", firstNameET.getText().toString()));	
 		nameValuePair.add(new BasicNameValuePair("last_name", lastNameET.getText().toString()));
 		nameValuePair.add(new BasicNameValuePair("email", emailET.getText().toString()));
 		if (!pwdET.getText().toString().equals(""))
 			nameValuePair.add(new BasicNameValuePair("password", pwdET.getText().toString()));
+		
 		// url with the post data
 		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/updateUser");
 
 		// sets the post request as the resulting string
 		httpost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+		Log.d("bug", (new UrlEncodedFormEntity(nameValuePair)).toString());
 		// Handles what is returned from the page
 		//ResponseHandler responseHandler = new BasicResponseHandler();
 		//Log.d("bugs", "execute request");

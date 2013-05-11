@@ -69,6 +69,7 @@ public class RestaurantActivity extends Activity {
 		//***Open navigation app when click on the address
 		restAddressTV.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
+				//*******need change
 				String uri = "google.navigation:q="+restAddress+restCity+restState;
 			    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 			    startActivity(i); 

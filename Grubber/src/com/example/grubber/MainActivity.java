@@ -94,13 +94,13 @@ public class MainActivity extends Activity  {
 	    	  startActivity(intent2);   
 	    	  break;
 	      case R.id.action_profile:
-				if(SaveSharedPreference.getUserId(MainActivity.this) != 0){
-					Intent intent3 = new Intent(context, ProfileActivity.class);
-			    	startActivity(intent3);   
-				}else{
-					Intent intent3 = new Intent(context, LoginActivity.class);
-			    	startActivity(intent3);   
-				}
+	    	  if(SaveSharedPreference.getUserId(MainActivity.this) != 0){
+	    		  Intent intent3 = new Intent(context, ProfileActivity.class);
+	    		  startActivity(intent3);   
+	    	  } else {
+	    		  Intent intent3 = new Intent(context, LoginActivity.class);
+	    		  startActivity(intent3);   
+	    	  }
 	          break;        
 	      default:
 	    	  break;

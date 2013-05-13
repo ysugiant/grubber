@@ -1,7 +1,7 @@
 package com.example.grubber;
 
 import com.example.grubber.R;
-
+import com.google.analytics.tracking.android.*;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -24,11 +24,20 @@ import android.widget.Toast;
 public class MainActivity extends Activity  {
 	
 	public final Context context = this;
-
+	private Tracker mGaTracker;
+	private GoogleAnalytics mGaInstance;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mGaInstance = GoogleAnalytics.getInstance(this);
+        mGaTracker = mGaInstance.getTracker("UA-40885024-1");
+        
         setContentView(R.layout.activity_main);        
+    }
+    
+    protected void onDestroy() {
+    	super.onDestroy();
     }
     
     @SuppressLint("NewApi")
@@ -38,6 +47,7 @@ public class MainActivity extends Activity  {
     	super.onResume();
     	//Refresh the options menu when this activity comes in focus
     	invalidateOptionsMenu();
+    	//this.tracker.trackPageView("/TopTracksActivity");
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

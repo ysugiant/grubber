@@ -33,7 +33,8 @@ public class MainActivity extends Activity  {
     
     @SuppressLint("NewApi")
 	@Override
-    public void onResume() {
+
+	public void onResume() {
     	super.onResume();
     	//Refresh the options menu when this activity comes in focus
     	invalidateOptionsMenu();

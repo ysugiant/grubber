@@ -14,23 +14,25 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.example.grubber.R;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import android.os.AsyncTask;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -49,9 +51,7 @@ public class Results extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_results);
-		
 		result_list = (ListView) findViewById(R.id.restaurantLV);
-        
 		try {
 			getRestaurant();
 		} catch (Exception e) {
@@ -70,7 +70,6 @@ public class Results extends FragmentActivity {
 	public void getRestaurant() throws Exception {
 		//start progress bar
 		progDialog = ProgressDialog.show( this, "Process ", "Loading Data...",true,true);
-		
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 
 		nameValuePair.add(new BasicNameValuePair("key", getIntent().getStringExtra("key")));
@@ -85,7 +84,6 @@ public class Results extends FragmentActivity {
 		{
 			nameValuePair.add(new BasicNameValuePair("longitude", getIntent().getStringExtra("longitude")));
 		}*/	
-
 				
 		// url with the post data
 		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/findRestaurants");
@@ -152,11 +150,10 @@ public class Results extends FragmentActivity {
 	        	for (int j = 0; j < fields.length; j++) {
 	        		String field = fields[j];
 	        		restaurant.put(field, result.get(field).getAsString());
+	        		
 	        	}
-
 	        	restList.add(restaurant);
 	        }
-
 	        ArrayList<String> list = new ArrayList<String>();
 	        for (int i = 0; i < restList.size(); i++) {
 	        	HashMap<String, String> rest2 = restList.get(i);

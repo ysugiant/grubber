@@ -235,7 +235,6 @@ public class LoginActivity extends Activity {
 			
 			if(obj != null)
 			{
-				//Log.d("bug", obj.get("message").toString());
 				runOnUiThread(new Runnable() {
 					public void run() {
 					    Toast.makeText(LoginActivity.this, obj.get("message").toString(), Toast.LENGTH_SHORT).show();
@@ -244,7 +243,6 @@ public class LoginActivity extends Activity {
 				if (obj.get("result").getAsBoolean())
 				{
 					SaveSharedPreference.setUserId(context, obj.get("user_id").getAsInt());
-				//	user.userLogin(obj.get("user_id").getAsInt());
 					return true;
 				}
 			}

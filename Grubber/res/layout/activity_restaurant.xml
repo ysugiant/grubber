@@ -20,8 +20,9 @@
 
     <TextView
         android:id="@+id/restNameTV"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="54dp"
         android:layout_marginTop="17dp"
@@ -29,22 +30,32 @@
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/restAddressTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/restImageIV"
-        android:layout_alignRight="@+id/restNameTV"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <ExpandableListView
+    <ListView
         android:id="@+id/foodListLV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/restImageIV"
         android:layout_below="@+id/restImageIV"
-        android:layout_marginTop="84dp" >
-    </ExpandableListView>
+        android:layout_marginTop="51dp" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/restAddressTV"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/restImageIV"
+        android:layout_alignLeft="@+id/restNameTV"
+        android:layout_alignRight="@+id/restNameTV"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/restCityTV"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/restAddressTV"
+        android:layout_alignRight="@+id/restAddressTV"
+        android:layout_below="@+id/restAddressTV"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

@@ -2,10 +2,10 @@ package com.example.grubber;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -14,12 +14,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -31,45 +28,48 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RestaurantActivity extends Activity {
 
 	private TextView restNameTV;
 	private TextView restAddressTV;
-	private ExpandableListView foodList;
+	private TextView restCityTV;
+	private ImageView restImageIV;
+	private ListView foodListLV;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant);
+		
 		//***set restaurant name, address, etc
 		//get value pass from previous page
-		String restName = getIntent().getStringExtra("rest_name");
-		final String restAddress = getIntent().getStringExtra("rest_address");
-		final String restCity = getIntent().getStringExtra("rest_city");
-		final String restState = getIntent().getStringExtra("rest_state");
-		final String restZip = getIntent().getStringExtra("rest_zip");
-		/* get from previous page (code)
-		             @Override
-            public void onClick(View v) {
-                            Intent intent = new Intent(Activity1.this, Activity2.class); 
-                            intent.putExtra("extra", data);
-                            startActivity(intent); 
-             });  
-		 */
+		final HashMap<String, String> rest = (HashMap<String, String>) getIntent().getSerializableExtra("rest");
+		
+		//define textview
 		restNameTV = (TextView)findViewById(R.id.restNameTV);
 		restAddressTV = (TextView)findViewById(R.id.restAddressTV);
 		restAddressTV.setClickable(true);
+		restCityTV = (TextView)findViewById(R.id.restCityTV);
+		restImageIV = (ImageView)findViewById(R.id.restImageIV);
+		foodListLV = (ListView)findViewById(R.id.foodListLV);
 		
-		restNameTV.setText(restName);
-		restAddressTV.setText(restAddress);
+		//show picture
+		//String picurl = "http://maps.googleapis.com/maps/api/streetview?size=100x100&location="+ rest.get("longitude")+","+rest.get("latitude") +"&fov=90&heading=235&pitch=10&sensor=false";
+		//new DownloadImageTask((ImageView) findViewById(R.id.imageView1)).execute(picurl);
+		
+		//set the textview
+		restNameTV.setText(rest.get("name"));
+		restAddressTV.setText(rest.get("address"));
+		restCityTV.setText(rest.get("city") + ", " +rest.get("state") + ", " + rest.get("zip"));
 		
 		//***Open navigation app when click on the address
 		restAddressTV.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				String uri = "google.navigation:q="+restAddress+restCity+restState;
+				String uri = "google.navigation:q="+rest.get("longitude")+","+rest.get("latitude");
 			    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 			    startActivity(i); 
 			}
@@ -79,7 +79,7 @@ public class RestaurantActivity extends Activity {
 		
 		//query to get the top 3 food list
 		try {
-			getFoodList();
+			getFoodList(rest.get("rest_id"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -93,10 +93,11 @@ public class RestaurantActivity extends Activity {
 		return true;
 	}
 
-	public void getFoodList() throws Exception {
+	public void getFoodList(String id) throws Exception {
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
-		nameValuePair.add(new BasicNameValuePair("rest_id", "1"));
-				
+		nameValuePair.add(new BasicNameValuePair("rest_id", id));
+		nameValuePair.add(new BasicNameValuePair("min", "0"));
+		nameValuePair.add(new BasicNameValuePair("max", "3"));
 		// url with the post data
 		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/findFood");
 
@@ -123,27 +124,69 @@ public class RestaurantActivity extends Activity {
 		}
 
 		protected void onPostExecute(HttpResponse response) {
-			//Gson gson = new Gson();
 			String json = "wrong";
 			try {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 				json = reader.readLine();
-			} catch (Exception e) { Log.d("bugs","reader"); }
+				Log.d("bug", json);
+				getFood(json);
+			} catch (Exception e) { 
+				Log.d("bugs","reader"); 
+				runOnUiThread(new Runnable() {
+					public void run() {
+					    Toast.makeText(RestaurantActivity.this, "Failed to get the data", Toast.LENGTH_SHORT).show();
+					}
+				});
+			}
 
+		}
+		
+		protected void getFood(String json)
+		{
 			
             JsonParser parser = new JsonParser();
             JsonObject obj = (JsonObject) parser.parse(json);
             JsonArray jarr = (JsonArray) obj.get("result");
 			// SET TEXT FIELD TO RESPONSE 
 
-			ArrayList<String> restlist = new ArrayList<String>();
-			for(JsonElement o : jarr){
-				restlist.add(o.toString());
+			ArrayList<String> foodlist = new ArrayList<String>();
+			Log.d("bug",jarr.size() +"");
+			if (jarr.size() == 0)
+			{	//no data
+				
+				return;
 			}
-			
-			//ArrayAdapter<String> arrayAdapter;
-			//arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, restlist);
-			//foodList.setAdapter(arrayAdapter); 
+			for(int i = 0; i < jarr.size(); i++){
+				JsonObject o = (JsonObject) jarr.get(i);
+				foodlist.add(o.get("name").getAsString());
+			}
+	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(RestaurantActivity.this, android.R.layout.simple_list_item_1, foodlist);
+			foodListLV.setAdapter(adapter); 
 		}
 	}
+	
+	/*private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+	    ImageView bmImage;
+
+	    public DownloadImageTask(ImageView bmImage) {
+	        this.bmImage = bmImage;
+	    }
+
+	    protected Bitmap doInBackground(String... urls) {
+	        String urldisplay = urls[0];
+	        Bitmap mIcon11 = null;
+	        try {
+	            InputStream in = new java.net.URL(urldisplay).openStream();
+	            mIcon11 = BitmapFactory.decodeStream(in);
+	        } catch (Exception e) {
+	            Log.e("Error", e.getMessage());
+	            e.printStackTrace();
+	        }
+	        return mIcon11;
+	    }
+
+	    protected void onPostExecute(Bitmap result) {
+	        bmImage.setImageBitmap(result);
+	    }
+	}*/
 }

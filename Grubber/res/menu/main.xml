@@ -1,9 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <item android:id="@+id/menu_search"
+          android:title="@string/menu_search"
+          android:showAsAction="always"
+          android:actionViewClass="android.widget.SearchView" 
+          android:queryHint="@string/search_hint" />
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:id="@+id/action_nearby"
+        android:orderInCategory="1"
+        android:showAsAction="always"
+        android:title="@string/search_nearby" />
+    <item
+        android:id="@+id/action_profile"
+        android:showAsAction="ifRoom"
+        android:orderInCategory="2"    
+        android:title="@string/user_profile" />
+    <item
+        android:id="@+id/action_signout"
+        android:showAsAction="ifRoom"
+        android:orderInCategory="3"    
+        android:title="@string/signout" 
+        android:visible="false" />    
 
-</menu>
+</menu> 

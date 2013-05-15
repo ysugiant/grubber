@@ -14,6 +14,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.example.grubber.ResultContent;
+import com.example.grubber.ResultAdapter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -155,14 +157,20 @@ public class Results extends FragmentActivity {
 	        	restList.add(restaurant);
 	        }
 	        ArrayList<String> list = new ArrayList<String>();
+	        ArrayList<ResultContent> list_result = new ArrayList<ResultContent>();
 	        for (int i = 0; i < restList.size(); i++) {
 	        	HashMap<String, String> rest2 = restList.get(i);
 	        	list.add(rest2.get("name"));
+	        	list_result.add(new ResultContent(rest2.get("name"),
+						  rest2.get("address"), rest2.get("distance")));
 	        }
 	        
+	        ResultAdapter radapter = new ResultAdapter(Results.this, list_result);
+
 	        //Show the restaurant list to ListView
-	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Results.this, android.R.layout.simple_list_item_1, list);
-	        result_list.setAdapter(adapter);
+	        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(Results.this, android.R.layout.simple_list_item_1, list);
+	        //result_list.setAdapter(adapter);
+	        result_list.setAdapter(radapter);
 	        result_list.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	            {//set onClick

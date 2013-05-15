@@ -39,6 +39,7 @@
             android:label="" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -77,7 +78,7 @@
             android:label="@string/title_activity_profile"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
-                <activity
+        <activity
             android:name="com.example.grubber.FoodPageActivity"
             android:label="@string/title_activity_food_page" >
         </activity>
@@ -98,7 +99,14 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyD_ATYYFuoEgx_tYLikKuV6FKpGbiztxpk" />
 
-      
+        <activity
+            android:name="com.example.grubber.NewRestaurantActivity"
+            android:label="@string/title_activity_new_restaurant" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.NewRestaurantAddrVerifyActivity"
+            android:label="@string/title_activity_new_restaurant_addr_verify" >
+        </activity>
     </application>
 
 </manifest>

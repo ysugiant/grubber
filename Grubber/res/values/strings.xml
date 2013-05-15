@@ -24,5 +24,12 @@
     <string name="menu_search">Search</string>
     <string name="title_activity_reivew">Review Activity</string>
     <string name="title_activity_review_single">Review</string>
+    <string name="title_activity_new_restaurant">NewRestaurantActivity</string>
+    <string name="restaurant_nameString">Name</string>
+    <string name="restaurant_addressString">Address</string>
+    <string name="restaurant_cityString">City</string>
+    <string name="restaurant_stateString">State</string>
+    <string name="restaurant_verifyString">Verify</string>
+    <string name="title_activity_new_restaurant_addr_verify">NewRestaurantAddrVerifyActivity</string>
 
 </resources>

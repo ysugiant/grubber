@@ -87,13 +87,12 @@
 				android:layout_height="wrap_content"
 				android:text="@string/restaurant_stateString"
 				android:textAppearance="?android:attr/textAppearanceMedium" />
-			<EditText
-			    android:id="@+id/restaurant_stateET"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_weight="0.92"
-			    android:singleLine="true"
-			    android:textAppearance="?android:attr/textAppearanceMedium" />
+			<ListView
+			    android:id="@+id/restaurant_stateLV"
+			    android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:layout_alignParentLeft="true"
+        		android:layout_alignParentTop="true" />
         </LinearLayout>
         
      	<Button

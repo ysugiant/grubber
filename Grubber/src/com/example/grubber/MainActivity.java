@@ -59,7 +59,7 @@ public class MainActivity extends Activity  {
         {
             MenuItem profileItem = menu.findItem(R.id.action_profile);
         	profileItem.setTitle(R.string.login);
-            Toast.makeText(this,"Not logged in",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Not logged in",Toast.LENGTH_SHORT).show();
         }
         else {
         	MenuItem signout = menu.findItem(R.id.action_signout);
@@ -70,10 +70,10 @@ public class MainActivity extends Activity  {
         			alertDialogBuilder.setTitle(R.string.logout_msg);
         			alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
         				public void onClick(DialogInterface dialog,int id) {            					    							
-							int tempUserName = SaveSharedPreference.getUserId(context);    			        		
+							//int tempUserName = SaveSharedPreference.getUserId(context);    			        		
 			        		dialog.cancel();    			        		
 			        		SaveSharedPreference.setUserId(context, 0);
-        					Toast.makeText(context ,tempUserName + " logged out" , Toast.LENGTH_SHORT).show();
+        					Toast.makeText(context , "Logged out" , Toast.LENGTH_SHORT).show();
         					invalidateOptionsMenu();
 						}    						
 					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -101,10 +101,10 @@ public class MainActivity extends Activity  {
 	      case R.id.action_nearby:
 	    	  Intent intent2 = new Intent(this, Results.class);
 	    	  //get long lat 
-	    	  LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
-	    	  Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    	  intent2.putExtra("longitude", location.getLongitude());
-	    	  intent2.putExtra("latitude", location.getLatitude());			
+	    	  //LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
+	    	  //Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	    	  //intent2.putExtra("longitude", location.getLongitude());
+	    	  //intent2.putExtra("latitude", location.getLatitude());			
 	    	  startActivity(intent2);   
 	    	  break;
 	      case R.id.action_profile:

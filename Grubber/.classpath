@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-<<<<<<< HEAD
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/Kayla/Documents/GitHub/grubber/Grubber/libs/android-support-v4.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/Kayla/Documents/GitHub/grubber/Grubber/libs/gson-2.2.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/Kayla/Documents/GitHub/grubber/Grubber/libs/libGoogleAnalyticsV2.jar"/>
-=======
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="lib" path="libs/libGoogleAnalyticsV2.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
->>>>>>> a5a4f25f035076e9c9cfa54d28fbb3117b2f6246
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -42,7 +42,7 @@
             android:layout_marginTop="2dip" >
 
 			<TextView
-			    android:id="@+id/food_addressTV"
+			    android:id="@+id/food_descriptionTV"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/descriptionSTR"
@@ -57,7 +57,7 @@
         </LinearLayout>
         
      	<Button
-     	    android:id="@+id/restaurant_verify"
+     	    android:id="@+id/submitBTN"
      	    android:layout_width="wrap_content"
      	    android:layout_height="wrap_content"
      	    android:text="@string/restaurant_verifyString" 

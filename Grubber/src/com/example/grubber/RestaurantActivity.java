@@ -1,6 +1,7 @@
 package com.example.grubber;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import java.util.ArrayList;
@@ -21,9 +22,12 @@ import com.google.gson.JsonParser;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -41,6 +45,8 @@ public class RestaurantActivity extends Activity {
 	private TextView restNameTV;
 	private TextView restAddressTV;
 	private TextView restCityTV;
+	private TextView restPhoneTV;
+	private TextView restWebsiteTV;
 	private ImageView restImageIV;
 	private ListView foodListLV;
 	private ProgressDialog progDialog; 
@@ -53,29 +59,48 @@ public class RestaurantActivity extends Activity {
 		
 		//***set restaurant name, address, etc
 		//get value pass from previous page
-		//final HashMap<String, String> rest = (HashMap<String, String>) getIntent().getSerializableExtra("rest");
 		//define textview
 		restNameTV = (TextView)findViewById(R.id.restNameTV);
 		restAddressTV = (TextView)findViewById(R.id.restAddressTV);
 		restAddressTV.setClickable(true);
+		restWebsiteTV = (TextView)findViewById(R.id.restWebsiteTV);
+		restWebsiteTV.setClickable(true);
+		restPhoneTV = (TextView)findViewById(R.id.restPhoneTV);
+		restPhoneTV.setClickable(true);
 		restCityTV = (TextView)findViewById(R.id.restCityTV);
 		restImageIV = (ImageView)findViewById(R.id.restImageIV);
 		foodListLV = (ListView)findViewById(R.id.foodListLV);
 		
 		//show picture
-		//String picurl = "http://maps.googleapis.com/maps/api/streetview?size=100x100&location="+ rest.get("longitude")+","+rest.get("latitude") +"&fov=90&heading=235&pitch=10&sensor=false";
-		//new DownloadImageTask((ImageView) findViewById(R.id.imageView1)).execute(picurl);
+		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ getIntent().getStringExtra("longitude")+","+getIntent().getStringExtra("latitude") +"&fov=90&heading=235&pitch=10&sensor=false";
+		new DownloadImageTask((ImageView) findViewById(R.id.restImageIV)).execute(picurl);
 		
 		//set the textview
 		restNameTV.setText(getIntent().getStringExtra("name"));
 		restAddressTV.setText(getIntent().getStringExtra("address"));
 		restCityTV.setText(getIntent().getStringExtra("city"));
+		restWebsiteTV.setText(getIntent().getStringExtra("website"));
+		restPhoneTV.setText(getIntent().getStringExtra("phone"));
 		rest_id = getIntent().getStringExtra("rest_id");
 		//***Open navigation app when click on the address
 		restAddressTV.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				String uri = "google.navigation:q="+getIntent().getStringExtra("longitude")+","+getIntent().getStringExtra("latitude");
 			    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+			    startActivity(i); 
+			}
+		});
+		
+		restWebsiteTV.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+			    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getIntent().getStringExtra("website")));
+			    startActivity(i); 
+			}
+		});
+		
+		restPhoneTV.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+			    Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + getIntent().getStringExtra("phone")));
 			    startActivity(i); 
 			}
 		});
@@ -185,7 +210,7 @@ public class RestaurantActivity extends Activity {
 		}
 	}
 	
-	/*private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 	    ImageView bmImage;
 
 	    public DownloadImageTask(ImageView bmImage) {
@@ -208,5 +233,5 @@ public class RestaurantActivity extends Activity {
 	    protected void onPostExecute(Bitmap result) {
 	        bmImage.setImageBitmap(result);
 	    }
-	}*/
+	}
 }

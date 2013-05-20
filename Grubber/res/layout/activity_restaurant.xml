@@ -58,4 +58,25 @@
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <TextView
+        android:id="@+id/restWebsiteTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/restCityTV"
+        android:layout_below="@+id/restCityTV"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="16dp"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/restPhoneTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/restWebsiteTV"
+        android:layout_alignBottom="@+id/restWebsiteTV"
+        android:layout_alignLeft="@+id/restImageIV"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </RelativeLayout>

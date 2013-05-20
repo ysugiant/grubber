@@ -48,7 +48,7 @@ public class NewRestaurantAddrVerifyActivity extends Activity {
 		rest_nameET = (EditText) findViewById(R.id.restaurant_nameET);
 		rest_addressET = (EditText) findViewById(R.id.restaurant_addressET);
 		rest_cityET = (EditText) findViewById(R.id.restaurant_cityET);
-		rest_stateET = (EditText) findViewById(R.id.restaurant_stateET);
+		rest_stateET = (EditText) findViewById(R.id.restaurant_stateLV);
 		verify_btn = (Button) findViewById(R.id.restaurant_verify);
 		try {
 			getAddress();

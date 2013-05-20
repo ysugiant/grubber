@@ -94,8 +94,7 @@ public class MainActivity extends Activity  {
     public boolean onOptionsItemSelected(MenuItem item) {
       switch (item.getItemId()) {
 	      case R.id.menu_search:
-	    	  Intent intent = new Intent(this, Results.class);
-	    	  intent.putExtra("key", "taco");
+	    	  Intent intent = new Intent(this, SearchActivity.class);
 	    	  startActivity(intent);
 	    	  break;
 	      case R.id.action_nearby:

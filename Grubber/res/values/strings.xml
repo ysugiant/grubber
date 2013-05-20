@@ -5,7 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="search">Search</string>
-    <string name="search_hint">Search for restaurants or food..</string>
+    <string name="search_hint">Search for restaurants or food</string>
     <string name="search_nearby">Find Nearby</string>
     <string name="title_activity_results">Results</string>
     <string name="login">Login/Register</string>
@@ -20,16 +20,21 @@
     <string name="user_profile">User Profile</string>
     <string name="about">About </string>
     <string name="logout_msg">Are you sure you want to log out?</string>
-    <string name="title_activity_restaurant">RestaurantActivity</string>
+    <string name="title_activity_restaurant">Restaurant Information</string>
     <string name="menu_search">Search</string>
     <string name="title_activity_reivew">Review Activity</string>
     <string name="title_activity_review_single">Review</string>
-    <string name="title_activity_new_restaurant">NewRestaurantActivity</string>
-    <string name="restaurant_nameString">Name</string>
-    <string name="restaurant_addressString">Address</string>
-    <string name="restaurant_cityString">City</string>
-    <string name="restaurant_stateString">State</string>
+    <string name="title_activity_new_restaurant">Add Restaurant</string>
+    <string name="addressSTR">Address</string>
+    <string name="citySTR">City</string>
+    <string name="stateSTR">State</string>
     <string name="restaurant_verifyString">Verify</string>
     <string name="title_activity_new_restaurant_addr_verify">NewRestaurantAddrVerifyActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="location">Use current location</string>
+    <string name="location_hint">Enter an address to search near</string>
+    <string name="title_activity_new_food">Add Food</string>
+    <string name="descriptionSTR">Description</string>
+    <string name="nameSTR">Name</string>
 
 </resources>

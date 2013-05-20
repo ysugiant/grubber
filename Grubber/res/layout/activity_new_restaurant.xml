@@ -25,7 +25,7 @@
 			    android:id="@+id/restaurant_nameTV"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/restaurant_nameString"
+				android:text="@string/nameSTR"
 				android:textAppearance="?android:attr/textAppearanceMedium" />
 			<EditText
 			    android:id="@+id/restaurant_nameET"
@@ -45,7 +45,7 @@
 			    android:id="@+id/restaurant_addressTV"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/restaurant_addressString"
+				android:text="@string/addressSTR"
 				android:textAppearance="?android:attr/textAppearanceMedium" />
 			<EditText
 			    android:id="@+id/restaurant_addressET"
@@ -65,7 +65,7 @@
 			    android:id="@+id/restaurant_cityTV"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/restaurant_cityString"
+				android:text="@string/citySTR"
 				android:textAppearance="?android:attr/textAppearanceMedium" />
 			<EditText
 			    android:id="@+id/restaurant_cityET"
@@ -85,7 +85,7 @@
 			    android:id="@+id/restaurant_stateTV"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/restaurant_stateString"
+				android:text="@string/stateSTR"
 				android:textAppearance="?android:attr/textAppearanceMedium" />
 			<ListView
 			    android:id="@+id/restaurant_stateLV"

@@ -22,5 +22,7 @@
     <string name="logout_msg">Are you sure you want to log out?</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="menu_search">Search</string>
+    <string name="ok">OK</string>
+    <string name="need_services">You do not have the services required to run this app. Please check your internet connection and your location.</string>
 
 </resources>

@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -24,12 +25,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 
@@ -40,12 +41,25 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.grubber.R;
+import com.example.grubber.R.layout;
+import com.example.grubber.R.menu;
+import com.google.android.gms.maps.*;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.support.v4.app.*;
+
+
 
 public class Results extends FragmentActivity {
 	public FragmentManager fragMan;
 	private ListView result_list;
 	private ProgressDialog progDialog; 
 	//private View main_view;
+	private GoogleMap mMap;	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +72,20 @@ public class Results extends FragmentActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		/* create map */
+		/* check we haven't instantiated the map already */
+		if (mMap == null) {
+			mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+			
+			if( mMap == null ) {
+				//DialogFragment servicesDialog = new NeedServicesDialogFragment();
+				//servicesDialog.show(getSupportFragmentManager(), "results_services_dialog");
+			} else {
+					//do something
+			}	
+		}		
+		
 	}
 	
 	@Override
@@ -97,6 +125,30 @@ public class Results extends FragmentActivity {
 
 	}
 
+	
+	public class NeedServicesDialogFragment extends DialogFragment {
+	    
+	    
+	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        // Use the Builder class for convenient dialog construction
+	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	        builder.setMessage(R.string.need_services)
+	               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+	            	   
+	                   public void onClick(DialogInterface dialog, int id) {
+	                	   //return to main screen
+	               	    	Intent intent = new Intent(getBaseContext(), MainActivity.class);
+	               	    	startActivity(intent);   
+	               	    	   
+	                   }
+	               });
+
+	        // Create the AlertDialog object and return it
+	        return builder.create();
+	    }
+	}
+	
+	
 	private class GetHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
 
 		@Override

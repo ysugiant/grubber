@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +27,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity  {
 	
 	public final Context context = this;
-
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,12 +93,20 @@ public class MainActivity extends Activity  {
 	    	  break;
 	      case R.id.action_nearby:
 	    	  Intent intent2 = new Intent(this, Results.class);
-	    	  //get long lat 
-	    	  LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
-	    	  Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    	  intent2.putExtra("longitude", location.getLongitude());
-	    	  intent2.putExtra("latitude", location.getLatitude());			
-	    	  startActivity(intent2);   
+	    	  LocationManager locManager = (LocationManager) getSystemService(LOCATION_SERVICE);  	    	  
+	    	  //get long lat
+				if( locManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ) {
+					DialogFragment servicesDialog = new NeedServicesDialogFragment();
+					servicesDialog.show(getFragmentManager(), "results_services_dialog");
+				} else {
+						//do something
+				
+		    	  LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
+		    	  Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		    	  intent2.putExtra("longitude", location.getLongitude());
+		    	  intent2.putExtra("latitude", location.getLatitude());		
+		    	  startActivity(intent2);   
+      			}
 	    	  break;
 	      case R.id.action_profile:
 	    	  if(SaveSharedPreference.getUserId(MainActivity.this) != 0){
@@ -112,4 +123,30 @@ public class MainActivity extends Activity  {
 
       return true;
     } 
+    
+    
+public static class NeedServicesDialogFragment extends DialogFragment {
+    static NeedServicesDialogFragment newInstance() {
+        return new NeedServicesDialogFragment();
+    }
+
+	
+	@Override	    
+	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        // Use the Builder class for convenient dialog construction
+	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	        builder.setMessage(R.string.need_services)
+	               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                	   dialog.dismiss();
+	                   }
+	               });
+
+	        // Create the AlertDialog object and return it
+	        return builder.create();
+	    }
+	}
+	
+    
+    
 }

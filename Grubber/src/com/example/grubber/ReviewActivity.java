@@ -19,11 +19,14 @@ import org.apache.http.message.BasicNameValuePair;
 
 
 
+import com.example.grubber.FoodPageActivity.Review;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+
+
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,25 +49,16 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FoodPageActivity extends Activity implements View.OnClickListener {
+public class ReviewActivity extends Activity  {
 
 	Context context = this;
 	
 	final int MIN =0;
-	final int MAX = 3;
+	final int MAX = 99;
 	
 	private  ArrayList<Review> reviewList = new ArrayList<Review>();
     private ArrayList<HashMap <String,String>> commetArrlist = new ArrayList<HashMap <String,String>>();
-	private TextView foodName;
-	private ImageView foodImg;
-	private TextView totalVoteTV;
-	private RatingBar rating;
-	private Button voteBtn;
-	private TextView reviewUsrName;
-	private TextView reviewContent;
-	private EditText voteComment;
 	private ListView reviewLV;
-	private TextView reviewMoreTV;
 	
 	
 	 class Review {
@@ -148,18 +142,13 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_food_page);
-		foodName = (TextView) findViewById(R.id.foogpage_foodNameTV);
-		foodImg = (ImageView)findViewById(R.id.foogpage_foodimgIV);
-		totalVoteTV = (TextView) findViewById(R.id.foodpage_totalVoteNumTV);
-		rating = (RatingBar) findViewById(R.id.foodpage_ratingRB);
-		voteBtn = (Button) findViewById(R.id.foodpage_voteBtn);
-		voteComment = (EditText) findViewById(R.id.foodpage_commentET);
-		reviewLV = (ListView) findViewById(R.id.foogpage_reviewList);
-		reviewMoreTV = (TextView) findViewById(R.id.foodpage_reviewMoreTV);
+		setContentView(R.layout.activity_reviews_list);
+
+	
+		reviewLV = (ListView) findViewById(R.id.review_reivewLV);
 		
-		voteBtn.setOnClickListener(this);
-		reviewMoreTV.setOnClickListener(this);  
+	
+		  
 		  try {
 			getComment();
 		} catch (Exception e) {
@@ -172,12 +161,11 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 			  public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 			  Object o = reviewLV.getItemAtPosition(position);
 			  Review review = (Review)o;
-			  Intent newIntent= new Intent(FoodPageActivity.this, ReviewSingleActivity.class); 
+			  Intent newIntent= new Intent(ReviewActivity.this, ReviewSingleActivity.class); 
 	   		  newIntent.putExtra("username", review.getName());
 	   		  newIntent.putExtra("comment", review.getContext());
 	   		  newIntent.putExtra("time", review.getTime());
 	   		  startActivityForResult(newIntent, 2 );
-			  //Toast.makeText(FoodPageActivity.this, "You have chosen : " + " " + obj_itemDetails.getName(), Toast.LENGTH_SHORT).show();
 			  } 
 			  });
 		  
@@ -185,74 +173,11 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_food_page, menu);
-		return true;
-	}
 	
-	@Override
-	public void onClick(View v) {
-		if(v.getId() == R.id.foodpage_voteBtn){
-			RegisterTask task = new RegisterTask();
-			task.execute((Void) null);
-		}
-		if(v.getId() == R.id.foodpage_reviewMoreTV){
-			Intent intent = new Intent(this, ReviewActivity.class);
-	    	startActivity(intent);	
-			
-		}
-		
-	}
-	
-	
-	
-	private class RegisterTask extends AsyncTask<Void, Void, Boolean> {
 
-		protected Boolean doInBackground(Void... params) {
-			
-			Log.d("bug1", SaveSharedPreference.getUserId(context) + voteComment.getText().toString());
-			final JsonObject obj = userVote(SaveSharedPreference.getUserId(context) + "", "2" ,voteComment.getText().toString());
 	
-			if(obj != null){
-				runOnUiThread(new Runnable() {
-					public void run() {
-					   // Toast.makeText(FoodPageActivity.this, obj.get("message").toString(), Toast.LENGTH_SHORT).show();
-					    }
-					});
-				if(obj.get("result").getAsBoolean()){
-					finish();
-				}
-				return obj.get("result").getAsBoolean();
-			}
-			return false;
-		}
-
-		
-		protected JsonObject userVote(String userid, String foodid, String comment){
-			URL url;
-			URLConnection uc;
-			BufferedReader data;
-
-			try {
-				Log.d("bug2","dasf");
-				url = new URL("http://cse190.myftp.org:8080/cse190/createVote?user_id=" + userid + "&food_id=" + foodid + "&comment=" + comment);
-				Log.d("bug3","dasf");
-				uc = url.openConnection();
-				data = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-				String inputLine = data.readLine();
-				JsonParser parser = new JsonParser();
-				return (JsonObject) parser.parse(inputLine);
-
-			} catch (Exception e) {
-				//No Connection
-				return null;
-			}
-		}
-
-	}
 	
+
 	
 	
 	

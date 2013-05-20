@@ -1,7 +1,7 @@
 package com.example.grubber;
 
 import com.example.grubber.R;
-
+import com.google.analytics.tracking.android.*;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -27,11 +27,21 @@ import android.widget.Toast;
 public class MainActivity extends Activity  {
 	
 	public final Context context = this;
+
+	private Tracker mGaTracker;
+	private GoogleAnalytics mGaInstance;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mGaInstance = GoogleAnalytics.getInstance(this);
+        mGaTracker = mGaInstance.getTracker("UA-40885024-1");
+        
         setContentView(R.layout.activity_main);        
+    }
+    
+    protected void onDestroy() {
+    	super.onDestroy();
     }
     
     @SuppressLint("NewApi")
@@ -41,6 +51,7 @@ public class MainActivity extends Activity  {
     	super.onResume();
     	//Refresh the options menu when this activity comes in focus
     	invalidateOptionsMenu();
+    	//this.tracker.trackPageView("/TopTracksActivity");
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,7 +63,7 @@ public class MainActivity extends Activity  {
         {
             MenuItem profileItem = menu.findItem(R.id.action_profile);
         	profileItem.setTitle(R.string.login);
-            Toast.makeText(this,"Not logged in",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Not logged in",Toast.LENGTH_SHORT).show();
         }
         else {
         	MenuItem signout = menu.findItem(R.id.action_signout);
@@ -63,10 +74,10 @@ public class MainActivity extends Activity  {
         			alertDialogBuilder.setTitle(R.string.logout_msg);
         			alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
         				public void onClick(DialogInterface dialog,int id) {            					    							
-							int tempUserName = SaveSharedPreference.getUserId(context);    			        		
+							//int tempUserName = SaveSharedPreference.getUserId(context);    			        		
 			        		dialog.cancel();    			        		
 			        		SaveSharedPreference.setUserId(context, 0);
-        					Toast.makeText(context ,tempUserName + " logged out" , Toast.LENGTH_SHORT).show();
+        					Toast.makeText(context , "Logged out" , Toast.LENGTH_SHORT).show();
         					invalidateOptionsMenu();
 						}    						
 					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -87,26 +98,17 @@ public class MainActivity extends Activity  {
     public boolean onOptionsItemSelected(MenuItem item) {
       switch (item.getItemId()) {
 	      case R.id.menu_search:
-	    	  Intent intent = new Intent(this, Results.class);
-	    	  intent.putExtra("key", "taco");
+	    	  Intent intent = new Intent(this, SearchActivity.class);
 	    	  startActivity(intent);
 	    	  break;
 	      case R.id.action_nearby:
 	    	  Intent intent2 = new Intent(this, Results.class);
-	    	  LocationManager locManager = (LocationManager) getSystemService(LOCATION_SERVICE);  	    	  
-	    	  //get long lat
-				if( locManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ) {
-					DialogFragment servicesDialog = new NeedServicesDialogFragment();
-					servicesDialog.show(getFragmentManager(), "results_services_dialog");
-				} else {
-						//do something
-				
-		    	  LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
-		    	  Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		    	  intent2.putExtra("longitude", location.getLongitude());
-		    	  intent2.putExtra("latitude", location.getLatitude());		
-		    	  startActivity(intent2);   
-      			}
+	    	  //get long lat 
+	    	  //LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
+	    	  //Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	    	  //intent2.putExtra("longitude", location.getLongitude());
+	    	  //intent2.putExtra("latitude", location.getLatitude());			
+	    	  startActivity(intent2);   
 	    	  break;
 	      case R.id.action_profile:
 	    	  if(SaveSharedPreference.getUserId(MainActivity.this) != 0){

@@ -15,6 +15,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.example.grubber.ResultContent;
+import com.example.grubber.ResultAdapter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -190,38 +192,35 @@ public class Results extends FragmentActivity {
 	        JsonObject jo = (JsonObject)jsonParser.parse(jsonString);
 	        JsonArray jarr = (JsonArray) jo.get("result");
 	        
-	        final ArrayList<HashMap<String, String>> restList = new ArrayList<HashMap<String, String>>();
-	        
-	        String[] fields = new String[] {"rest_id", "name", "address", "city", "state",
-					 "zip", "latitude", "longitude", "phone", "website", "distance"};
-	        
+	        final ArrayList<ResultContent> list_result = new ArrayList<ResultContent>();
 	        for (int i = 0; i < jarr.size(); i++) {
 	        	JsonObject result = (JsonObject) jarr.get(i);
-	        	HashMap<String, String> restaurant = new HashMap<String, String>();
 
-	        	for (int j = 0; j < fields.length; j++) {
-	        		String field = fields[j];
-	        		restaurant.put(field, result.get(field).getAsString());
-	        		
-	        	}
-	        	restList.add(restaurant);
-	        }
-	        ArrayList<String> list = new ArrayList<String>();
-	        for (int i = 0; i < restList.size(); i++) {
-	        	HashMap<String, String> rest2 = restList.get(i);
-	        	list.add(rest2.get("name"));
+	        	//set for adapter value
+	        	list_result.add(new ResultContent(result.get("rest_id").getAsString(), result.get("name").getAsString(),
+						  result.get("address").getAsString(), result.get("city").getAsString(), result.get("state").getAsString(),
+						  result.get("zip").getAsString(), result.get("longitude").getAsString(), result.get("latitude").getAsString(),
+						  result.get("phone").getAsString(), result.get("website").getAsString(), result.get("distance").getAsString()));
 	        }
 	        
+	        ResultAdapter radapter = new ResultAdapter(Results.this, list_result);
+
 	        //Show the restaurant list to ListView
-	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Results.this, android.R.layout.simple_list_item_1, list);
-	        result_list.setAdapter(adapter);
+	        result_list.setAdapter(radapter);
 	        result_list.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	            {//set onClick
 	            	Intent intent = new Intent(Results.this, RestaurantActivity.class);
-	            	Log.d("bug", id + "");
-	            	HashMap<String, String> tmp = restList.get((int) id);
-	            	intent.putExtra("rest", tmp);
+	            	ResultContent tmp = list_result.get((int) id);
+	            	intent.putExtra("rest_id", tmp.getId());
+	            	intent.putExtra("name", tmp.getName());
+	            	intent.putExtra("address", tmp.getAddress());
+	            	intent.putExtra("city", tmp.getCity() + ", " + tmp.getState() + ", " + tmp.getZip());
+	            	intent.putExtra("longitude", tmp.getLongitude());
+	            	intent.putExtra("latitude", tmp.getLatitude());
+	            	intent.putExtra("phone", tmp.getPhone());
+	            	intent.putExtra("website", tmp.getWebsite());
+	            	intent.putExtra("distance", tmp.getDistance());
 	        		startActivity(intent);
 	            }
 	        });

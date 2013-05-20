@@ -1,6 +1,7 @@
 package com.example.grubber;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import java.util.ArrayList;
@@ -21,25 +22,36 @@ import com.google.gson.JsonParser;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class RestaurantActivity extends Activity {
 
 	private TextView restNameTV;
 	private TextView restAddressTV;
 	private TextView restCityTV;
+	private TextView restPhoneTV;
+	private TextView restWebsiteTV;
 	private ImageView restImageIV;
 	private ListView foodListLV;
+	private ProgressDialog progDialog; 
+
+	String rest_id;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,39 +59,55 @@ public class RestaurantActivity extends Activity {
 		
 		//***set restaurant name, address, etc
 		//get value pass from previous page
-		final HashMap<String, String> rest = (HashMap<String, String>) getIntent().getSerializableExtra("rest");
-		
 		//define textview
 		restNameTV = (TextView)findViewById(R.id.restNameTV);
 		restAddressTV = (TextView)findViewById(R.id.restAddressTV);
 		restAddressTV.setClickable(true);
+		restWebsiteTV = (TextView)findViewById(R.id.restWebsiteTV);
+		restWebsiteTV.setClickable(true);
+		restPhoneTV = (TextView)findViewById(R.id.restPhoneTV);
+		restPhoneTV.setClickable(true);
 		restCityTV = (TextView)findViewById(R.id.restCityTV);
 		restImageIV = (ImageView)findViewById(R.id.restImageIV);
 		foodListLV = (ListView)findViewById(R.id.foodListLV);
 		
 		//show picture
-		//String picurl = "http://maps.googleapis.com/maps/api/streetview?size=100x100&location="+ rest.get("longitude")+","+rest.get("latitude") +"&fov=90&heading=235&pitch=10&sensor=false";
-		//new DownloadImageTask((ImageView) findViewById(R.id.imageView1)).execute(picurl);
+		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ getIntent().getStringExtra("longitude")+","+getIntent().getStringExtra("latitude") +"&fov=90&heading=235&pitch=10&sensor=false";
+		new DownloadImageTask((ImageView) findViewById(R.id.restImageIV)).execute(picurl);
 		
 		//set the textview
-		restNameTV.setText(rest.get("name"));
-		restAddressTV.setText(rest.get("address"));
-		restCityTV.setText(rest.get("city") + ", " +rest.get("state") + ", " + rest.get("zip"));
-		
+		restNameTV.setText(getIntent().getStringExtra("name"));
+		restAddressTV.setText(getIntent().getStringExtra("address"));
+		restCityTV.setText(getIntent().getStringExtra("city"));
+		restWebsiteTV.setText(getIntent().getStringExtra("website"));
+		restPhoneTV.setText(getIntent().getStringExtra("phone"));
+		rest_id = getIntent().getStringExtra("rest_id");
 		//***Open navigation app when click on the address
 		restAddressTV.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				String uri = "google.navigation:q="+rest.get("longitude")+","+rest.get("latitude");
+				String uri = "google.navigation:q="+getIntent().getStringExtra("longitude")+","+getIntent().getStringExtra("latitude");
 			    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 			    startActivity(i); 
 			}
 		});
 		
+		restWebsiteTV.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+			    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getIntent().getStringExtra("website")));
+			    startActivity(i); 
+			}
+		});
 		
+		restPhoneTV.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+			    Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + getIntent().getStringExtra("phone")));
+			    startActivity(i); 
+			}
+		});
 		
 		//query to get the top 3 food list
 		try {
-			getFoodList(rest.get("rest_id"));
+			getFoodList(rest_id);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -94,6 +122,7 @@ public class RestaurantActivity extends Activity {
 	}
 
 	public void getFoodList(String id) throws Exception {
+		progDialog = ProgressDialog.show( this, "Process ", "Loading Data...",true,true);
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 		nameValuePair.add(new BasicNameValuePair("rest_id", id));
 		nameValuePair.add(new BasicNameValuePair("min", "0"));
@@ -138,34 +167,50 @@ public class RestaurantActivity extends Activity {
 					}
 				});
 			}
-
+			//stop progress bar
+			progDialog.dismiss();
 		}
 		
 		protected void getFood(String json)
 		{
-			
             JsonParser parser = new JsonParser();
             JsonObject obj = (JsonObject) parser.parse(json);
             JsonArray jarr = (JsonArray) obj.get("result");
-			// SET TEXT FIELD TO RESPONSE 
+            
+	        final ArrayList<FoodContent> list_result = new ArrayList<FoodContent>();
+	        for (int i = 0; i < jarr.size(); i++) {
+	        	JsonObject result = (JsonObject) jarr.get(i);
 
-			ArrayList<String> foodlist = new ArrayList<String>();
-			Log.d("bug",jarr.size() +"");
-			if (jarr.size() == 0)
-			{	//no data
-				
-				return;
-			}
-			for(int i = 0; i < jarr.size(); i++){
-				JsonObject o = (JsonObject) jarr.get(i);
-				foodlist.add(o.get("name").getAsString());
-			}
-	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(RestaurantActivity.this, android.R.layout.simple_list_item_1, foodlist);
-			foodListLV.setAdapter(adapter); 
+	        	//set for adapter value
+	        	list_result.add(new FoodContent(result.get("food_id").getAsString(), result.get("name").getAsString(),
+						  result.get("description").getAsString(), result.get("vote").getAsString()));
+	        }
+	        
+	        FoodAdapter radapter = new FoodAdapter(RestaurantActivity.this, list_result);
+
+	        //Show the food list to ListView
+	        foodListLV.setAdapter(radapter);
+	        /*foodListLV.setOnItemClickListener(new OnItemClickListener() {
+	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+	            {//set onClick and open RestaurantActivity page
+	            	Intent intent = new Intent(RestaurantActivity.this, RestaurantActivity.class);
+	            	ResultContent tmp = list_result.get((int) id);
+	            	intent.putExtra("rest_id", tmp.getId());
+	            	intent.putExtra("name", tmp.getName());
+	            	intent.putExtra("address", tmp.getAddress());
+	            	intent.putExtra("city", tmp.getCity() + ", " + tmp.getState() + ", " + tmp.getZip());
+	            	intent.putExtra("longitude", tmp.getLongitude());
+	            	intent.putExtra("latitude", tmp.getLatitude());
+	            	intent.putExtra("phone", tmp.getPhone());
+	            	intent.putExtra("website", tmp.getWebsite());
+	            	intent.putExtra("distance", tmp.getDistance());
+	        		startActivity(intent);
+	            }
+	        });*/
 		}
 	}
 	
-	/*private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 	    ImageView bmImage;
 
 	    public DownloadImageTask(ImageView bmImage) {
@@ -188,5 +233,5 @@ public class RestaurantActivity extends Activity {
 	    protected void onPostExecute(Bitmap result) {
 	        bmImage.setImageBitmap(result);
 	    }
-	}*/
+	}
 }

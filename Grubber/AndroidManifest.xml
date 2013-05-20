@@ -18,6 +18,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <!--
          The following two permissions are not required to use
+<<<<<<< HEAD
 	     Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -92,4 +93,110 @@
         </activity>
     </application>
 
+=======
+	     Google Maps Android API v2, but are recommended.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <permission
+        android:name="com.example.grubber.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.grubber.permission.MAPS_RECEIVE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.grubber.MainActivity"
+            android:label="" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="com.example.grubber.Results" />
+        </activity>
+        <activity
+            android:name="com.example.grubber.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.Results"
+            android:label="@string/title_activity_results" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name="com.example.grubber.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.SignupActivity"
+            android:label="@string/title_activity_signup"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.FoodPageActivity"
+            android:label="@string/title_activity_food_page" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.RestaurantActivity"
+            android:label="@string/title_activity_restaurant" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.ReviewActivity"
+            android:label="@string/title_activity_reivew" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.ReviewSingleActivity"
+            android:label="@string/title_activity_review_single" >
+        </activity>
+        <!-- Google Maps API -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyD_ATYYFuoEgx_tYLikKuV6FKpGbiztxpk" />
+
+        <activity
+            android:name="com.example.grubber.NewRestaurantActivity"
+            android:label="@string/title_activity_new_restaurant" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.NewRestaurantAddrVerifyActivity"
+            android:label="@string/title_activity_new_restaurant_addr_verify" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.SearchActivity"
+            android:label="@string/search"
+            android:parentActivityName="com.example.grubber.MainActivity"
+            android:windowSoftInputMode="stateVisible" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.grubber.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.example.grubber.NewFoodActivity"
+            android:label="@string/title_activity_new_food" >
+        </activity>
+    </application>
+
+>>>>>>> a5a4f25f035076e9c9cfa54d28fbb3117b2f6246
 </manifest>

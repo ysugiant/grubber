@@ -3,12 +3,13 @@
     <item android:id="@+id/menu_search"
           android:title="@string/menu_search"
           android:showAsAction="always"
-          android:actionViewClass="android.widget.SearchView" 
+          android:icon="@drawable/search"
           android:queryHint="@string/search_hint" />
     <item
         android:id="@+id/action_nearby"
         android:orderInCategory="1"
         android:showAsAction="always"
+        android:icon="@drawable/nearby"
         android:title="@string/search_nearby" />
     <item
         android:id="@+id/action_profile"

@@ -128,7 +128,10 @@ public class SignupActivity extends Activity implements View.OnClickListener  {
 			if(obj != null){
 				runOnUiThread(new Runnable() {
 					public void run() {
-					    Toast.makeText(SignupActivity.this, obj.get("message").toString(), Toast.LENGTH_SHORT).show();
+						//Strip off the quotes around the message!
+						String msg = obj.get("message").toString();
+						msg = msg.substring(1, msg.length()-1);
+					    Toast.makeText(SignupActivity.this, msg, Toast.LENGTH_SHORT).show();
 					    }
 					});
 				if(obj.get("result").getAsBoolean()){

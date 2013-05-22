@@ -40,7 +40,6 @@ public class MainActivity extends Activity  {
         super.onCreate(savedInstanceState);
         mGaInstance = GoogleAnalytics.getInstance(this);
         mGaTracker = mGaInstance.getTracker("UA-40885024-1");
-        
         setContentView(R.layout.activity_main);        
     }
     
@@ -187,5 +186,5 @@ public static class NeedServicesDialogFragment extends DialogFragment {
 	}
 	
     
-    
+    }
 }

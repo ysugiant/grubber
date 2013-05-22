@@ -24,13 +24,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,6 +49,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class RestaurantActivity extends Activity {
 
+	public final Context context = this;	
 	private TextView restNameTV;
 	private TextView restAddressTV;
 	private TextView restCityTV;
@@ -56,6 +64,7 @@ public class RestaurantActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant);
+		getActionBar().setDisplayHomeAsUpEnabled(true);		
 		
 		//***set restaurant name, address, etc
 		//get value pass from previous page
@@ -113,13 +122,75 @@ public class RestaurantActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+	
+	public void onResume() {
+    	super.onResume();
+    	//Refresh the options menu when this activity comes in focus
+    	invalidateOptionsMenu();
+    	//this.tracker.trackPageView("/TopTracksActivity");
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.restaurant, menu);
-		return true;
-	}
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.restaurant, menu);
+                      
+        //Change profile button to login/register if they are not logged in
+        if(SaveSharedPreference.getUserId(RestaurantActivity.this) == 0)
+        {
+            MenuItem profileItem = menu.findItem(R.id.action_profile);
+        	profileItem.setTitle(R.string.login);
+            //Toast.makeText(this,"Not logged in",Toast.LENGTH_SHORT).show();
+        }
+        else {
+        	MenuItem signout = menu.findItem(R.id.action_signout);
+        	signout.setVisible(true);
+            signout.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            	public boolean onMenuItemClick(MenuItem item) {            		        	
+        			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        			alertDialogBuilder.setTitle(R.string.logout_msg);
+        			alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        				public void onClick(DialogInterface dialog,int id) {            					    							
+							//int tempUserName = SaveSharedPreference.getUserId(context);    			        		
+			        		dialog.cancel();    			        		
+			        		SaveSharedPreference.setUserId(context, 0);
+        					Toast.makeText(context , "Logged out" , Toast.LENGTH_SHORT).show();
+        					invalidateOptionsMenu();
+						}    						
+					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+    					public void onClick(DialogInterface dialog,int id) {    						
+    						dialog.cancel();    					
+    					}}
+    				  );            		
+            		AlertDialog alertDialog = alertDialogBuilder.create();
+            		alertDialog.show();   
+            		return true;            		
+            	} 	
+            });        	
+        }        
+        return true;
+      } 					
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+	      case R.id.action_profile:
+	    	  if(SaveSharedPreference.getUserId(RestaurantActivity.this) != 0){
+	    		  Intent intent3 = new Intent(context, ProfileActivity.class);
+	    		  startActivity(intent3);   
+	    	  } else {
+	    		  Intent intent3 = new Intent(context, LoginActivity.class);
+	    		  startActivity(intent3);   
+	    	  }
+	          break; 
+	      case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			break;	          
+	      default:
+	    	  break;
+      }
+
+      return true;
+    }
 
 	public void getFoodList(String id) throws Exception {
 		progDialog = ProgressDialog.show( this, "Process ", "Loading Data...",true,true);
@@ -138,34 +209,29 @@ public class RestaurantActivity extends Activity {
 		new GetHttpRequest().execute(httpost);
 
 	}
-	private class GetHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
+	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
 
 		@Override
-		protected HttpResponse doInBackground(HttpPost... params) {
+		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
+			String json = "wrong";
 			try {
 				HttpResponse resp = httpclient.execute(params[0]);
-				return resp;
+				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+				json = reader.readLine();
+				return json;
 			} catch (Exception e) {
 				Log.d("bugs", "Catch in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(HttpResponse response) {
-			String json = "wrong";
+		protected void onPostExecute(String json) {
 			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				json = reader.readLine();
-				Log.d("bug", json);
 				getFood(json);
 			} catch (Exception e) { 
 				Log.d("bugs","reader"); 
-				runOnUiThread(new Runnable() {
-					public void run() {
-					    Toast.makeText(RestaurantActivity.this, "Failed to get the data", Toast.LENGTH_SHORT).show();
-					}
-				});
+				Toast.makeText(RestaurantActivity.this, "Failed to get the data", Toast.LENGTH_SHORT).show();			
 			}
 			//stop progress bar
 			progDialog.dismiss();

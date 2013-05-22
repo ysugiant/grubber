@@ -36,17 +36,12 @@ import android.content.Intent;
  * well.
  */
 public class LoginActivity extends Activity {
-	
-	
-	
+			
     public void goToRegister(View view) {
     	Intent intent = new Intent(this, SignupActivity.class);
     	startActivity(intent);	
     }
-    
-    
-    
-    
+            
     public final Context context = this;
     
 	/**
@@ -237,7 +232,10 @@ public class LoginActivity extends Activity {
 			{
 				runOnUiThread(new Runnable() {
 					public void run() {
-					    Toast.makeText(LoginActivity.this, obj.get("message").toString(), Toast.LENGTH_SHORT).show();
+						//Strip off the quotes around the message!
+						String msg = obj.get("message").toString();
+						msg = msg.substring(1, msg.length()-1);
+					    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
 					    }
 					});
 				if (obj.get("result").getAsBoolean())

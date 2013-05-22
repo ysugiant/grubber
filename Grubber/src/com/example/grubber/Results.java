@@ -30,13 +30,25 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+<<<<<<< HEAD
+=======
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
+>>>>>>> 6044ad94583a628ca730f1b1dcec809395cf6d8f
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import android.view.View;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -56,10 +68,10 @@ import android.support.v4.app.*;
 
 
 
-public class Results extends FragmentActivity {
-	public FragmentManager fragMan;
+public class Results extends Activity {
 	private ListView result_list;
 	private ProgressDialog progDialog; 
+	public final Context context = this;
 	//private View main_view;
 	private GoogleMap mMap;	
 	
@@ -68,10 +80,11 @@ public class Results extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_results);
 		result_list = (ListView) findViewById(R.id.restaurantLV);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		try {
 			getRestaurant();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			Log.d("bugs", "caught getRest");
 			e.printStackTrace();
 		}
 		
@@ -90,19 +103,86 @@ public class Results extends FragmentActivity {
 		
 	}
 	
+	public void onResume() {
+    	super.onResume();
+    	//Refresh the options menu when this activity comes in focus
+    	invalidateOptionsMenu();
+    	//this.tracker.trackPageView("/TopTracksActivity");
+    }	
+	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.results, menu);
-		return true;
-	}
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.results, menu);
+                      
+        //Change profile button to login/register if they are not logged in
+        if(SaveSharedPreference.getUserId(Results.this) == 0)
+        {
+            MenuItem profileItem = menu.findItem(R.id.action_profile);
+        	profileItem.setTitle(R.string.login);
+            //Toast.makeText(this,"Not logged in",Toast.LENGTH_SHORT).show();
+        }
+        else {
+        	MenuItem signout = menu.findItem(R.id.action_signout);
+        	signout.setVisible(true);
+            signout.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            	public boolean onMenuItemClick(MenuItem item) {            		        	
+        			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        			alertDialogBuilder.setTitle(R.string.logout_msg);
+        			alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        				public void onClick(DialogInterface dialog,int id) {            					    							
+							//int tempUserName = SaveSharedPreference.getUserId(context);    			        		
+			        		dialog.cancel();    			        		
+			        		SaveSharedPreference.setUserId(context, 0);
+        					Toast.makeText(context , "Logged out" , Toast.LENGTH_SHORT).show();
+        					invalidateOptionsMenu();
+						}    						
+					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+    					public void onClick(DialogInterface dialog,int id) {    						
+    						dialog.cancel();    					
+    					}}
+    				  );            		
+            		AlertDialog alertDialog = alertDialogBuilder.create();
+            		alertDialog.show();   
+            		return true;            		
+            	} 	
+            });        	
+        }        
+        return true;
+      }
+	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+	      case R.id.action_profile:
+	    	  if(SaveSharedPreference.getUserId(Results.this) != 0){
+	    		  Intent intent3 = new Intent(context, ProfileActivity.class);
+	    		  startActivity(intent3);   
+	    	  } else {
+	    		  Intent intent3 = new Intent(context, LoginActivity.class);
+	    		  startActivity(intent3);   
+	    	  }
+	          break;   
+	       // Respond to the action bar's Up/Home button
+	      case android.R.id.home:
+	          NavUtils.navigateUpFromSameTask(this);
+	          return true;	          
+	      default:
+	    	  break;
+      }
+
+      return true;
+    }
 
 	public void getRestaurant() throws Exception {
 		//start progress bar
 		progDialog = ProgressDialog.show( this, "Process ", "Loading Data...",true,true);
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
-
-		nameValuePair.add(new BasicNameValuePair("key", getIntent().getStringExtra("key")));
+		
+		String key = getIntent().getStringExtra("key");
+		if (key!=null) {
+			nameValuePair.add(new BasicNameValuePair("key", key));
+		}
 		nameValuePair.add(new BasicNameValuePair("min", "0"));
 		nameValuePair.add(new BasicNameValuePair("max", "11")); // have to reach max?
 		/*Log.d("bug", getIntent().getStringExtra("latitude"));
@@ -127,6 +207,7 @@ public class Results extends FragmentActivity {
 
 	}
 
+<<<<<<< HEAD
 	
 	public class NeedServicesDialogFragment extends DialogFragment {
 	    
@@ -152,36 +233,31 @@ public class Results extends FragmentActivity {
 	
 	
 	private class GetHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
+=======
+	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
+>>>>>>> 6044ad94583a628ca730f1b1dcec809395cf6d8f
 
 		@Override
-		protected HttpResponse doInBackground(HttpPost... params) {
+		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
+			String json = "wrong";
 			try {
 				HttpResponse resp = httpclient.execute(params[0]);
-				return resp;
+				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+				json = reader.readLine();
+				return json;
 			} catch (Exception e) {
-				Log.d("bugs", "Catch in HTTPGETTER");
+				Log.d("bugs", "Caught in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(HttpResponse response) {
-			String json = "wrong";
+		protected void onPostExecute(String json) {
 			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				json = reader.readLine();
-				//Log.d("bug", json);
 				setView(json);
 			} catch (Exception e) { 
-				Log.d("bugs","reader"); 
-				//add button to refresh
-				
-				runOnUiThread(new Runnable() {
-					public void run() {
-					    Toast.makeText(Results.this, "Failed to get the data", Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
+				Toast.makeText(Results.this, "Something went wrong! Oops!", Toast.LENGTH_SHORT).show();
+			};
 			//stop progress bar
 			progDialog.dismiss();
 		}

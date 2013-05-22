@@ -11,6 +11,8 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ public class SearchActivity extends Activity {
 	private final double DEFAULT_COORD = 200.0;
 	public double longt = DEFAULT_COORD;
 	public double lat = DEFAULT_COORD;
+	public boolean addr_changed = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,17 @@ public class SearchActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		lat = getIntent().getDoubleExtra("latitude", DEFAULT_COORD);
 		longt  = getIntent().getDoubleExtra("longitude", DEFAULT_COORD);
+		
+		EditText address_box = (EditText) findViewById(R.id.edit_location);
+		address_box.addTextChangedListener(new TextWatcher(){
+	        public void afterTextChanged(Editable s) {
+	            addr_changed = true;
+	        }
+	        public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+	        public void onTextChanged(CharSequence s, int start, int before, int count){}
+	    });
 		fillCurrentLocation();
+		addr_changed = false;
 	}
 
 	@Override
@@ -99,7 +112,28 @@ public class SearchActivity extends Activity {
 		
 		Intent intent = new Intent(this, Results.class);
   	  	intent.putExtra("key", term);
-  	  	intent.putExtra("location", loc);
+  	  	
+		if (addr_changed) {
+			Geocoder coder = new Geocoder(this);
+			List<Address> address;
+			double user_lat = DEFAULT_COORD;
+			double user_long = DEFAULT_COORD;
+			try {
+			    address = coder.getFromLocationName(loc,5);
+			    if (address != null) {
+				    Address location = address.get(0);
+				    user_lat = location.getLatitude();
+				    user_long = location.getLongitude();
+			  	  	intent.putExtra("latitude", user_lat);
+			  	  	intent.putExtra("longitude", user_long);
+			    }
+
+			} catch (Exception e) {}
+		} else {
+  	  		intent.putExtra("latitude", lat);
+  	  		intent.putExtra("longitude", longt);
+		}
   	  	startActivity(intent);
+
 	}
 }

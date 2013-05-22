@@ -35,6 +35,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,6 +62,7 @@ public class Results extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_results);
 		result_list = (ListView) findViewById(R.id.restaurantLV);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		try {
 			getRestaurant();
 		} catch (Exception e) {
@@ -128,7 +130,11 @@ public class Results extends FragmentActivity {
 	    		  Intent intent3 = new Intent(context, LoginActivity.class);
 	    		  startActivity(intent3);   
 	    	  }
-	          break;        
+	          break;   
+	       // Respond to the action bar's Up/Home button
+	      case android.R.id.home:
+	          NavUtils.navigateUpFromSameTask(this);
+	          return true;	          
 	      default:
 	    	  break;
       }

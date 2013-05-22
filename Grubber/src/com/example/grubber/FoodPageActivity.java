@@ -32,6 +32,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -159,6 +160,7 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_food_page);
+		getActionBar().setDisplayHomeAsUpEnabled(true);		
 		foodName = (TextView) findViewById(R.id.foogpage_foodNameTV);
 		foodImg = (ImageView)findViewById(R.id.foogpage_foodimgIV);
 		totalVoteTV = (TextView) findViewById(R.id.foodpage_totalVoteNumTV);
@@ -246,7 +248,10 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	    		  Intent intent3 = new Intent(context, LoginActivity.class);
 	    		  startActivity(intent3);   
 	    	  }
-	          break;        
+	          break;
+	      case android.R.id.home:
+	          NavUtils.navigateUpFromSameTask(this);
+	          return true;		          
 	      default:
 	    	  break;
       }

@@ -2,12 +2,12 @@
 
     <item
         android:id="@+id/action_profile"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:orderInCategory="2"    
         android:title="@string/user_profile" />
     <item
         android:id="@+id/action_signout"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:orderInCategory="3"    
         android:title="@string/signout" 
         android:visible="false" />   

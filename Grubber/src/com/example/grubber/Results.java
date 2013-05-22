@@ -37,11 +37,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-<<<<<<< HEAD
-=======
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
->>>>>>> 6044ad94583a628ca730f1b1dcec809395cf6d8f
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,7 +65,7 @@ import android.support.v4.app.*;
 
 
 
-public class Results extends Activity {
+public class Results extends FragmentActivity {
 	private ListView result_list;
 	private ProgressDialog progDialog; 
 	public final Context context = this;
@@ -198,8 +195,6 @@ public class Results extends Activity {
 
 		new GetHttpRequest().execute(httpost);
 	}
-
-<<<<<<< HEAD
 	
 	public class NeedServicesDialogFragment extends DialogFragment {
 	    
@@ -223,12 +218,7 @@ public class Results extends Activity {
 	    }
 	}
 	
-	
-	private class GetHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
-=======
 	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
->>>>>>> 6044ad94583a628ca730f1b1dcec809395cf6d8f
-
 		@Override
 		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();

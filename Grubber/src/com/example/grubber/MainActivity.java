@@ -153,28 +153,26 @@ public class MainActivity extends Activity  {
 		servicesDialog.show(getFragmentManager(), "results_services_dialog");		
     }
     
-public static class NeedServicesDialogFragment extends DialogFragment {
-    static NeedServicesDialogFragment newInstance() {
-        return new NeedServicesDialogFragment();
-    }
-
-	
-	@Override	    
-	    public Dialog onCreateDialog(Bundle savedInstanceState) {
-	        // Use the Builder class for convenient dialog construction
-	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	        builder.setMessage(R.string.need_services)
-	               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-	                   public void onClick(DialogInterface dialog, int id) {
-	                	   dialog.dismiss();
-	                   }
-	               });
-
-	        // Create the AlertDialog object and return it
-	        return builder.create();
+	public static class NeedServicesDialogFragment extends DialogFragment {
+	    static NeedServicesDialogFragment newInstance() {
+	        return new NeedServicesDialogFragment();
 	    }
-	}
 	
+		
+		@Override	    
+		    public Dialog onCreateDialog(Bundle savedInstanceState) {
+		        // Use the Builder class for convenient dialog construction
+		        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		        builder.setMessage(R.string.need_services)
+		               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+		                   public void onClick(DialogInterface dialog, int id) {
+		                	   dialog.dismiss();
+		                   }
+		               });
+	
+		        // Create the AlertDialog object and return it
+		        return builder.create();
+		    }
+	}
     
-    }
 }

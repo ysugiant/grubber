@@ -71,6 +71,9 @@ public class Results extends FragmentActivity {
 	public final Context context = this;
 	//private View main_view;
 	private GoogleMap mMap;	
+
+	DialogFragment servicesDialog = new NeedServicesDialogFragment();
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,16 +90,15 @@ public class Results extends FragmentActivity {
 		
 		/* create map */
 		/* check we haven't instantiated the map already */
-		/*if (mMap == null) {
+		if (mMap == null) {
 			mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 			
 			if( mMap == null ) {
-				//DialogFragment servicesDialog = new NeedServicesDialogFragment();
-				//servicesDialog.show(getSupportFragmentManager(), "results_services_dialog");
+				servicesDialog.show(getSupportFragmentManager(), "results_services_dialog");
 			} else {
 				//do something
 			}	
-		}*/		
+		}		
 		
 	}
 	

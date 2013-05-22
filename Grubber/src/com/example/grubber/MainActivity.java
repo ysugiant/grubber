@@ -1,5 +1,6 @@
 package com.example.grubber;
 
+import com.example.grubber.Alerts.NeedServicesDialogFragment;
 import com.example.grubber.MyLocation.LocationResult;
 import com.example.grubber.R;
 import com.google.analytics.tracking.android.*;
@@ -12,9 +13,7 @@ import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,6 +35,9 @@ public class MainActivity extends Activity  {
 	private Tracker mGaTracker;
 	private GoogleAnalytics mGaInstance;
 	public Location userLoc;
+
+	//alerts
+	DialogFragment servicesDialog = new NeedServicesDialogFragment();
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,19 +119,22 @@ public class MainActivity extends Activity  {
 	    	  if (userLoc!=null) {
 	    		  intent.putExtra("longitude", userLoc.getLongitude());
 	    		  intent.putExtra("latitude", userLoc.getLatitude());
+		    	  startActivity(intent);
+	    	  } else {
+	    		  servicesDialog.show(getFragmentManager(), "results_services_dialog");	
 	    	  }
-	    	  startActivity(intent);
+
 	    	  break;
 	      case R.id.action_nearby:
 	    	  Intent intent2 = new Intent(this, Results.class);
 	    	  if (userLoc!=null) {
 	    		  intent2.putExtra("longitude", userLoc.getLongitude()+"");
 	    		  intent2.putExtra("latitude", userLoc.getLatitude()+"");
+		    	  startActivity(intent2);   
 	    	  }
 	    	  else {
-	    		  showNeedServicesDialog();  
+	    		  servicesDialog.show(getFragmentManager(), "results_services_dialog");	
 	    	  }
-	    	  startActivity(intent2);   
 	    	  break;
 	      case R.id.action_profile:
 	    	  if(SaveSharedPreference.getUserId(MainActivity.this) != 0){
@@ -146,33 +151,5 @@ public class MainActivity extends Activity  {
 
       return true;
     } 
-    
-    
-    public void showNeedServicesDialog() {
-    	DialogFragment servicesDialog = new NeedServicesDialogFragment();
-		servicesDialog.show(getFragmentManager(), "results_services_dialog");		
-    }
-    
-	public static class NeedServicesDialogFragment extends DialogFragment {
-	    static NeedServicesDialogFragment newInstance() {
-	        return new NeedServicesDialogFragment();
-	    }
-	
-		
-		@Override	    
-		    public Dialog onCreateDialog(Bundle savedInstanceState) {
-		        // Use the Builder class for convenient dialog construction
-		        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		        builder.setMessage(R.string.need_services)
-		               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-		                   public void onClick(DialogInterface dialog, int id) {
-		                	   dialog.dismiss();
-		                   }
-		               });
-	
-		        // Create the AlertDialog object and return it
-		        return builder.create();
-		    }
-	}
 }
     

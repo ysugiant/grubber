@@ -59,8 +59,7 @@ public class ReviewActivity extends Activity  {
 	private  ArrayList<Review> reviewList = new ArrayList<Review>();
     private ArrayList<HashMap <String,String>> commetArrlist = new ArrayList<HashMap <String,String>>();
 	private ListView reviewLV;
-	
-	
+		
 	 class Review {
 	        private String usrName;
 	        private String usrContext;
@@ -137,18 +136,13 @@ public class ReviewActivity extends Activity  {
 	        }
 	    }
 	    
-
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_reviews_list);
 
-	
 		reviewLV = (ListView) findViewById(R.id.review_reivewLV);
-		
-	
-		  
+				  
 		  try {
 			getComment();
 		} catch (Exception e) {
@@ -167,22 +161,9 @@ public class ReviewActivity extends Activity  {
 	   		  newIntent.putExtra("time", review.getTime());
 	   		  startActivityForResult(newIntent, 2 );
 			  } 
-			  });
-		  
-		  
-
+			  });		  	
 	}
-
-	
-
-	
-	
-
-	
-	
-	
-	
-	
+		
 	public void getComment() throws Exception {
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 		// need to get the food_id from the resutrant page
@@ -200,37 +181,27 @@ public class ReviewActivity extends Activity  {
 		//ResponseHandler responseHandler = new BasicResponseHandler();
 		//Log.d("bugs", "execute request");
 		new getHttpRequest().execute(httpost);
-
 	}
 	
-	
-	
-	
-
-	private class getHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
-
+	private class getHttpRequest extends AsyncTask<HttpPost, Void, String> {
 		@Override
-		protected HttpResponse doInBackground(HttpPost... params) {
+		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
+			String json = "wrong";
 			try {
 				HttpResponse resp = httpclient.execute(params[0]);
-				return resp;
+				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+				json = reader.readLine();
+				return json;
 			} catch (Exception e) {
 				Log.d("bugs", "Catch in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(HttpResponse response) {
-			
-			Gson gson = new Gson();
-			String json = "wrong";
-			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				json = reader.readLine();
-				
+		protected void onPostExecute(String json) {
+			try {				
 				JsonParser parser = new JsonParser();
-
 			    JsonObject obj = (JsonObject) parser.parse(json);
 			    JsonArray results = (JsonArray) obj.get("result");
 			    //JsonObject res = (JsonObject) results.get(0);
@@ -253,15 +224,10 @@ public class ReviewActivity extends Activity  {
 		     	        	reviewList.add(new Review(commetArrlist.get(i).get("username"),commetArrlist.get(i).get("comment"),commetArrlist.get(i).get("time")));
 		     	        }
 		        reviewLV.setAdapter(new ReviewAdapter(context, R.layout.review_list_item, reviewList)); 
-			} catch (Exception e) { Log.d("bugs","reader"); }
-
-		    	
-		    	
-		    }
+			} catch (Exception e) { 
+				Log.d("bugs","reader"); 
+			}		    			    	
 		}
-	
-
-	
-	
+	}
 	
 }

@@ -209,34 +209,29 @@ public class RestaurantActivity extends Activity {
 		new GetHttpRequest().execute(httpost);
 
 	}
-	private class GetHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
+	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
 
 		@Override
-		protected HttpResponse doInBackground(HttpPost... params) {
+		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
+			String json = "wrong";
 			try {
 				HttpResponse resp = httpclient.execute(params[0]);
-				return resp;
+				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+				json = reader.readLine();
+				return json;
 			} catch (Exception e) {
 				Log.d("bugs", "Catch in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(HttpResponse response) {
-			String json = "wrong";
+		protected void onPostExecute(String json) {
 			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				json = reader.readLine();
-				Log.d("bug", json);
 				getFood(json);
 			} catch (Exception e) { 
 				Log.d("bugs","reader"); 
-				runOnUiThread(new Runnable() {
-					public void run() {
-					    Toast.makeText(RestaurantActivity.this, "Failed to get the data", Toast.LENGTH_SHORT).show();
-					}
-				});
+				Toast.makeText(RestaurantActivity.this, "Failed to get the data", Toast.LENGTH_SHORT).show();			
 			}
 			//stop progress bar
 			progDialog.dismiss();

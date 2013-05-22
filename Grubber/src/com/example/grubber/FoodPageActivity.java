@@ -349,30 +349,25 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	
 	
 
-	private class getHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
-
+	private class getHttpRequest extends AsyncTask<HttpPost, Void, String> {
 		@Override
-		protected HttpResponse doInBackground(HttpPost... params) {
+		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
+			String json = "wrong";
 			try {
 				HttpResponse resp = httpclient.execute(params[0]);
-				return resp;
+				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+				json = reader.readLine();
+				return json;
 			} catch (Exception e) {
 				Log.d("bugs", "Catch in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(HttpResponse response) {
-			
-			Gson gson = new Gson();
-			String json = "wrong";
-			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				json = reader.readLine();
-				
+		protected void onPostExecute(String json) {
+			try {				
 				JsonParser parser = new JsonParser();
-
 			    JsonObject obj = (JsonObject) parser.parse(json);
 			    JsonArray results = (JsonArray) obj.get("result");
 			    //JsonObject res = (JsonObject) results.get(0);

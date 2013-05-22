@@ -186,28 +186,25 @@ public class ProfileActivity extends Activity {
 
 	}
 	
-	private class GetHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
+	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
 
 		@Override
-		protected HttpResponse doInBackground(HttpPost... params) {
+		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
+			String json = "wrong";
 			try {
 				HttpResponse resp = httpclient.execute(params[0]);
-				return resp;
+				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+				json = reader.readLine();
+				return json;
 			} catch (Exception e) {
 				Log.d("bugs", "Catch in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(HttpResponse response) {
+		protected void onPostExecute(String json) {
 			Gson gson = new Gson();
-			String json = "wrong";
-			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				json = reader.readLine();
-			} catch (Exception e) { Log.d("bugs","reader"); }
-
 			Type mapType = new TypeToken<Map<String,String>>(){}.getType();
 			Map<String, String> answer = gson.fromJson(json, mapType);
             
@@ -222,36 +219,31 @@ public class ProfileActivity extends Activity {
 		}
 	}
 
-	private class UpdateHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
+	private class UpdateHttpRequest extends AsyncTask<HttpPost, Void, String> {
 
 		@Override
-		protected HttpResponse doInBackground(HttpPost... params) {
+		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
+			String json = "wrong";
 			try {
 				HttpResponse resp = httpclient.execute(params[0]);
-				return resp;
+				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+				json = reader.readLine();
+				return json;
 			} catch (Exception e) {
 				Log.d("bugs", "Catch in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(HttpResponse response) {
+		protected void onPostExecute(String json) {
 			Gson gson = new Gson();
-			String json = "wrong";
-			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				json = reader.readLine();
-			} catch (Exception e) { Log.d("bugs","reader"); }
-
 			Type mapType = new TypeToken<Map<String,String>>(){}.getType();
-			final Map<String, String> answer = gson.fromJson(json, mapType);
-            
-			runOnUiThread(new Runnable() {
-				public void run() {
-				    Toast.makeText(ProfileActivity.this, answer.get("message"), Toast.LENGTH_SHORT).show();
-				    }
-				});
+			final Map<String, String> answer = gson.fromJson(json, mapType); 
+			//Strip off the quotes around the message!
+			String msg = answer.get("message").toString();
+			msg = msg.substring(1, msg.length()-1);			
+			Toast.makeText(ProfileActivity.this, msg, Toast.LENGTH_SHORT).show();				    
 			if(answer.get("result").equals("true"))
 			{
 				finish();

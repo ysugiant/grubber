@@ -186,5 +186,5 @@ public static class NeedServicesDialogFragment extends DialogFragment {
 	}
 	
     
-    }
+    
 }

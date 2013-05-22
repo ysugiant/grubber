@@ -218,6 +218,7 @@ public class Results extends FragmentActivity {
 	    }
 	}
 	
+
 	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
 		@Override
 		protected String doInBackground(HttpPost... params) {

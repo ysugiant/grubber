@@ -84,13 +84,16 @@
         <activity
             android:name="com.example.grubber.FoodPageActivity"
             android:label="@string/title_activity_food_page" >
+			<meta-data
+	               android:name="android.support.PARENT_ACTIVITY"
+	               android:value="com.example.grubber.MainActivity" />				
         </activity>
         <activity
             android:name="com.example.grubber.RestaurantActivity"
             android:label="@string/title_activity_restaurant" >
 			<meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.grubber.Results" />			
+                android:value="com.example.grubber.MainActivity" />			
         </activity>
         <activity
             android:name="com.example.grubber.ReviewActivity"

@@ -28,6 +28,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -50,8 +51,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
-public class Results extends FragmentActivity {
-	public FragmentManager fragMan;
+public class Results extends Activity {
 	private ListView result_list;
 	private ProgressDialog progDialog; 
 	public final Context context = this;
@@ -66,7 +66,7 @@ public class Results extends FragmentActivity {
 		try {
 			getRestaurant();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			Log.d("bugs", "caught getRest");
 			e.printStackTrace();
 		}
 	}
@@ -146,8 +146,11 @@ public class Results extends FragmentActivity {
 		//start progress bar
 		progDialog = ProgressDialog.show( this, "Process ", "Loading Data...",true,true);
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
-
-		nameValuePair.add(new BasicNameValuePair("key", getIntent().getStringExtra("key")));
+		
+		String key = getIntent().getStringExtra("key");
+		if (key!=null) {
+			nameValuePair.add(new BasicNameValuePair("key", key));
+		}
 		nameValuePair.add(new BasicNameValuePair("min", "0"));
 		nameValuePair.add(new BasicNameValuePair("max", "11")); // have to reach max?
 		/*Log.d("bug", getIntent().getStringExtra("latitude"));
@@ -172,37 +175,29 @@ public class Results extends FragmentActivity {
 
 	}
 
-	private class GetHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
+	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
 
 		@Override
-		protected HttpResponse doInBackground(HttpPost... params) {
+		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
+			String json = "wrong";
 			try {
 				HttpResponse resp = httpclient.execute(params[0]);
-				return resp;
+				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+				json = reader.readLine();
+				return json;
 			} catch (Exception e) {
-				Log.d("bugs", "Catch in HTTPGETTER");
+				Log.d("bugs", "Caught in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(HttpResponse response) {
-			String json = "wrong";
+		protected void onPostExecute(String json) {
 			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				json = reader.readLine();
-				//Log.d("bug", json);
 				setView(json);
 			} catch (Exception e) { 
-				Log.d("bugs","reader"); 
-				//add button to refresh
-				
-				runOnUiThread(new Runnable() {
-					public void run() {
-					    Toast.makeText(Results.this, "Failed to get the data", Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
+				Toast.makeText(Results.this, "Something went wrong! Oops!", Toast.LENGTH_SHORT).show();
+			};
 			//stop progress bar
 			progDialog.dismiss();
 		}

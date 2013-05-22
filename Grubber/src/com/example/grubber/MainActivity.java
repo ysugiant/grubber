@@ -1,6 +1,6 @@
 package com.example.grubber;
 
-
+import com.example.grubber.MyLocation.LocationResult;
 import com.example.grubber.R;
 import com.google.analytics.tracking.android.*;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -26,6 +26,7 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
+import com.example.grubber.MyLocation;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity  {
@@ -34,13 +35,24 @@ public class MainActivity extends Activity  {
 
 	private Tracker mGaTracker;
 	private GoogleAnalytics mGaInstance;
+	public Location userLoc;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGaInstance = GoogleAnalytics.getInstance(this);
         mGaTracker = mGaInstance.getTracker("UA-40885024-1");
-        setContentView(R.layout.activity_main);        
+        setContentView(R.layout.activity_main); 
+        
+        LocationResult locationResult = new LocationResult(){
+            @Override
+            public void gotLocation(Location location){
+                //Got the location!
+            	userLoc = location;
+            }
+        };
+        MyLocation myLocation = new MyLocation();
+        myLocation.getLocation(this, locationResult);
     }
     
     protected void onDestroy() {
@@ -99,47 +111,25 @@ public class MainActivity extends Activity  {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
     	switch (item.getItemId()) {
 	      case R.id.menu_search:
-	    	  if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ) {
-	    		  Intent intent = new Intent(this, SearchActivity.class);
-	    		  startActivity(intent);
-	    	  } else {
-	    		  showNeedServicesDialog();	
+	    	  Intent intent = new Intent(this, SearchActivity.class);
+	    	  if (userLoc!=null) {
+	    		  intent.putExtra("longitude", userLoc.getLongitude());
+	    		  intent.putExtra("latitude", userLoc.getLatitude());
 	    	  }
+	    	  startActivity(intent);
 	    	  break;
 	      case R.id.action_nearby:
-	    	  if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ) {
-		    	  Intent intent2 = new Intent(this, Results.class);
-	    		  //get long lat 
-	    		  Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    		  
-	    		  if( location == null ) {
-	    			// Define a listener that responds to location updates
-	    			LocationListener locationListener = new LocationListener() {
-	    			    public void onLocationChanged(Location location) {
-	    			      // Called when a new location is found by the network location provider.
-	    			    }
-
-	    			    public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-	    			    public void onProviderEnabled(String provider) {}
-
-	    			    public void onProviderDisabled(String provider) { showNeedServicesDialog(); }
-	    			};
-
-	    			// Register the listener with the Location Manager to receive location updates
-	    			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60000, 0, locationListener);
-	    			location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    		  }
-	    		  
-	    		  intent2.putExtra("longitude", location.getLongitude());
-	    		  intent2.putExtra("latitude", location.getLatitude());			
-	    		  startActivity(intent2);   
-	    	  } else {
-	    		  showNeedServicesDialog();	
+	    	  Intent intent2 = new Intent(this, Results.class);
+	    	  if (userLoc!=null) {
+	    		  intent2.putExtra("longitude", userLoc.getLongitude()+"");
+	    		  intent2.putExtra("latitude", userLoc.getLatitude()+"");
 	    	  }
+	    	  else {
+	    		  showNeedServicesDialog();  
+	    	  }
+	    	  startActivity(intent2);   
 	    	  break;
 	      case R.id.action_profile:
 	    	  if(SaveSharedPreference.getUserId(MainActivity.this) != 0){
@@ -163,28 +153,26 @@ public class MainActivity extends Activity  {
 		servicesDialog.show(getFragmentManager(), "results_services_dialog");		
     }
     
-public static class NeedServicesDialogFragment extends DialogFragment {
-    static NeedServicesDialogFragment newInstance() {
-        return new NeedServicesDialogFragment();
-    }
-
-	
-	@Override	    
-	    public Dialog onCreateDialog(Bundle savedInstanceState) {
-	        // Use the Builder class for convenient dialog construction
-	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	        builder.setMessage(R.string.need_services)
-	               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-	                   public void onClick(DialogInterface dialog, int id) {
-	                	   dialog.dismiss();
-	                   }
-	               });
-
-	        // Create the AlertDialog object and return it
-	        return builder.create();
+	public static class NeedServicesDialogFragment extends DialogFragment {
+	    static NeedServicesDialogFragment newInstance() {
+	        return new NeedServicesDialogFragment();
 	    }
-	}
 	
-    
-    
+		
+		@Override	    
+		    public Dialog onCreateDialog(Bundle savedInstanceState) {
+		        // Use the Builder class for convenient dialog construction
+		        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		        builder.setMessage(R.string.need_services)
+		               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+		                   public void onClick(DialogInterface dialog, int id) {
+		                	   dialog.dismiss();
+		                   }
+		               });
+	
+		        // Create the AlertDialog object and return it
+		        return builder.create();
+		    }
+	}
 }
+    

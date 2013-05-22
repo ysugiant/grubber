@@ -65,7 +65,7 @@ import android.support.v4.app.*;
 
 
 
-public class Results extends Activity {
+public class Results extends FragmentActivity {
 	private ListView result_list;
 	private ProgressDialog progDialog; 
 	public final Context context = this;
@@ -182,26 +182,18 @@ public class Results extends Activity {
 		}
 		nameValuePair.add(new BasicNameValuePair("min", "0"));
 		nameValuePair.add(new BasicNameValuePair("max", "11")); // have to reach max?
-		/*Log.d("bug", getIntent().getStringExtra("latitude"));
-		if(getIntent().getStringExtra("latitude") != null)
-		{
+		if (getIntent().getStringExtra("latitude") != null && getIntent().getStringExtra("longitude") != null) {
 			nameValuePair.add(new BasicNameValuePair("latitude", getIntent().getStringExtra("latitude")));
-		}
-		if(getIntent().getStringExtra("longitude") != null)
-		{
 			nameValuePair.add(new BasicNameValuePair("longitude", getIntent().getStringExtra("longitude")));
-		}*/	
+		}	
 				
 		// url with the post data
 		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/findRestaurants");
 
 		// sets the post request as the resulting string
 		httpost.setEntity(new UrlEncodedFormEntity(nameValuePair));
-		// Handles what is returned from the page
-		//ResponseHandler responseHandler = new BasicResponseHandler();
-		//Log.d("bugs", "execute request");
-		new GetHttpRequest().execute(httpost);
 
+		new GetHttpRequest().execute(httpost);
 	}
 	
 	public class NeedServicesDialogFragment extends DialogFragment {
@@ -226,9 +218,8 @@ public class Results extends Activity {
 	    }
 	}
 	
-	
-	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
 
+	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
 		@Override
 		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();

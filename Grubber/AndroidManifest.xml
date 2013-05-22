@@ -18,7 +18,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <!--
          The following two permissions are not required to use
-	     Google Maps Android API v2, but are recommended.
+	     Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -62,6 +62,9 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
+			<meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.grubber.MainActivity" />            
         </activity>
         <activity
             android:name="com.example.grubber.RegisterActivity"
@@ -81,10 +84,16 @@
         <activity
             android:name="com.example.grubber.FoodPageActivity"
             android:label="@string/title_activity_food_page" >
+			<meta-data
+	               android:name="android.support.PARENT_ACTIVITY"
+	               android:value="com.example.grubber.MainActivity" />				
         </activity>
         <activity
             android:name="com.example.grubber.RestaurantActivity"
             android:label="@string/title_activity_restaurant" >
+			<meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.grubber.MainActivity" />			
         </activity>
         <activity
             android:name="com.example.grubber.ReviewActivity"
@@ -122,4 +131,5 @@
         </activity>
     </application>
 
+>>>>>>> a5a4f25f035076e9c9cfa54d28fbb3117b2f6246
 </manifest>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">GrubberLayout</string>
+    <string name="app_name">Grubber</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="search">Search</string>
@@ -32,9 +32,10 @@
     <string name="title_activity_new_restaurant_addr_verify">NewRestaurantAddrVerifyActivity</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="location">Use current location</string>
-    <string name="location_hint">Enter an address to search near</string>
+    <string name="location_hint">Enter an address</string>
     <string name="title_activity_new_food">Add Food</string>
     <string name="descriptionSTR">Description</string>
     <string name="nameSTR">Name</string>
-
+    <string name="ok">OK</string>
+	<string name="need_services">This application requires locations services and an internet connection. Please check your settings and try again.</string>
 </resources>

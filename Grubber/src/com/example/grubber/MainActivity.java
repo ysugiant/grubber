@@ -1,13 +1,20 @@
 package com.example.grubber;
 
+import com.example.grubber.MyLocation.LocationResult;
 import com.example.grubber.R;
 import com.google.analytics.tracking.android.*;
+import com.google.android.gms.maps.SupportMapFragment;
+
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,21 +26,33 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
+import com.example.grubber.MyLocation;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity  {
 	
 	public final Context context = this;
+
 	private Tracker mGaTracker;
 	private GoogleAnalytics mGaInstance;
+	public Location userLoc;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGaInstance = GoogleAnalytics.getInstance(this);
         mGaTracker = mGaInstance.getTracker("UA-40885024-1");
+        setContentView(R.layout.activity_main); 
         
-        setContentView(R.layout.activity_main);        
+        LocationResult locationResult = new LocationResult(){
+            @Override
+            public void gotLocation(Location location){
+                //Got the location!
+            	userLoc = location;
+            }
+        };
+        MyLocation myLocation = new MyLocation();
+        myLocation.getLocation(this, locationResult);
     }
     
     protected void onDestroy() {
@@ -92,18 +111,24 @@ public class MainActivity extends Activity  {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-      switch (item.getItemId()) {
+    	switch (item.getItemId()) {
 	      case R.id.menu_search:
 	    	  Intent intent = new Intent(this, SearchActivity.class);
+	    	  if (userLoc!=null) {
+	    		  intent.putExtra("longitude", userLoc.getLongitude());
+	    		  intent.putExtra("latitude", userLoc.getLatitude());
+	    	  }
 	    	  startActivity(intent);
 	    	  break;
 	      case R.id.action_nearby:
 	    	  Intent intent2 = new Intent(this, Results.class);
-	    	  //get long lat 
-	    	  //LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
-	    	  //Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    	  //intent2.putExtra("longitude", location.getLongitude());
-	    	  //intent2.putExtra("latitude", location.getLatitude());			
+	    	  if (userLoc!=null) {
+	    		  intent2.putExtra("longitude", userLoc.getLongitude()+"");
+	    		  intent2.putExtra("latitude", userLoc.getLatitude()+"");
+	    	  }
+	    	  else {
+	    		  showNeedServicesDialog();  
+	    	  }
 	    	  startActivity(intent2);   
 	    	  break;
 	      case R.id.action_profile:
@@ -121,4 +146,33 @@ public class MainActivity extends Activity  {
 
       return true;
     } 
+    
+    
+    public void showNeedServicesDialog() {
+    	DialogFragment servicesDialog = new NeedServicesDialogFragment();
+		servicesDialog.show(getFragmentManager(), "results_services_dialog");		
+    }
+    
+	public static class NeedServicesDialogFragment extends DialogFragment {
+	    static NeedServicesDialogFragment newInstance() {
+	        return new NeedServicesDialogFragment();
+	    }
+	
+		
+		@Override	    
+		    public Dialog onCreateDialog(Bundle savedInstanceState) {
+		        // Use the Builder class for convenient dialog construction
+		        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		        builder.setMessage(R.string.need_services)
+		               .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+		                   public void onClick(DialogInterface dialog, int id) {
+		                	   dialog.dismiss();
+		                   }
+		               });
+	
+		        // Create the AlertDialog object and return it
+		        return builder.create();
+		    }
+	}
 }
+    

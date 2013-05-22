@@ -84,46 +84,36 @@ public class NewFoodActivity extends Activity {
 
 	}
 
-	private class GetHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
+	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
 
 		@Override
-		protected HttpResponse doInBackground(HttpPost... params) {
+		protected String doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
+			String json = "";
+			String inputLine;
 			try {
 				//Log.d("bug", params[0].getURI().toString());
 				HttpResponse resp = httpclient.execute(params[0]);
-				return resp;
+				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
+		        while ((inputLine = reader.readLine()) != null) 
+		        {
+		        	json += inputLine;
+		        }
+				return json;
 			} catch (Exception e) {
 				Log.d("bugs", "Catch in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(HttpResponse response) {
-			String json = "";
+		protected void onPostExecute(String json) {			
 			try {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				String inputLine;
-		        while ((inputLine = reader.readLine()) != null) 
-		        {
-		        	json = json + inputLine;
-		        }
-				Log.d("bug", json);
 				setView(json);
-				runOnUiThread(new Runnable() {
-					public void run() {
-					    Toast.makeText(NewFoodActivity.this, "Thank you for the information. We will publish it ASAP", Toast.LENGTH_SHORT).show();
-					}
-				});
+				Toast.makeText(NewFoodActivity.this, "Thank you for the information. We will publish it ASAP", Toast.LENGTH_SHORT).show();				
 			} catch (Exception e) { 
 				Log.d("bug","reader"); 
 				//add button to refresh
-				
-				runOnUiThread(new Runnable() {
-					public void run() {
-					    Toast.makeText(NewFoodActivity.this, "Failed to add the restaurant", Toast.LENGTH_SHORT).show();
-					}
-				});
+				Toast.makeText(NewFoodActivity.this, "Failed to add the restaurant", Toast.LENGTH_SHORT).show();				
 			}
 			//stop progress bar
 			progDialog.dismiss();
@@ -131,8 +121,7 @@ public class NewFoodActivity extends Activity {
 		
 		protected void setView(String jsonString)
 		{
-			JsonParser parser = new JsonParser();
-		    
+			JsonParser parser = new JsonParser();		    
 		    JsonObject obj = (JsonObject) parser.parse(jsonString);
 		    boolean results = obj.get("result").getAsBoolean();		    
 		}

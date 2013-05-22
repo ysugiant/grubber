@@ -77,7 +77,7 @@ public class Results extends FragmentActivity {
 		
 		/* create map */
 		/* check we haven't instantiated the map already */
-		if (mMap == null) {
+		/*if (mMap == null) {
 			mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 			
 			if( mMap == null ) {
@@ -86,7 +86,7 @@ public class Results extends FragmentActivity {
 			} else {
 				//do something
 			}	
-		}		
+		}*/		
 		
 	}
 	

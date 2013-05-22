@@ -6,6 +6,7 @@ import com.google.analytics.tracking.android.*;
 import com.google.android.gms.maps.SupportMapFragment;
 
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
@@ -105,19 +106,37 @@ public class MainActivity extends Activity  {
 	    	  startActivity(intent);
 	    	  break;
 	      case R.id.action_nearby:
-	    	  Intent intent2 = new Intent(this, Results.class);
 	    	  LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);  
 	    	  
-	    	  if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){  
-	    		  DialogFragment servicesDialog = new NeedServicesDialogFragment();
-	    		  servicesDialog.show(getFragmentManager(), "results_services_dialog");					
-  			  }
-	    	  else {
+	    	  if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ) {
+		    	  Intent intent2 = new Intent(this, Results.class);
 	    		  //get long lat 
 	    		  Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	    		  
+	    		  if( location == null ) {
+	    			// Define a listener that responds to location updates
+	    			LocationListener locationListener = new LocationListener() {
+	    			    public void onLocationChanged(Location location) {
+	    			      // Called when a new location is found by the network location provider.
+	    			    }
+
+	    			    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+	    			    public void onProviderEnabled(String provider) {}
+
+	    			    public void onProviderDisabled(String provider) { showNeedServicesDialog(); }
+	    			};
+
+	    			// Register the listener with the Location Manager to receive location updates
+	    			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60000, 0, locationListener);
+	    			location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	    		  }
+	    		  
 	    		  intent2.putExtra("longitude", location.getLongitude());
 	    		  intent2.putExtra("latitude", location.getLatitude());			
 	    		  startActivity(intent2);   
+	    	  } else {
+	    		  showNeedServicesDialog();	
 	    	  }
 	    	  break;
 	      case R.id.action_profile:
@@ -136,6 +155,11 @@ public class MainActivity extends Activity  {
       return true;
     } 
     
+    
+    public void showNeedServicesDialog() {
+    	DialogFragment servicesDialog = new NeedServicesDialogFragment();
+		servicesDialog.show(getFragmentManager(), "results_services_dialog");		
+    }
     
 public static class NeedServicesDialogFragment extends DialogFragment {
     static NeedServicesDialogFragment newInstance() {

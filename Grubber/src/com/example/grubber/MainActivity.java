@@ -1,7 +1,10 @@
 package com.example.grubber;
 
+
 import com.example.grubber.R;
 import com.google.analytics.tracking.android.*;
+import com.google.android.gms.maps.SupportMapFragment;
+
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -103,12 +106,19 @@ public class MainActivity extends Activity  {
 	    	  break;
 	      case R.id.action_nearby:
 	    	  Intent intent2 = new Intent(this, Results.class);
-	    	  //get long lat 
-	    	  //LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
-	    	  //Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    	  //intent2.putExtra("longitude", location.getLongitude());
-	    	  //intent2.putExtra("latitude", location.getLatitude());			
-	    	  startActivity(intent2);   
+	    	  LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);  
+	    	  
+	    	  if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){  
+	    		  DialogFragment servicesDialog = new NeedServicesDialogFragment();
+	    		  servicesDialog.show(getFragmentManager(), "results_services_dialog");					
+  			  }
+	    	  else {
+	    		  //get long lat 
+	    		  Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	    		  intent2.putExtra("longitude", location.getLongitude());
+	    		  intent2.putExtra("latitude", location.getLatitude());			
+	    		  startActivity(intent2);   
+	    	  }
 	    	  break;
 	      case R.id.action_profile:
 	    	  if(SaveSharedPreference.getUserId(MainActivity.this) != 0){

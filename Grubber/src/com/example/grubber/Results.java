@@ -84,7 +84,7 @@ public class Results extends FragmentActivity {
 				//DialogFragment servicesDialog = new NeedServicesDialogFragment();
 				//servicesDialog.show(getSupportFragmentManager(), "results_services_dialog");
 			} else {
-					//do something
+				//do something
 			}	
 		}		
 		
@@ -104,7 +104,7 @@ public class Results extends FragmentActivity {
 
 		nameValuePair.add(new BasicNameValuePair("key", getIntent().getStringExtra("key")));
 		nameValuePair.add(new BasicNameValuePair("min", "0"));
-		nameValuePair.add(new BasicNameValuePair("max", "10"));
+		nameValuePair.add(new BasicNameValuePair("max", "11")); // have to reach max?
 		/*Log.d("bug", getIntent().getStringExtra("latitude"));
 		if(getIntent().getStringExtra("latitude") != null)
 		{

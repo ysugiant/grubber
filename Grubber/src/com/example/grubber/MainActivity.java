@@ -1,5 +1,6 @@
 package com.example.grubber;
 
+import com.example.grubber.MyLocation.LocationResult;
 import com.example.grubber.R;
 import com.google.analytics.tracking.android.*;
 import android.location.Location;
@@ -19,6 +20,7 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
+import com.example.grubber.MyLocation;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity  {
@@ -26,13 +28,24 @@ public class MainActivity extends Activity  {
 	public final Context context = this;
 	private Tracker mGaTracker;
 	private GoogleAnalytics mGaInstance;
+	public Location userLoc;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGaInstance = GoogleAnalytics.getInstance(this);
         mGaTracker = mGaInstance.getTracker("UA-40885024-1");
-        setContentView(R.layout.activity_main);        
+        setContentView(R.layout.activity_main); 
+        
+        LocationResult locationResult = new LocationResult(){
+            @Override
+            public void gotLocation(Location location){
+                //Got the location!
+            	userLoc = location;
+            }
+        };
+        MyLocation myLocation = new MyLocation();
+        myLocation.getLocation(this, locationResult);
     }
     
     protected void onDestroy() {
@@ -94,15 +107,16 @@ public class MainActivity extends Activity  {
       switch (item.getItemId()) {
 	      case R.id.menu_search:
 	    	  Intent intent = new Intent(this, SearchActivity.class);
+    		  intent.putExtra("longitude", userLoc.getLongitude());
+    		  intent.putExtra("latitude", userLoc.getLatitude()); 
 	    	  startActivity(intent);
 	    	  break;
 	      case R.id.action_nearby:
 	    	  Intent intent2 = new Intent(this, Results.class);
-	    	  //get long lat 
-	    	  //LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
-	    	  //Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    	  //intent2.putExtra("longitude", location.getLongitude());
-	    	  //intent2.putExtra("latitude", location.getLatitude());			
+	    	  if (userLoc!=null) {
+	    		  intent2.putExtra("longitude", userLoc.getLongitude()+"");
+	    		  intent2.putExtra("latitude", userLoc.getLatitude()+"");
+	    	  }
 	    	  startActivity(intent2);   
 	    	  break;
 	      case R.id.action_profile:

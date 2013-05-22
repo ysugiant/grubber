@@ -100,14 +100,17 @@ public class MainActivity extends Activity  {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-      switch (item.getItemId()) {
+    	LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+    	switch (item.getItemId()) {
 	      case R.id.menu_search:
-	    	  Intent intent = new Intent(this, SearchActivity.class);
-	    	  startActivity(intent);
+	    	  if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ) {
+	    		  Intent intent = new Intent(this, SearchActivity.class);
+	    		  startActivity(intent);
+	    	  } else {
+	    		  showNeedServicesDialog();	
+	    	  }
 	    	  break;
 	      case R.id.action_nearby:
-	    	  LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);  
-	    	  
 	    	  if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ) {
 		    	  Intent intent2 = new Intent(this, Results.class);
 	    		  //get long lat 

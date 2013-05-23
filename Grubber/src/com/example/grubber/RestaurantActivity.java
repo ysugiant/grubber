@@ -272,23 +272,18 @@ public class RestaurantActivity extends Activity {
 
 	        //Show the food list to ListView
 	        foodListLV.setAdapter(radapter);
-	        /*foodListLV.setOnItemClickListener(new OnItemClickListener() {
+	        foodListLV.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	            {//set onClick and open RestaurantActivity page
-	            	Intent intent = new Intent(RestaurantActivity.this, RestaurantActivity.class);
-	            	ResultContent tmp = list_result.get((int) id);
-	            	intent.putExtra("rest_id", tmp.getId());
+	            	Intent intent = new Intent(RestaurantActivity.this, FoodPageActivity.class);
+	            	FoodContent tmp = list_result.get((int) id);
+	            	intent.putExtra("rest_id", rest_id);
 	            	intent.putExtra("name", tmp.getName());
-	            	intent.putExtra("address", tmp.getAddress());
-	            	intent.putExtra("city", tmp.getCity() + ", " + tmp.getState() + ", " + tmp.getZip());
-	            	intent.putExtra("longitude", tmp.getLongitude());
-	            	intent.putExtra("latitude", tmp.getLatitude());
-	            	intent.putExtra("phone", tmp.getPhone());
-	            	intent.putExtra("website", tmp.getWebsite());
-	            	intent.putExtra("distance", tmp.getDistance());
+	            	intent.putExtra("description", tmp.getDescription());
+	            	intent.putExtra("total_vote", tmp.getVote());
 	        		startActivity(intent);
 	            }
-	        });*/
+	        });
 		}
 	}
 	

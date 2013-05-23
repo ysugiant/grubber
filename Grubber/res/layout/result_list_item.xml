@@ -14,7 +14,8 @@
 		android:contentDescription="@string/icon"/>-->
 	<LinearLayout
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_height="70dp"
+		android:layout_weight="85"
 		android:layout_alignParentLeft="true" 
 		android:orientation="vertical">
 		<TextView
@@ -28,11 +29,26 @@
 			android:layout_height="wrap_content"
 			android:textSize="15dp"/>
 	</LinearLayout>
-	<TextView
-		android:id="@+id/result_distance"
+	
+	<LinearLayout
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentRight="true" 
-		android:layout_marginRight="50dp"
-		android:textSize="15dp"/>
+		android:layout_height="70dp"
+		android:layout_weight="15"
+		android:layout_alignParentLeft="true" 
+		android:orientation="vertical">
+		<TextView
+			android:id="@+id/result_distance"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="10"
+			android:gravity="right"
+			android:textSize="15dp"/>
+		<TextView
+			android:id="@+id/result_votes"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="10"
+			android:gravity="right"
+			android:textSize="25dp"/>
+	</LinearLayout>
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FoodAdapter extends ArrayAdapter<FoodContent>{
@@ -31,8 +32,8 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		TextView tname = (TextView) row.findViewById(R.id.food_name);
 		TextView tdescription = (TextView) row.findViewById(R.id.food_description);
 		TextView tvote = (TextView) row.findViewById(R.id.food_vote);
-		
-		if (tname != null)
+		ImageView icon = (ImageView) row.findViewById(R.id.food_icon);
+ 		if (tname != null)
 			 tname.setText(res.getName());
 		
 		if (tdescription != null)

@@ -28,19 +28,13 @@ import com.google.gson.reflect.TypeToken;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -71,6 +65,7 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	private EditText voteComment;
 	private ListView reviewLV;
 	private TextView reviewMoreTV;
+
 	
 	
 	 class Review {
@@ -149,18 +144,12 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	        }
 	    }
 	    
-	public void onResume() {
-    	super.onResume();
-    	//Refresh the options menu when this activity comes in focus
-    	invalidateOptionsMenu();
-    	//this.tracker.trackPageView("/TopTracksActivity");
-    }
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_food_page);
-		getActionBar().setDisplayHomeAsUpEnabled(true);		
 		foodName = (TextView) findViewById(R.id.foogpage_foodNameTV);
 		foodImg = (ImageView)findViewById(R.id.foogpage_foodimgIV);
 		totalVoteTV = (TextView) findViewById(R.id.foodpage_totalVoteNumTV);
@@ -170,8 +159,23 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		reviewLV = (ListView) findViewById(R.id.foogpage_reviewList);
 		reviewMoreTV = (TextView) findViewById(R.id.foodpage_reviewMoreTV);
 		
-		voteBtn.setOnClickListener(this);
+		
+		
+		if(SaveSharedPreference.getUserId(context) == 0){
+	  		voteBtn.setClickable(false);
+	  		voteComment.setEnabled(false);
+	  		
+	  	}else{
+	  		voteBtn.setClickable(true);
+	  		voteComment.setEnabled(true);
+	  		voteBtn.setOnClickListener(this);
+	  	}
 		reviewMoreTV.setOnClickListener(this);  
+		
+		Log.d("bug", getIntent().getStringExtra("total_vote") );
+		foodName.setText( getIntent().getStringExtra("food_name"));
+		totalVoteTV.setText(getIntent().getStringExtra("total_vote"));
+
 		  try {
 			getComment();
 		} catch (Exception e) {
@@ -197,67 +201,12 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 
 	}
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_food_page, menu);
-                      
-        //Change profile button to login/register if they are not logged in
-        if(SaveSharedPreference.getUserId(FoodPageActivity.this) == 0)
-        {
-            MenuItem profileItem = menu.findItem(R.id.action_profile);
-        	profileItem.setTitle(R.string.login);
-            //Toast.makeText(this,"Not logged in",Toast.LENGTH_SHORT).show();
-        }
-        else {
-        	MenuItem signout = menu.findItem(R.id.action_signout);
-        	signout.setVisible(true);
-            signout.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            	public boolean onMenuItemClick(MenuItem item) {            		        	
-        			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        			alertDialogBuilder.setTitle(R.string.logout_msg);
-        			alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-        				public void onClick(DialogInterface dialog,int id) {            					    							
-							//int tempUserName = SaveSharedPreference.getUserId(context);    			        		
-			        		dialog.cancel();    			        		
-			        		SaveSharedPreference.setUserId(context, 0);
-        					Toast.makeText(context , "Logged out" , Toast.LENGTH_SHORT).show();
-        					invalidateOptionsMenu();
-						}    						
-					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
-    					public void onClick(DialogInterface dialog,int id) {    						
-    						dialog.cancel();    					
-    					}}
-    				  );            		
-            		AlertDialog alertDialog = alertDialogBuilder.create();
-            		alertDialog.show();   
-            		return true;            		
-            	} 	
-            });        	
-        }        
-        return true;
-      } 					
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-      switch (item.getItemId()) {
-	      case R.id.action_profile:
-	    	  if(SaveSharedPreference.getUserId(FoodPageActivity.this) != 0){
-	    		  Intent intent3 = new Intent(context, ProfileActivity.class);
-	    		  startActivity(intent3);   
-	    	  } else {
-	    		  Intent intent3 = new Intent(context, LoginActivity.class);
-	    		  startActivity(intent3);   
-	    	  }
-	          break;
-	      case android.R.id.home:
-	          NavUtils.navigateUpFromSameTask(this);
-	          return true;		          
-	      default:
-	    	  break;
-      }
-
-      return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_food_page, menu);
+		return true;
+	}
 	
 	@Override
 	public void onClick(View v) {
@@ -266,7 +215,13 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 			task.execute((Void) null);
 		}
 		if(v.getId() == R.id.foodpage_reviewMoreTV){
-			Intent intent = new Intent(this, ReviewActivity.class);
+		
+			Intent intent = new Intent(FoodPageActivity.this, ReviewActivity.class);
+        	
+        	intent.putExtra("rest_id", getIntent().getStringExtra("rest_id"));
+        	intent.putExtra("food_id", getIntent().getStringExtra("food_id"));
+        	intent.putExtra("total_vote", getIntent().getStringExtra("total_vote"));
+       
 	    	startActivity(intent);	
 			
 		}
@@ -279,8 +234,8 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 
 		protected Boolean doInBackground(Void... params) {
 			
-			Log.d("bug1", SaveSharedPreference.getUserId(context) + voteComment.getText().toString());
-			final JsonObject obj = userVote(SaveSharedPreference.getUserId(context) + "", "2" ,voteComment.getText().toString());
+			
+			final JsonObject obj = userVote(SaveSharedPreference.getUserId(context) + "", getIntent().getStringExtra("food_id") ,voteComment.getText().toString());
 	
 			if(obj != null){
 				runOnUiThread(new Runnable() {
@@ -303,9 +258,9 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 			BufferedReader data;
 
 			try {
-				Log.d("bug2","dasf");
+			
 				url = new URL("http://cse190.myftp.org:8080/cse190/createVote?user_id=" + userid + "&food_id=" + foodid + "&comment=" + comment);
-				Log.d("bug3","dasf");
+			
 				uc = url.openConnection();
 				data = new BufferedReader(new InputStreamReader(uc.getInputStream()));
 				String inputLine = data.readLine();
@@ -329,7 +284,8 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 		// need to get the food_id from the resutrant page
 		
-		nameValuePair.add(new BasicNameValuePair("food_id", 1+""));
+		Log.d("bug5", getIntent().getStringExtra("food_id"));
+		nameValuePair.add(new BasicNameValuePair("food_id", getIntent().getStringExtra("food_id")));
 		nameValuePair.add(new BasicNameValuePair("min", MIN+""));
 		nameValuePair.add(new BasicNameValuePair("max", MAX+""));
 				
@@ -341,6 +297,7 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		// Handles what is returned from the page
 		//ResponseHandler responseHandler = new BasicResponseHandler();
 		//Log.d("bugs", "execute request");
+		
 		new getHttpRequest().execute(httpost);
 
 	}
@@ -349,46 +306,63 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	
 	
 
-	private class getHttpRequest extends AsyncTask<HttpPost, Void, String> {
+	private class getHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
+		
 		@Override
-		protected String doInBackground(HttpPost... params) {
+		protected HttpResponse doInBackground(HttpPost... params) {
 			DefaultHttpClient httpclient = new DefaultHttpClient();
-			String json = "wrong";
 			try {
 				HttpResponse resp = httpclient.execute(params[0]);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
-				json = reader.readLine();
-				return json;
+				return resp;
 			} catch (Exception e) {
 				Log.d("bugs", "Catch in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(String json) {
-			try {				
+		protected void onPostExecute(HttpResponse response) {
+		
+			Gson gson = new Gson();
+			String json = "wrong";
+			try {
+			
+				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+			
+				json = reader.readLine();
+				
 				JsonParser parser = new JsonParser();
+
 			    JsonObject obj = (JsonObject) parser.parse(json);
+			
 			    JsonArray results = (JsonArray) obj.get("result");
+			
 			    //JsonObject res = (JsonObject) results.get(0);
 
 			    //HashMap <String,String> comment;
 			  
 			    //get the last 3 comment from the server
-			    for(int i =0; i < 3; i++ ){
-			    	  
+			    for(int i =0; i < results.size(); i++ ){
+			    	
+			    	
 			    	JsonObject res = (JsonObject) results.get(i);
+			    
 			    	
 			    	HashMap <String,String> comment = new HashMap<String, String>();
-			    	comment.put("username", res.get("username").getAsString());    	
-			    	comment.put("comment", res.get("comment").getAsString());
-			    	comment.put("time", res.get("time").getAsString().split("\\s+")[0]);
+			    	Log.d("bug9", res.get("username").getAsString() );
+			    		comment.put("username", res.get("username").getAsString());    	
+			    		comment.put("comment", res.get("comment").getAsString());
+			    		comment.put("time", res.get("time").getAsString().split("\\s+")[0]);
+			    		
+			    	
 			    	commetArrlist.add(comment);
+			    	
 			    }
+			
 			    
-		        for (int i = 0; i < 3; i++) {
+		        for (int i = 0; i < results.size(); i++) {
+		        			
 		     	        	reviewList.add(new Review(commetArrlist.get(i).get("username"),commetArrlist.get(i).get("comment"),commetArrlist.get(i).get("time")));
-		     	        }
+		     	}
 		        reviewLV.setAdapter(new ReviewAdapter(context, R.layout.review_list_item, reviewList)); 
 			} catch (Exception e) { Log.d("bugs","reader"); }
 

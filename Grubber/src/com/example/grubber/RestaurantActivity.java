@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -41,12 +42,14 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+@SuppressLint("NewApi")
 public class RestaurantActivity extends Activity {
 
 	public final Context context = this;	
@@ -57,6 +60,7 @@ public class RestaurantActivity extends Activity {
 	private TextView restWebsiteTV;
 	private ImageView restImageIV;
 	private ListView foodListLV;
+	private Button addBTN;
 	private ProgressDialog progDialog; 
 
 	String rest_id;
@@ -79,6 +83,7 @@ public class RestaurantActivity extends Activity {
 		restCityTV = (TextView)findViewById(R.id.restCityTV);
 		restImageIV = (ImageView)findViewById(R.id.restImageIV);
 		foodListLV = (ListView)findViewById(R.id.foodListLV);
+		addBTN = (Button)findViewById(R.id.addBTN);
 		
 		//show picture
 		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ getIntent().getStringExtra("longitude")+","+getIntent().getStringExtra("latitude") +"&fov=90&heading=235&pitch=10&sensor=false";
@@ -88,7 +93,10 @@ public class RestaurantActivity extends Activity {
 		restNameTV.setText(getIntent().getStringExtra("name"));
 		restAddressTV.setText(getIntent().getStringExtra("address"));
 		restCityTV.setText(getIntent().getStringExtra("city"));
-		restWebsiteTV.setText(getIntent().getStringExtra("website"));
+		if (getIntent().getStringExtra("website").equals(""))
+			restWebsiteTV.setText("-");
+		else
+			restWebsiteTV.setText(getIntent().getStringExtra("website"));
 		restPhoneTV.setText(getIntent().getStringExtra("phone"));
 		rest_id = getIntent().getStringExtra("rest_id");
 		//***Open navigation app when click on the address
@@ -113,7 +121,15 @@ public class RestaurantActivity extends Activity {
 			    startActivity(i); 
 			}
 		});
+
 		
+		addBTN.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+			    Intent i = new Intent(RestaurantActivity.this, NewFoodActivity.class);
+			    i.putExtra("rest_id", rest_id);
+			    startActivity(i); 
+			}
+		});
 		//query to get the top 3 food list
 		try {
 			getFoodList(rest_id);
@@ -197,7 +213,7 @@ public class RestaurantActivity extends Activity {
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 		nameValuePair.add(new BasicNameValuePair("rest_id", id));
 		nameValuePair.add(new BasicNameValuePair("min", "0"));
-		nameValuePair.add(new BasicNameValuePair("max", "3"));
+		nameValuePair.add(new BasicNameValuePair("max", "10"));
 		// url with the post data
 		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/findFood");
 
@@ -256,23 +272,18 @@ public class RestaurantActivity extends Activity {
 
 	        //Show the food list to ListView
 	        foodListLV.setAdapter(radapter);
-	        /*foodListLV.setOnItemClickListener(new OnItemClickListener() {
+	        foodListLV.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	            {//set onClick and open RestaurantActivity page
-	            	Intent intent = new Intent(RestaurantActivity.this, RestaurantActivity.class);
-	            	ResultContent tmp = list_result.get((int) id);
-	            	intent.putExtra("rest_id", tmp.getId());
+	            	Intent intent = new Intent(RestaurantActivity.this, FoodPageActivity.class);
+	            	FoodContent tmp = list_result.get((int) id);
+	            	intent.putExtra("rest_id", rest_id);
 	            	intent.putExtra("name", tmp.getName());
-	            	intent.putExtra("address", tmp.getAddress());
-	            	intent.putExtra("city", tmp.getCity() + ", " + tmp.getState() + ", " + tmp.getZip());
-	            	intent.putExtra("longitude", tmp.getLongitude());
-	            	intent.putExtra("latitude", tmp.getLatitude());
-	            	intent.putExtra("phone", tmp.getPhone());
-	            	intent.putExtra("website", tmp.getWebsite());
-	            	intent.putExtra("distance", tmp.getDistance());
+	            	intent.putExtra("description", tmp.getDescription());
+	            	intent.putExtra("total_vote", tmp.getVote());
 	        		startActivity(intent);
 	            }
-	        });*/
+	        });
 		}
 	}
 	

@@ -64,7 +64,12 @@ public class ReviewSingleActivity extends Activity implements View.OnClickListen
 	public void onClick(View v) {
 		if(v.getId() == R.id.reviewSingle_backBtn){
 			Intent intent = new Intent(this, FoodPageActivity.class);
+		   	intent.putExtra("rest_id", getIntent().getStringExtra("rest_id"));
+        	intent.putExtra("food_id", getIntent().getStringExtra("food_id"));
+        	intent.putExtra("total_vote", getIntent().getStringExtra("total_vote"));
 			startActivity(intent);
+			
+			
 		}
 		
 	}

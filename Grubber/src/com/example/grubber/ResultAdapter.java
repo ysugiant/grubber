@@ -33,7 +33,13 @@ public class ResultAdapter extends ArrayAdapter<ResultContent>{
 		TextView tdistance = (TextView) row.findViewById(R.id.result_distance);
 		
 		if (tname != null)
-			 tname.setText(res.getName());
+		{
+			String n = res.getName();
+			if(n.length() > 30)
+				tname.setText(n.substring(0, 30));
+			else
+				tname.setText(n);
+		}
 		
 		if (taddress != null)
 			 taddress.setText(res.getAddress());
@@ -42,7 +48,7 @@ public class ResultAdapter extends ArrayAdapter<ResultContent>{
 			 if (res.getDistance().contains("-"))
 				 tdistance.setText("");
 			 else
-				 tdistance.setText(res.getDistance());
+				 tdistance.setText(res.getDistance().substring(0,4) + " miles");
 		}
 		
 		return row;

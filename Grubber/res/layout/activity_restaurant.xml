@@ -97,8 +97,8 @@
         android:id="@+id/foodListLV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
-        android:layout_toLeftOf="@+id/textView1" >
+        android:layout_below="@+id/addBTN"
+        android:layout_marginTop="22dp" >
     </ListView>
 
 </RelativeLayout>

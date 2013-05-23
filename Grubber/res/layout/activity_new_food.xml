@@ -55,6 +55,12 @@
 			    android:singleLine="true"
 			    android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/pictureBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" />
         
      	<Button
      	    android:id="@+id/submitBTN"
@@ -62,6 +68,7 @@
      	    android:layout_height="wrap_content"
      	    android:text="@string/submit" 
      	    android:layout_marginTop="8dip"/>
+
     </LinearLayout>
 
 </RelativeLayout>

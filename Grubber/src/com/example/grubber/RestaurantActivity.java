@@ -93,7 +93,10 @@ public class RestaurantActivity extends Activity {
 		restNameTV.setText(getIntent().getStringExtra("name"));
 		restAddressTV.setText(getIntent().getStringExtra("address"));
 		restCityTV.setText(getIntent().getStringExtra("city"));
-		restWebsiteTV.setText(getIntent().getStringExtra("website"));
+		if (getIntent().getStringExtra("website").equals(""))
+			restWebsiteTV.setText("-");
+		else
+			restWebsiteTV.setText(getIntent().getStringExtra("website"));
 		restPhoneTV.setText(getIntent().getStringExtra("phone"));
 		rest_id = getIntent().getStringExtra("rest_id");
 		//***Open navigation app when click on the address
@@ -210,7 +213,7 @@ public class RestaurantActivity extends Activity {
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 		nameValuePair.add(new BasicNameValuePair("rest_id", id));
 		nameValuePair.add(new BasicNameValuePair("min", "0"));
-		nameValuePair.add(new BasicNameValuePair("max", "3"));
+		nameValuePair.add(new BasicNameValuePair("max", "10"));
 		// url with the post data
 		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/findFood");
 

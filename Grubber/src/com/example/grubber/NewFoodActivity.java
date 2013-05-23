@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -33,6 +34,7 @@ public class NewFoodActivity extends Activity {
 	private EditText food_nameET;
 	private EditText food_descriptionET;
 	private Button submit_btn;
+	private Button pictureBTN;
 	private ProgressDialog progDialog;
 
 	@Override
@@ -42,6 +44,7 @@ public class NewFoodActivity extends Activity {
 		food_nameET = (EditText) findViewById(R.id.food_nameET);
 		food_descriptionET = (EditText) findViewById(R.id.food_descriptionET);
 		submit_btn = (Button) findViewById(R.id.submitBTN);
+		pictureBTN= (Button)findViewById(R.id.pictureBTN);
 		
 	    submit_btn.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -54,6 +57,14 @@ public class NewFoodActivity extends Activity {
 					}
 				}
 			});
+	    
+	    pictureBTN.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,15 +6,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".NewFoodActivity" >
-    
-    <LinearLayout 
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:gravity="center"
-		android:orientation="vertical" 
-		android:focusable="true" 
-		android:focusableInTouchMode="true">
+    tools:context=".NewFoodActivity" 
+	android:gravity="center"
+	android:orientation="vertical" 
+	android:focusable="true" 
+	android:focusableInTouchMode="true">
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,7 +25,7 @@
 				android:textAppearance="?android:attr/textAppearanceMedium" />
 			<EditText
 			    android:id="@+id/food_nameET"
-			    android:layout_width="wrap_content"
+			    android:layout_width="0dip"
 			    android:layout_height="wrap_content"
 			    android:layout_weight="0.92"
 			    android:singleLine="true"
@@ -49,7 +45,7 @@
 				android:textAppearance="?android:attr/textAppearanceMedium" />
 			<EditText
 			    android:id="@+id/food_descriptionET"
-			    android:layout_width="wrap_content"
+			    android:layout_width="0dip"
 			    android:layout_height="wrap_content"
 			    android:layout_weight="0.92"
 			    android:singleLine="true"
@@ -62,6 +58,5 @@
      	    android:layout_height="wrap_content"
      	    android:text="@string/restaurant_verifyString" 
      	    android:layout_marginTop="8dip"/>
-    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

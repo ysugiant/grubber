@@ -68,13 +68,14 @@ public class NewFoodActivity extends Activity {
 		progDialog = ProgressDialog.show( this, "Process ", "Loading Data...",true,true);
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 
+		nameValuePair.add(new BasicNameValuePair("rest_id", getIntent().getStringExtra("rest_id")));
 		nameValuePair.add(new BasicNameValuePair("name", food_nameET.getText().toString()));
 		nameValuePair.add(new BasicNameValuePair("description", food_descriptionET.getText().toString()));
 
 		
 		//Log.d("bug", getIntent().getStringExtra("address"));
 		// url with the post data
-		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/createFood");
+		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/createFood");
 
 		// sets the post request as the resulting string
 		httpost.setEntity(new UrlEncodedFormEntity(nameValuePair));
@@ -99,17 +100,19 @@ public class NewFoodActivity extends Activity {
 		        {
 		        	json += inputLine;
 		        }
+		        Log.d("bug", json);
 				return json;
 			} catch (Exception e) {
-				Log.d("bugs", "Catch in HTTPGETTER");
+				Log.d("bug", "Catch in HTTPGETTER");
 			}
 			return null;
 		}
 
-		protected void onPostExecute(String json) {			
+		protected void onPostExecute(String json) {	
+			boolean res = false;
 			try {
-				setView(json);
-				Toast.makeText(NewFoodActivity.this, "Thank you for the information. We will publish it ASAP", Toast.LENGTH_SHORT).show();				
+				res = setView(json);
+				//Toast.makeText(NewFoodActivity.this, "Thank you for the information. We will publish it ASAP", Toast.LENGTH_SHORT).show();				
 			} catch (Exception e) { 
 				Log.d("bug","reader"); 
 				//add button to refresh
@@ -117,13 +120,16 @@ public class NewFoodActivity extends Activity {
 			}
 			//stop progress bar
 			progDialog.dismiss();
+			if (res)
+				finish();
 		}
 		
-		protected void setView(String jsonString)
+		protected boolean setView(String jsonString)
 		{
 			JsonParser parser = new JsonParser();		    
 		    JsonObject obj = (JsonObject) parser.parse(jsonString);
-		    boolean results = obj.get("result").getAsBoolean();		    
+		    Toast.makeText(NewFoodActivity.this, obj.get("message").getAsString(), Toast.LENGTH_SHORT).show();
+		    return obj.get("result").getAsBoolean();		    
 		}
 	}
 

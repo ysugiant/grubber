@@ -60,7 +60,7 @@
      	    android:id="@+id/submitBTN"
      	    android:layout_width="wrap_content"
      	    android:layout_height="wrap_content"
-     	    android:text="@string/restaurant_verifyString" 
+     	    android:text="@string/submit" 
      	    android:layout_marginTop="8dip"/>
     </LinearLayout>
 

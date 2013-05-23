@@ -30,31 +30,49 @@
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <ListView
-        android:id="@+id/foodListLV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/restImageIV"
-        android:layout_marginTop="51dp" >
-    </ListView>
-
-    <TextView
-        android:id="@+id/restAddressTV"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/restImageIV"
-        android:layout_alignLeft="@+id/restNameTV"
-        android:layout_alignRight="@+id/restNameTV"
-        android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
     <TextView
         android:id="@+id/restCityTV"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/restAddressTV"
-        android:layout_alignRight="@+id/restAddressTV"
         android:layout_below="@+id/restAddressTV"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/restAddressTV"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/restNameTV"
+        android:layout_below="@+id/restNameTV"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/restPhoneTV"
+        android:layout_alignBottom="@+id/restPhoneTV"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="19dp"
+        android:text="Phone :" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/restWebsiteTV"
+        android:layout_alignBottom="@+id/restWebsiteTV"
+        android:layout_alignLeft="@+id/textView1"
+        android:text="Website :" />
+
+    <TextView
+        android:id="@+id/restPhoneTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/restCityTV"
+        android:layout_below="@+id/restCityTV"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -62,21 +80,25 @@
         android:id="@+id/restWebsiteTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/restCityTV"
-        android:layout_below="@+id/restCityTV"
-        android:layout_marginLeft="26dp"
-        android:layout_marginTop="16dp"
+        android:layout_alignLeft="@+id/restPhoneTV"
+        android:layout_below="@+id/restPhoneTV"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <TextView
-        android:id="@+id/restPhoneTV"
+    <Button
+        android:id="@+id/addBTN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/restWebsiteTV"
-        android:layout_alignBottom="@+id/restWebsiteTV"
-        android:layout_alignLeft="@+id/restImageIV"
-        android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_alignRight="@+id/restCityTV"
+        android:layout_below="@+id/restWebsiteTV"
+        android:text="Add" />
+
+    <ListView
+        android:id="@+id/foodListLV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button1"
+        android:layout_toLeftOf="@+id/textView1" >
+    </ListView>
 
 </RelativeLayout>

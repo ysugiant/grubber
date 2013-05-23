@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -41,12 +42,14 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+@SuppressLint("NewApi")
 public class RestaurantActivity extends Activity {
 
 	public final Context context = this;	
@@ -57,6 +60,7 @@ public class RestaurantActivity extends Activity {
 	private TextView restWebsiteTV;
 	private ImageView restImageIV;
 	private ListView foodListLV;
+	private Button addBTN;
 	private ProgressDialog progDialog; 
 
 	String rest_id;
@@ -79,6 +83,7 @@ public class RestaurantActivity extends Activity {
 		restCityTV = (TextView)findViewById(R.id.restCityTV);
 		restImageIV = (ImageView)findViewById(R.id.restImageIV);
 		foodListLV = (ListView)findViewById(R.id.foodListLV);
+		addBTN = (Button)findViewById(R.id.addBTN);
 		
 		//show picture
 		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ getIntent().getStringExtra("longitude")+","+getIntent().getStringExtra("latitude") +"&fov=90&heading=235&pitch=10&sensor=false";
@@ -113,7 +118,15 @@ public class RestaurantActivity extends Activity {
 			    startActivity(i); 
 			}
 		});
+
 		
+		addBTN.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+			    Intent i = new Intent(RestaurantActivity.this, NewFoodActivity.class);
+			    i.putExtra("rest_id", rest_id);
+			    startActivity(i); 
+			}
+		});
 		//query to get the top 3 food list
 		try {
 			getFoodList(rest_id);

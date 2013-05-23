@@ -24,6 +24,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -56,6 +58,7 @@ public class ProfileActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_profile);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		//hidden the keyboard!!!
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
 		
@@ -134,7 +137,26 @@ public class ProfileActivity extends Activity {
 				
 			}
 		});
-	}	
+	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_search, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			//NavUtils.navigateUpFromSameTask(this);
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 	
 	public final static boolean isValidEmail(CharSequence target) {
 	    if (target == null) {

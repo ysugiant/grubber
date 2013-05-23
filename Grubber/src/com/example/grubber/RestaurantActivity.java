@@ -199,8 +199,9 @@ public class RestaurantActivity extends Activity {
 	    	  }
 	          break; 
 	      case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
-			break;	          
+	    	  //NavUtils.navigateUpFromSameTask(this);
+	    	  finish();
+	    	  break;	          
 	      default:
 	    	  break;
       }

@@ -45,6 +45,7 @@ public class NewFoodActivity extends Activity {
 		food_descriptionET = (EditText) findViewById(R.id.food_descriptionET);
 		submit_btn = (Button) findViewById(R.id.submitBTN);
 		picture_btn= (Button) findViewById(R.id.pictureBTN);
+
 		
 	    submit_btn.setOnClickListener(new View.OnClickListener() {
 				@Override

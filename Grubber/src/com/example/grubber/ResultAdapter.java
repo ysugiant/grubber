@@ -34,7 +34,7 @@ public class ResultAdapter extends ArrayAdapter<ResultContent>{
 		
 		if (tname != null)
 		{
-			String n = rest.getName();
+			String n = res.getName();
 			if(n.length() > 30)
 				tname.setText(n.substring(0, 30));
 			else
@@ -48,7 +48,7 @@ public class ResultAdapter extends ArrayAdapter<ResultContent>{
 			 if (res.getDistance().contains("-"))
 				 tdistance.setText("");
 			 else
-				 tdistance.setText(res.getDistance().subString(0,4) + " miles");
+				 tdistance.setText(res.getDistance().substring(0,4) + " miles");
 		}
 		
 		return row;

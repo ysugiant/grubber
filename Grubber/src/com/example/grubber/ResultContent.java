@@ -12,6 +12,7 @@ public class ResultContent {
 	String phone;
 	String website;
 	String distance;
+	String votes;
 	
 	public String getName() {
 		return name;
@@ -80,7 +81,13 @@ public class ResultContent {
 	private void setWebsite(String website) {
 		this.website = website;
 	}
-	public ResultContent(String id, String name, String address, String city, String state, String zip, String longitude, String latitude, String phone, String website, String distance) {
+	public String getVotes() {
+		return votes;
+	}
+	private void setVotes(String votes) {
+		this.votes = votes;
+	}
+	public ResultContent(String id, String name, String address, String city, String state, String zip, String longitude, String latitude, String phone, String website, String distance, String votes) {
 		setId(id);
 		setName(name);
 		setAddress(address);
@@ -92,6 +99,7 @@ public class ResultContent {
 		setPhone(phone);
 		setWebsite(website);
 		setDistance(distance);
+		setVotes(votes);
 	}
 	
 	// image

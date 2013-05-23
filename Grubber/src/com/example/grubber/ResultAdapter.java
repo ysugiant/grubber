@@ -31,6 +31,7 @@ public class ResultAdapter extends ArrayAdapter<ResultContent>{
 		TextView tname = (TextView) row.findViewById(R.id.result_name);
 		TextView taddress = (TextView) row.findViewById(R.id.result_address);
 		TextView tdistance = (TextView) row.findViewById(R.id.result_distance);
+		TextView tvotes = (TextView) row.findViewById(R.id.result_votes);
 		
 		if (tname != null)
 		{
@@ -49,6 +50,10 @@ public class ResultAdapter extends ArrayAdapter<ResultContent>{
 				 tdistance.setText("");
 			 else
 				 tdistance.setText(res.getDistance().substring(0,4) + " miles");
+		}
+		
+		if (tvotes != null) {
+			tvotes.setText(res.getVotes());
 		}
 		
 		return row;

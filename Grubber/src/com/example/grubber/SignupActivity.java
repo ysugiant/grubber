@@ -22,6 +22,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -54,6 +56,7 @@ public class SignupActivity extends Activity implements View.OnClickListener  {
 		setContentView(R.layout.activity_signup);
 		//hidden the keyboard by deafult
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		usernameET =  (EditText) findViewById(R.id.signup_username_ET);
 		pwdET = (EditText) findViewById(R.id.signup_pwd_ET);
@@ -65,11 +68,31 @@ public class SignupActivity extends Activity implements View.OnClickListener  {
 		confirmBtn = (Button) findViewById(R.id.signup_confirm_btn);
 		
 		
-		confirmBtn.setOnClickListener(this);
-		
-		
-		
+		confirmBtn.setOnClickListener(this);						
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		getMenuInflater().inflate(R.menu.register, menu);
+		return true;
+	}
+	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+	      case R.id.action_forgot_password:
+	          break;   
+	       // Respond to the action bar's Up/Home button
+	      case android.R.id.home:
+	          finish();
+	          return true;	          
+	      default:
+	    	  break;
+      }
+
+      return true;
+    }
 
 	@Override
 	public void onClick(View v) {

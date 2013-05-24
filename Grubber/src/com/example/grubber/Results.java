@@ -299,7 +299,7 @@ public class Results extends FragmentActivity {
 	        result_list.setAdapter(radapter);
 	        
 	        // set new scroll position
-	        result_list.setSelectionFromTop(currentPosition /*+ 1*/,  0);
+	        result_list.setSelectionFromTop(currentPosition,  0);
 	        
 	        result_list.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 

@@ -183,7 +183,7 @@ public class Results extends FragmentActivity {
 			nameValuePair.add(new BasicNameValuePair("key", key));
 		}
 		nameValuePair.add(new BasicNameValuePair("min", "0"));
-		nameValuePair.add(new BasicNameValuePair("max", "11")); // have to reach max?
+		nameValuePair.add(new BasicNameValuePair("max", "10")); // have to reach max?
 		if (getIntent().getStringExtra("latitude") != null && getIntent().getStringExtra("longitude") != null) {
 			nameValuePair.add(new BasicNameValuePair("latitude", getIntent().getStringExtra("latitude")));
 			nameValuePair.add(new BasicNameValuePair("longitude", getIntent().getStringExtra("longitude")));
@@ -287,7 +287,6 @@ public class Results extends FragmentActivity {
 	            }
 	        });
 		}
-	}
-	
+	}	
 	
 }

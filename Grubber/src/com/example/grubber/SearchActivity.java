@@ -118,8 +118,8 @@ public class SearchActivity extends Activity {
 				    Address location = address.get(0);
 				    user_lat = location.getLatitude();
 				    user_long = location.getLongitude();
-			  	  	intent.putExtra("latitude", user_lat);
-			  	  	intent.putExtra("longitude", user_long);
+			  	  	intent.putExtra("latitude", user_lat+"");
+			  	  	intent.putExtra("longitude", user_long+"");
 			    }
 
 			} catch (Exception e) {}

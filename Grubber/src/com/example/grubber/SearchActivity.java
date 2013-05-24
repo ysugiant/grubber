@@ -118,8 +118,8 @@ public class SearchActivity extends Activity {
 				    Address location = address.get(0);
 				    user_lat = location.getLatitude();
 				    user_long = location.getLongitude();
-			  	  	intent.putExtra("latitude", user_lat+"");
-			  	  	intent.putExtra("longitude", user_long+"");
+			  	  	intent.putExtra("latitude", String.valueOf(user_lat));
+			  	  	intent.putExtra("longitude", String.valueOf(user_long));
 			    }
 
 			} catch (Exception e) {}
@@ -127,9 +127,6 @@ public class SearchActivity extends Activity {
   	  		intent.putExtra("latitude", String.valueOf(lat));
   	  		intent.putExtra("longitude", String.valueOf(longt));
 		}
-		Log.d("bugs", intent.getExtras().get("key").toString());
-		Log.d("bugs", intent.getExtras().get("latitude").toString());
-		Log.d("bugs", intent.getExtras().get("longitude").toString());
   	  	startActivity(intent);
 
 	}

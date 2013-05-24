@@ -261,7 +261,8 @@ public class Results extends FragmentActivity {
 	        	list_result.add(new ResultContent(result.get("rest_id").getAsString(), result.get("name").getAsString(),
 						  result.get("address").getAsString(), result.get("city").getAsString(), result.get("state").getAsString(),
 						  result.get("zip").getAsString(), result.get("longitude").getAsString(), result.get("latitude").getAsString(),
-						  result.get("phone").getAsString(), result.get("website").getAsString(), result.get("distance").getAsString()));
+						  result.get("phone").getAsString(), result.get("website").getAsString(), result.get("distance").getAsString(),
+						  result.get("votes").getAsString()));
 	        }
 	        
 	        ResultAdapter radapter = new ResultAdapter(Results.this, list_result);

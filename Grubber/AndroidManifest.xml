@@ -67,11 +67,6 @@
                 android:value="com.example.grubber.MainActivity" />            
         </activity>
         <activity
-            android:name="com.example.grubber.RegisterActivity"
-            android:label="@string/title_activity_register"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
-        <activity
             android:name="com.example.grubber.SignupActivity"
             android:label="@string/title_activity_signup"
             android:windowSoftInputMode="adjustResize|stateVisible" >
@@ -111,10 +106,6 @@
         <activity
             android:name="com.example.grubber.NewRestaurantActivity"
             android:label="@string/title_activity_new_restaurant" >
-        </activity>
-        <activity
-            android:name="com.example.grubber.NewRestaurantAddrVerifyActivity"
-            android:label="@string/title_activity_new_restaurant_addr_verify" >
         </activity>
         <activity
             android:name="com.example.grubber.SearchActivity"

@@ -4,7 +4,7 @@
     <string name="signup_pwd_TV">Password:</string>
     <string name="signup_pwd_reenter_TV">Re-enter Password:</string>
     <string name="signup_confirm_btn">Confirm</string>
-    <string name="title_activity_signup">sign Up</string>
+    <string name="title_activity_signup">Sign Up</string>
     <string name="signup_email_TV">Email:</string>
     <string name="signup_firstname_TV">First Name:</string>
     <string name="signup_lastname_TV">Last Name:</string>

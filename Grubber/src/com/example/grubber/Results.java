@@ -75,6 +75,7 @@ public class Results extends FragmentActivity {
 	
 	int current_page = 0;
 	ArrayList<ResultContent> list_result = null;
+	final int itemsPerPage = 10;
 
 	DialogFragment servicesDialog = new NeedServicesDialogFragment();
 
@@ -203,8 +204,10 @@ public class Results extends FragmentActivity {
 		if (key!=null) {
 			nameValuePair.add(new BasicNameValuePair("key", key));
 		}
-		nameValuePair.add(new BasicNameValuePair("min", String.valueOf(10 * current_page)));//"0"));
-		nameValuePair.add(new BasicNameValuePair("max", String.valueOf(10 * (current_page + 1))));//"10"));
+		nameValuePair.add(new BasicNameValuePair("min", 
+												  String.valueOf(itemsPerPage * current_page)));//"0"));
+		nameValuePair.add(new BasicNameValuePair("max", 
+												  String.valueOf(itemsPerPage * (current_page + 1))));//"10"));
 		if (getIntent().getStringExtra("latitude") != null && getIntent().getStringExtra("longitude") != null) {
 			nameValuePair.add(new BasicNameValuePair("latitude", getIntent().getStringExtra("latitude")));
 			nameValuePair.add(new BasicNameValuePair("longitude", getIntent().getStringExtra("longitude")));

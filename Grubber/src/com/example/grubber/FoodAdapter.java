@@ -1,8 +1,14 @@
 package com.example.grubber;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
+
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +39,11 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		TextView tdescription = (TextView) row.findViewById(R.id.food_description);
 		TextView tvote = (TextView) row.findViewById(R.id.food_vote);
 		ImageView icon = (ImageView) row.findViewById(R.id.food_icon);
+		
+		//show picture
+		String picurl = "https://dl.dropboxusercontent.com/u/174700234/"+ res.getFoodId() + ".jpg";
+		new DownloadImageTask(icon).execute(picurl);
+		
  		if (tname != null)
 			 tname.setText(res.getName());
 		
@@ -42,7 +53,33 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		if (tvote != null) {
 			tvote.setText(res.getVote());
 		}
-		
+				
 		return row;
+	}
+	
+	
+	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+	    ImageView bmImage;
+
+	    public DownloadImageTask(ImageView bmImage) {
+	        this.bmImage = bmImage;
+	    }
+
+	    protected Bitmap doInBackground(String... urls) {
+	        String urldisplay = urls[0];
+	        Bitmap mIcon11 = null;
+	        try {
+	            InputStream in = new java.net.URL(urldisplay).openStream();
+	            mIcon11 = BitmapFactory.decodeStream(in);
+	        } catch (Exception e) {
+	            Log.e("Error", e.getMessage());
+	            e.printStackTrace();
+	        }
+	        return mIcon11;
+	    }
+
+	    protected void onPostExecute(Bitmap result) {
+	        bmImage.setImageBitmap(result);
+	    }
 	}
 }

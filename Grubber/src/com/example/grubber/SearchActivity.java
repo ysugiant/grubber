@@ -124,9 +124,12 @@ public class SearchActivity extends Activity {
 
 			} catch (Exception e) {}
 		} else {
-  	  		intent.putExtra("latitude", lat);
-  	  		intent.putExtra("longitude", longt);
+  	  		intent.putExtra("latitude", String.valueOf(lat));
+  	  		intent.putExtra("longitude", String.valueOf(longt));
 		}
+		Log.d("bugs", intent.getExtras().get("key").toString());
+		Log.d("bugs", intent.getExtras().get("latitude").toString());
+		Log.d("bugs", intent.getExtras().get("longitude").toString());
   	  	startActivity(intent);
 
 	}

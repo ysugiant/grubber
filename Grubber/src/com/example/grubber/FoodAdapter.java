@@ -1,14 +1,8 @@
 package com.example.grubber;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
-
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +12,11 @@ import android.widget.TextView;
 
 public class FoodAdapter extends ArrayAdapter<FoodContent>{
 	private ArrayList<FoodContent> foodList;
-	
+	private ImageLoader imageLoader;
 	public FoodAdapter(Context context, ArrayList<FoodContent> resultsList) {
 		super (context, R.layout.food_list_item, resultsList);
 		this.foodList = resultsList;
+		imageLoader = new ImageLoader(context);
 	}
 	
 	@Override
@@ -39,11 +34,11 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		TextView tdescription = (TextView) row.findViewById(R.id.food_description);
 		TextView tvote = (TextView) row.findViewById(R.id.food_vote);
 		ImageView icon = (ImageView) row.findViewById(R.id.food_icon);
-		
+
 		//show picture
 		String picurl = "https://dl.dropboxusercontent.com/u/174700234/"+ res.getFoodId() + ".jpg";
-		new DownloadImageTask(icon).execute(picurl);
-		
+		imageLoader.DisplayImage(picurl, icon);
+
  		if (tname != null)
 			 tname.setText(res.getName());
 		
@@ -55,31 +50,5 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		}
 				
 		return row;
-	}
-	
-	
-	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-	    ImageView bmImage;
-
-	    public DownloadImageTask(ImageView bmImage) {
-	        this.bmImage = bmImage;
-	    }
-
-	    protected Bitmap doInBackground(String... urls) {
-	        String urldisplay = urls[0];
-	        Bitmap mIcon11 = null;
-	        try {
-	            InputStream in = new java.net.URL(urldisplay).openStream();
-	            mIcon11 = BitmapFactory.decodeStream(in);
-	        } catch (Exception e) {
-	            Log.e("Error", e.getMessage());
-	            e.printStackTrace();
-	        }
-	        return mIcon11;
-	    }
-
-	    protected void onPostExecute(Bitmap result) {
-	        bmImage.setImageBitmap(result);
-	    }
 	}
 }

@@ -49,7 +49,6 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -72,9 +71,6 @@ public class Results extends FragmentActivity {
 	public final Context context = this;
 	//private View main_view;
 	private GoogleMap mMap;	
-	
-	int current_page = 0;
-	ArrayList<ResultContent> list_result = null;
 
 	DialogFragment servicesDialog = new NeedServicesDialogFragment();
 
@@ -84,23 +80,6 @@ public class Results extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_results);
 		result_list = (ListView) findViewById(R.id.restaurantLV);
-		Button loadMore = new Button(this); // style you later
-		loadMore.setText("Load More");
-		result_list.addFooterView(loadMore);		
-		loadMore.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				try {
-					getRestaurant();
-				} catch (Exception e) {
-					Log.d("bugs", "caught getRest when loading more");
-					e.printStackTrace();
-				}
-				
-			}
-		});
-		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		try {
 			getRestaurant();
@@ -203,8 +182,8 @@ public class Results extends FragmentActivity {
 		if (key!=null) {
 			nameValuePair.add(new BasicNameValuePair("key", key));
 		}
-		nameValuePair.add(new BasicNameValuePair("min", String.valueOf(10 * current_page)));//"0"));
-		nameValuePair.add(new BasicNameValuePair("max", String.valueOf(10 * (current_page + 1))));//"10"));
+		nameValuePair.add(new BasicNameValuePair("min", "0"));
+		nameValuePair.add(new BasicNameValuePair("max", "10")); // have to reach max?
 		if (getIntent().getStringExtra("latitude") != null && getIntent().getStringExtra("longitude") != null) {
 			nameValuePair.add(new BasicNameValuePair("latitude", getIntent().getStringExtra("latitude")));
 			nameValuePair.add(new BasicNameValuePair("longitude", getIntent().getStringExtra("longitude")));
@@ -270,14 +249,11 @@ public class Results extends FragmentActivity {
 		
 		protected void setView(String jsonString)
 		{
-			current_page += 1;
-			
 	        JsonParser jsonParser = new JsonParser();
 	        JsonObject jo = (JsonObject)jsonParser.parse(jsonString);
 	        JsonArray jarr = (JsonArray) jo.get("result");
 	        
-	        if (list_result == null)
-	        /*final ArrayList<ResultContent>*/ list_result = new ArrayList<ResultContent>();
+	        final ArrayList<ResultContent> list_result = new ArrayList<ResultContent>();
 	        for (int i = 0; i < jarr.size(); i++) {
 	        	JsonObject result = (JsonObject) jarr.get(i);
 
@@ -289,15 +265,10 @@ public class Results extends FragmentActivity {
 						  result.get("votes").getAsString()));
 	        }
 	        
-	        int currentPosition = result_list.getFirstVisiblePosition();
 	        ResultAdapter radapter = new ResultAdapter(Results.this, list_result);
 
 	        //Show the restaurant list to ListView
 	        result_list.setAdapter(radapter);
-	        
-	        // set new scroll position
-	        result_list.setSelectionFromTop(currentPosition + 1,  0);
-	        
 	        result_list.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	            {//set onClick

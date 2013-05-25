@@ -76,6 +76,8 @@ public class Results extends FragmentActivity {
 	int current_page = 0;
 	ArrayList<ResultContent> list_result = null;
 	final int itemsPerPage = 10;
+	Button loadMore = null;
+	int totalResults = 0;
 
 	DialogFragment servicesDialog = new NeedServicesDialogFragment();
 
@@ -85,7 +87,7 @@ public class Results extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_results);
 		result_list = (ListView) findViewById(R.id.restaurantLV);
-		Button loadMore = new Button(this); // style you later
+		loadMore = new Button(this);//(Button) findViewById(R.id.results_loadmore);//new Button(this); // style you later
 		loadMore.setText("Load More");
 		result_list.addFooterView(loadMore);		
 		loadMore.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +103,8 @@ public class Results extends FragmentActivity {
 				
 			}
 		});
+		
+		loadMore.setVisibility(View.GONE);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		try {
@@ -273,11 +277,32 @@ public class Results extends FragmentActivity {
 		
 		protected void setView(String jsonString)
 		{
-			current_page += 1;
-			
 	        JsonParser jsonParser = new JsonParser();
 	        JsonObject jo = (JsonObject)jsonParser.parse(jsonString);
-	        JsonArray jarr = (JsonArray) jo.get("result");
+	        if (list_result == null) {
+	        	totalResults = jo.get("total").getAsInt();
+	        	// do some total checks, then set button - goal is to do it once, when it is null
+	        	/*
+	        	if (totalResults == 0) {
+	        		// load "refresh" page
+	        		result_list.setVisibility(View.GONE); // trying this first
+	        		ImageView refresh = new ImageView
+	        	} 
+	        	else {
+	        		loadMore.setVisibility(View.VISIBLE);
+	        	}*/
+        		loadMore.setVisibility(View.VISIBLE);
+
+	        }
+	        
+			current_page += 1;
+	        // want to load the next page? ASSUMING there are results available
+	        if (current_page >= ((int)totalResults/(int)itemsPerPage) + 1 ) {
+	        	loadMore.setVisibility(View.GONE);
+	        }
+
+	        	
+	        JsonArray jarr = jo.getAsJsonArray("result");
 	        
 	        if (list_result == null)
 	        /*final ArrayList<ResultContent>*/ list_result = new ArrayList<ResultContent>();

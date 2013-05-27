@@ -153,7 +153,7 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		foodName = (TextView) findViewById(R.id.foogpage_foodNameTV);
 		foodImg = (ImageView)findViewById(R.id.foogpage_foodimgIV);
 		totalVoteTV = (TextView) findViewById(R.id.foodpage_totalVoteNumTV);
-		rating = (RatingBar) findViewById(R.id.foodpage_ratingRB);
+		//rating = (RatingBar) findViewById(R.id.foodpage_ratingRB);
 		voteBtn = (Button) findViewById(R.id.foodpage_voteBtn);
 		voteComment = (EditText) findViewById(R.id.foodpage_commentET);
 		reviewLV = (ListView) findViewById(R.id.foogpage_reviewList);

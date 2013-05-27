@@ -211,7 +211,7 @@ public class Results extends FragmentActivity {
 		nameValuePair.add(new BasicNameValuePair("min", 
 												  String.valueOf(itemsPerPage * current_page)));//"0"));
 		nameValuePair.add(new BasicNameValuePair("max", 
-												  String.valueOf(itemsPerPage * (current_page + 1))));//"10"));
+												  String.valueOf((itemsPerPage * (current_page + 1))-1)));//"10"));
 		if (getIntent().getStringExtra("latitude") != null && getIntent().getStringExtra("longitude") != null) {
 			nameValuePair.add(new BasicNameValuePair("latitude", getIntent().getStringExtra("latitude")));
 			nameValuePair.add(new BasicNameValuePair("longitude", getIntent().getStringExtra("longitude")));

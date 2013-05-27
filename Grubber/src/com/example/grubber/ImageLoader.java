@@ -33,7 +33,7 @@ public class ImageLoader {
         executorService=Executors.newFixedThreadPool(5);
     }
     //fix this later
-    final int stub_id=R.drawable.hint;
+    final int stub_id=R.drawable.ic_launcher;
     public void DisplayImage(String url, ImageView imageView)
     {
         imageViews.put(imageView, url);

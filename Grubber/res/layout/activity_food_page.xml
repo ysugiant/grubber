@@ -56,8 +56,8 @@
                     android:text="" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="197dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
@@ -65,14 +65,19 @@
                     android:id="@+id/foodpage_totalVoteNumTV"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:text=" " />
+                    android:layout_alignParentBottom="true"
+                    android:text="324" />
 
-                <RatingBar
-                    android:id="@+id/foodpage_ratingRB"
+                <ImageView
+                    android:id="@+id/foogpage_voteicon"
                     android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:clickable="false" />
-            </LinearLayout>
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/foodpage_totalVoteNumTV"
+                    android:layout_weight="0.93"
+                    android:src="@drawable/vote" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

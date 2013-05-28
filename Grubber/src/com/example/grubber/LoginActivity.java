@@ -18,10 +18,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -81,6 +83,7 @@ public class LoginActivity extends Activity {
 
 		setContentView(R.layout.activity_login);
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -120,6 +123,22 @@ public class LoginActivity extends Activity {
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
 	}
+	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+	      case R.id.action_forgot_password:
+	          break;   
+	       // Respond to the action bar's Up/Home button
+	      case android.R.id.home:
+	          finish();
+	          return true;	          
+	      default:
+	    	  break;
+      }
+
+      return true;
+    }
 
 	/**
 	 * Attempts to sign in or register the account specified by the login form.

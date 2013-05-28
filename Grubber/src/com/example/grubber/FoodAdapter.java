@@ -12,10 +12,11 @@ import android.widget.TextView;
 
 public class FoodAdapter extends ArrayAdapter<FoodContent>{
 	private ArrayList<FoodContent> foodList;
-	
+	private ImageLoader imageLoader;
 	public FoodAdapter(Context context, ArrayList<FoodContent> resultsList) {
 		super (context, R.layout.food_list_item, resultsList);
 		this.foodList = resultsList;
+		imageLoader = new ImageLoader(context);
 	}
 	
 	@Override
@@ -33,6 +34,11 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		TextView tdescription = (TextView) row.findViewById(R.id.food_description);
 		TextView tvote = (TextView) row.findViewById(R.id.food_vote);
 		ImageView icon = (ImageView) row.findViewById(R.id.food_icon);
+
+		//show picture
+		String picurl = "https://dl.dropboxusercontent.com/u/174700234/"+ res.getFoodId() + ".jpg";
+		imageLoader.DisplayImage(picurl, icon);
+
  		if (tname != null)
 			 tname.setText(res.getName());
 		
@@ -42,7 +48,7 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		if (tvote != null) {
 			tvote.setText(res.getVote());
 		}
-		
+				
 		return row;
 	}
 }

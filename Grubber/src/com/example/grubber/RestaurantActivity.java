@@ -278,7 +278,8 @@ public class RestaurantActivity extends Activity {
 	            {//set onClick and open RestaurantActivity page
 	            	Intent intent = new Intent(RestaurantActivity.this, FoodPageActivity.class);
 	            	FoodContent tmp = list_result.get((int) id);
-	            	intent.putExtra("rest_id", rest_id);
+	            	Log.d("bug", rest_id + tmp.getName() + tmp.getDescription() + tmp.getVote());
+	            	intent.putExtra("food_id", tmp.getFoodId());
 	            	intent.putExtra("name", tmp.getName());
 	            	intent.putExtra("description", tmp.getDescription());
 	            	intent.putExtra("total_vote", tmp.getVote());

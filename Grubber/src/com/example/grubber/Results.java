@@ -49,6 +49,7 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -71,6 +72,12 @@ public class Results extends FragmentActivity {
 	public final Context context = this;
 	//private View main_view;
 	private GoogleMap mMap;	
+	
+	int current_page = 0;
+	ArrayList<ResultContent> list_result = null;
+	final int itemsPerPage = 10;
+	Button loadMore = null;
+	int totalResults = 0;
 
 	DialogFragment servicesDialog = new NeedServicesDialogFragment();
 
@@ -80,6 +87,25 @@ public class Results extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_results);
 		result_list = (ListView) findViewById(R.id.restaurantLV);
+		loadMore = new Button(this);//(Button) findViewById(R.id.results_loadmore);//new Button(this); // style you later
+		loadMore.setText("Load More");
+		result_list.addFooterView(loadMore);		
+		loadMore.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				try {
+					getRestaurant();
+				} catch (Exception e) {
+					Log.d("bugs", "caught getRest when loading more");
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		
+		loadMore.setVisibility(View.GONE);
+		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		try {
 			getRestaurant();
@@ -164,7 +190,7 @@ public class Results extends FragmentActivity {
 	          break;   
 	       // Respond to the action bar's Up/Home button
 	      case android.R.id.home:
-	          NavUtils.navigateUpFromSameTask(this);
+	    	  finish();
 	          return true;	          
 	      default:
 	    	  break;
@@ -182,8 +208,10 @@ public class Results extends FragmentActivity {
 		if (key!=null) {
 			nameValuePair.add(new BasicNameValuePair("key", key));
 		}
-		nameValuePair.add(new BasicNameValuePair("min", "0"));
-		nameValuePair.add(new BasicNameValuePair("max", "11")); // have to reach max?
+		nameValuePair.add(new BasicNameValuePair("min", 
+												  String.valueOf(itemsPerPage * current_page)));//"0"));
+		nameValuePair.add(new BasicNameValuePair("max", 
+												  String.valueOf((itemsPerPage * (current_page + 1))-1)));//"10"));
 		if (getIntent().getStringExtra("latitude") != null && getIntent().getStringExtra("longitude") != null) {
 			nameValuePair.add(new BasicNameValuePair("latitude", getIntent().getStringExtra("latitude")));
 			nameValuePair.add(new BasicNameValuePair("longitude", getIntent().getStringExtra("longitude")));
@@ -251,9 +279,33 @@ public class Results extends FragmentActivity {
 		{
 	        JsonParser jsonParser = new JsonParser();
 	        JsonObject jo = (JsonObject)jsonParser.parse(jsonString);
-	        JsonArray jarr = (JsonArray) jo.get("result");
+	        if (list_result == null) {
+	        	totalResults = jo.get("total").getAsInt();
+	        	// do some total checks, then set button - goal is to do it once, when it is null
+	        	/*
+	        	if (totalResults == 0) {
+	        		// load "refresh" page
+	        		result_list.setVisibility(View.GONE); // trying this first
+	        		ImageView refresh = new ImageView
+	        	} 
+	        	else {
+	        		loadMore.setVisibility(View.VISIBLE);
+	        	}*/
+        		loadMore.setVisibility(View.VISIBLE);
+
+	        }
 	        
-	        final ArrayList<ResultContent> list_result = new ArrayList<ResultContent>();
+			current_page += 1;
+	        // want to load the next page? ASSUMING there are results available
+	        if (current_page >= ((int)totalResults/(int)itemsPerPage) + 1 ) {
+	        	loadMore.setVisibility(View.GONE);
+	        }
+
+	        	
+	        JsonArray jarr = jo.getAsJsonArray("result");
+	        
+	        if (list_result == null)
+	        /*final ArrayList<ResultContent>*/ list_result = new ArrayList<ResultContent>();
 	        for (int i = 0; i < jarr.size(); i++) {
 	        	JsonObject result = (JsonObject) jarr.get(i);
 
@@ -265,10 +317,15 @@ public class Results extends FragmentActivity {
 						  result.get("votes").getAsString()));
 	        }
 	        
+	        int currentPosition = result_list.getFirstVisiblePosition();
 	        ResultAdapter radapter = new ResultAdapter(Results.this, list_result);
 
 	        //Show the restaurant list to ListView
 	        result_list.setAdapter(radapter);
+	        
+	        // set new scroll position
+	        result_list.setSelectionFromTop(currentPosition,  0);
+	        
 	        result_list.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	            {//set onClick
@@ -287,7 +344,6 @@ public class Results extends FragmentActivity {
 	            }
 	        });
 		}
-	}
-	
+	}	
 	
 }

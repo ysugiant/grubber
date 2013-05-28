@@ -62,6 +62,13 @@ public class RestaurantActivity extends Activity {
 	private ListView foodListLV;
 	private Button addBTN;
 	private ProgressDialog progDialog; 
+	
+	//load more
+	private int itemsPerPage = 3;
+	private int current_page = 0;
+	private ArrayList<FoodContent> list_result = null;
+	private int total_result = 0;
+	private Button loadMore;
 
 	String rest_id;
 	@Override
@@ -98,7 +105,6 @@ public class RestaurantActivity extends Activity {
 		else
 			restWebsiteTV.setText(getIntent().getStringExtra("website"));
 		restPhoneTV.setText(getIntent().getStringExtra("phone"));
-		rest_id = getIntent().getStringExtra("rest_id");
 		//***Open navigation app when click on the address
 		restAddressTV.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
@@ -131,6 +137,29 @@ public class RestaurantActivity extends Activity {
 			}
 		});
 		//query to get the top 3 food list
+		
+		rest_id = getIntent().getStringExtra("rest_id");
+
+		loadMore = new Button(this);
+		loadMore.setText("Load More");
+		foodListLV.addFooterView(loadMore);		
+		loadMore.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				try {
+					getFoodList(rest_id);
+				} catch (Exception e) {
+					Log.d("bugs", "caught getFoodList when loading more");
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		
+		loadMore.setVisibility(View.GONE);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+
 		try {
 			getFoodList(rest_id);
 		} catch (Exception e) {
@@ -143,6 +172,7 @@ public class RestaurantActivity extends Activity {
     	super.onResume();
     	//Refresh the options menu when this activity comes in focus
     	invalidateOptionsMenu();
+    	
     	//this.tracker.trackPageView("/TopTracksActivity");
     }
 
@@ -213,8 +243,8 @@ public class RestaurantActivity extends Activity {
 		progDialog = ProgressDialog.show( this, "Process ", "Loading Data...",true,true);
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 		nameValuePair.add(new BasicNameValuePair("rest_id", id));
-		nameValuePair.add(new BasicNameValuePair("min", "0"));
-		nameValuePair.add(new BasicNameValuePair("max", "10"));
+		nameValuePair.add(new BasicNameValuePair("min", String.valueOf(itemsPerPage * current_page)));
+		nameValuePair.add(new BasicNameValuePair("max", String.valueOf((itemsPerPage * (current_page + 1))-1)));
 		// url with the post data
 		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/findFood");
 
@@ -260,7 +290,16 @@ public class RestaurantActivity extends Activity {
             JsonObject obj = (JsonObject) parser.parse(json);
             JsonArray jarr = (JsonArray) obj.get("result");
             
-	        final ArrayList<FoodContent> list_result = new ArrayList<FoodContent>();
+	        //final ArrayList<FoodContent> list_result = new ArrayList<FoodContent>();
+            if (list_result == null)
+            	list_result = new ArrayList<FoodContent>();
+            
+            if (jarr.size() < 3)
+            	loadMore.setVisibility(View.GONE);
+            else
+        		loadMore.setVisibility(View.VISIBLE);
+
+            
 	        for (int i = 0; i < jarr.size(); i++) {
 	        	JsonObject result = (JsonObject) jarr.get(i);
 
@@ -270,7 +309,6 @@ public class RestaurantActivity extends Activity {
 	        }
 	        
 	        FoodAdapter radapter = new FoodAdapter(RestaurantActivity.this, list_result);
-
 	        //Show the food list to ListView
 	        foodListLV.setAdapter(radapter);
 	        foodListLV.setOnItemClickListener(new OnItemClickListener() {
@@ -286,6 +324,10 @@ public class RestaurantActivity extends Activity {
 	        		startActivity(intent);
 	            }
 	        });
+	        
+	        int currentPosition = foodListLV.getFirstVisiblePosition();
+	        foodListLV.setSelectionFromTop(currentPosition,  0);
+	        current_page += 1;
 		}
 	}
 	

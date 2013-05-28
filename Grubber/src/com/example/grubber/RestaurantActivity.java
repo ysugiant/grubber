@@ -67,7 +67,7 @@ public class RestaurantActivity extends Activity {
 	private int itemsPerPage = 3;
 	private int current_page = 0;
 	private ArrayList<FoodContent> list_result = null;
-	private int total_result = 0;
+	//private int total_result = 0;
 	private Button loadMore;
 
 	String rest_id;
@@ -136,10 +136,8 @@ public class RestaurantActivity extends Activity {
 			    startActivity(i); 
 			}
 		});
-		//query to get the top 3 food list
 		
-		rest_id = getIntent().getStringExtra("rest_id");
-
+		
 		loadMore = new Button(this);
 		loadMore.setText("Load More");
 		foodListLV.addFooterView(loadMore);		
@@ -156,6 +154,17 @@ public class RestaurantActivity extends Activity {
 				
 			}
 		});
+	}
+	
+	public void onResume() {
+    	super.onResume();
+    	//Refresh the options menu when this activity comes in focus
+    	invalidateOptionsMenu();
+    	
+		rest_id = getIntent().getStringExtra("rest_id");
+
+		current_page = 0;
+		list_result = null;
 		
 		loadMore.setVisibility(View.GONE);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -166,13 +175,6 @@ public class RestaurantActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void onResume() {
-    	super.onResume();
-    	//Refresh the options menu when this activity comes in focus
-    	invalidateOptionsMenu();
-    	
     	//this.tracker.trackPageView("/TopTracksActivity");
     }
 

@@ -48,11 +48,6 @@
                 android:value="com.example.grubber.Results" />
         </activity>
         <activity
-            android:name="com.example.grubber.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
-        <activity
             android:name="com.example.grubber.Results"
             android:label="@string/title_activity_results" >
             <intent-filter>
@@ -65,16 +60,6 @@
 			<meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.grubber.MainActivity" />            
-        </activity>
-        <activity
-            android:name="com.example.grubber.RegisterActivity"
-            android:label="@string/title_activity_register"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
-        <activity
-            android:name="com.example.grubber.SignupActivity"
-            android:label="@string/title_activity_signup"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
             android:name="com.example.grubber.ProfileActivity"
@@ -128,6 +113,12 @@
         <activity
             android:name="com.example.grubber.NewFoodActivity"
             android:label="@string/title_activity_new_food" >
+        </activity>
+        <activity
+            android:name="com.example.grubber.SignInTabsActivity"
+            android:label="string/title_activity_signintabs"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+           
         </activity>
     </application>
 

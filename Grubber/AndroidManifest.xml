@@ -62,11 +62,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.grubber.MainActivity" />            
         </activity>
-        <activity
-            android:name="com.example.grubber.SignupActivity"
-            android:label="@string/title_activity_signup"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
+        
         <activity
             android:name="com.example.grubber.ProfileActivity"
             android:label="@string/title_activity_profile"
@@ -94,10 +90,6 @@
             android:name="com.example.grubber.ReviewSingleActivity"
             android:label="@string/title_activity_review_single" >
         </activity>
-        <!-- Google Maps API -->
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyD_ATYYFuoEgx_tYLikKuV6FKpGbiztxpk" />
 
         <activity
             android:name="com.example.grubber.NewRestaurantActivity"
@@ -118,10 +110,16 @@
         </activity>
         <activity
             android:name="com.example.grubber.SignInTabsActivity"
-            android:label="string/title_activity_signintabs"
+            android:label="Login or Register"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-           
         </activity>
+    
+
+        <!-- Google Maps API -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyD_ATYYFuoEgx_tYLikKuV6FKpGbiztxpk" />    
+    
     </application>
 
 </manifest>

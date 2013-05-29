@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.EditText;
 import android.support.v4.app.NavUtils;
 
@@ -25,6 +27,7 @@ public class SearchActivity extends Activity {
 	public double longt = DEFAULT_COORD;
 	public double lat = DEFAULT_COORD;
 	public boolean addr_changed = false;
+	public float miles = 5.0f;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,27 @@ public class SearchActivity extends Activity {
 		}
 	}
 	
+	public void onRadioButtonClicked(View view) {
+		// Is the button now checked?
+	    boolean checked = ((RadioButton) view).isChecked();
+	    
+	    // Check which radio button was clicked
+	    switch(view.getId()) {
+	        case R.id.radio_5:
+	            if (checked)
+	                miles = 5.0f;
+	            break;
+	        case R.id.radio_10:
+	            if (checked)
+	                miles = 10.0f;
+	            break;
+	        case R.id.radio_25:
+	            if (checked)
+	                miles = 25.0f;
+	            break;	
+	    }
+	}
+	
 	public void doSearch(View view) {
 		//Method called when 'Search' button is pressed
 		EditText search_box = (EditText) findViewById(R.id.edit_search);
@@ -106,6 +130,7 @@ public class SearchActivity extends Activity {
 		
 		Intent intent = new Intent(this, Results.class);
   	  	intent.putExtra("key", term);
+  	  	intent.putExtra("radius", miles);
   	  	
 		if (addr_changed) {
 			Geocoder coder = new Geocoder(this);

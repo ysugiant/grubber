@@ -37,5 +37,8 @@
     <string name="descriptionSTR">Description</string>
     <string name="nameSTR">Name</string>
     <string name="ok">OK</string>
+    <string name="mi5">5 miles</string>
+    <string name="mi10">10 miles</string>
+    <string name="mi25">25 miles</string>
 	<string name="need_services">This application requires locations services and an internet connection. Please check your settings and try again.</string>
 </resources>

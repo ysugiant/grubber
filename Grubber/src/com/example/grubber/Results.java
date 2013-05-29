@@ -208,6 +208,11 @@ public class Results extends FragmentActivity {
 		if (key!=null) {
 			nameValuePair.add(new BasicNameValuePair("key", key));
 		}
+		
+		float radius = getIntent().getFloatExtra("radius", -1.0f);
+		if (radius!=-1.0f) {
+			nameValuePair.add(new BasicNameValuePair("radius", String.valueOf(radius)));
+		}
 		nameValuePair.add(new BasicNameValuePair("min", 
 												  String.valueOf(itemsPerPage * current_page)));//"0"));
 		nameValuePair.add(new BasicNameValuePair("max", 

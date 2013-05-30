@@ -58,6 +58,7 @@ import com.example.grubber.R.layout;
 import com.example.grubber.R.menu;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -173,7 +174,7 @@ public class Results extends FragmentActivity {
 	    		  Intent intent3 = new Intent(context, ProfileActivity.class);
 	    		  startActivity(intent3);   
 	    	  } else {
-	    		  Intent intent3 = new Intent(context, LoginActivity.class);
+	    		  Intent intent3 = new Intent(context, SignInTabsActivity.class);
 	    		  startActivity(intent3);   
 	    	  }
 	          break;   
@@ -311,10 +312,14 @@ public class Results extends FragmentActivity {
 				} else {
 					//set up map
 					CameraUpdate center = CameraUpdateFactory.newLatLng( new LatLng( Double.parseDouble( getIntent().getStringExtra("latitude")),  Double.parseDouble(getIntent().getStringExtra("longitude"))) );
-				    CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+				    CameraUpdate zoom = CameraUpdateFactory.zoomTo(10);
 
 				    mMap.moveCamera(center);
 				    mMap.animateCamera(zoom);
+				    
+				    mMap.clear(); //reset any markers
+				    
+				    
 				}	
 			}	
 	        	        
@@ -328,6 +333,12 @@ public class Results extends FragmentActivity {
 						  result.get("zip").getAsString(), result.get("longitude").getAsString(), result.get("latitude").getAsString(),
 						  result.get("phone").getAsString(), result.get("website").getAsString(), result.get("distance").getAsString(),
 						  result.get("votes").getAsString()));
+	        	
+	        	//setting up map markers	        	
+	        	mMap.addMarker(new MarkerOptions()
+	            .position(new LatLng(result.get("longitude").getAsDouble(), result.get("longitude").getAsDouble()))
+	            .title(result.get("name").getAsString()));
+
 	        }
 	        
 	        int currentPosition = result_list.getFirstVisiblePosition();

@@ -226,7 +226,7 @@ public class RestaurantActivity extends Activity {
 	    		  Intent intent3 = new Intent(context, ProfileActivity.class);
 	    		  startActivity(intent3);   
 	    	  } else {
-	    		  Intent intent3 = new Intent(context, LoginActivity.class);
+	    		  Intent intent3 = new Intent(context, SignInTabsActivity.class);
 	    		  startActivity(intent3);   
 	    	  }
 	          break; 

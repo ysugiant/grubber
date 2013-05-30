@@ -45,6 +45,46 @@
     
     </LinearLayout>
     
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    tools:context=".SearchActivity" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15sp"
+            android:layout_marginTop="5sp"
+            android:padding="10dip"
+            android:text="Within"
+            android:textSize="@dimen/def_txt_size"
+            android:typeface="normal" />
+	    
+        <RadioGroup
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical">
+		    <RadioButton android:id="@+id/radio_5"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/mi5"
+		        android:onClick="onRadioButtonClicked"/>
+		    <RadioButton android:id="@+id/radio_10"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/mi10"
+		        android:onClick="onRadioButtonClicked"/>
+			<RadioButton android:id="@+id/radio_25"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/mi25"
+		        android:onClick="onRadioButtonClicked"/>		    
+  		</RadioGroup>
+    
+    </LinearLayout>
+    
     <Button android:id="@+id/go_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

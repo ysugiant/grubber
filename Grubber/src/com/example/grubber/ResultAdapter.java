@@ -49,7 +49,7 @@ public class ResultAdapter extends ArrayAdapter<ResultContent>{
 			 if (res.getDistance().contains("-"))
 				 tdistance.setText("");
 			 else
-				 tdistance.setText(res.getDistance().substring(0,4) + " miles");
+				 tdistance.setText(res.getDistance().substring(0,4) + " mi");
 		}
 		
 		if (tvotes != null) {

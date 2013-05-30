@@ -7,12 +7,24 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/hint" />
+        android:gravity="center_horizontal"
+        android:text="Top 5 Grub"
+        android:background="@drawable/back"
+        android:textSize="26sp" />
+
+    <ListView
+        android:id="@+id/topfoodListLV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addBTN"
+        android:layout_marginTop="12dp" >
+    </ListView>
     
 </LinearLayout>

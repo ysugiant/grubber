@@ -36,7 +36,7 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		ImageView icon = (ImageView) row.findViewById(R.id.food_icon);
 
 		//show picture
-		String picurl = "http://cse190.myftp.org/picture"+ res.getFoodId() + ".jpg";
+		String picurl = "http://cse190.myftp.org/picture/"+ res.getFoodId() + ".jpg";
 		imageLoader.DisplayImage(picurl, icon);
 
  		if (tname != null)

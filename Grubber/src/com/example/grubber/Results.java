@@ -57,6 +57,7 @@ import com.example.grubber.R;
 import com.example.grubber.R.layout;
 import com.example.grubber.R.menu;
 import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.LatLng;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -112,19 +113,7 @@ public class Results extends FragmentActivity {
 		} catch (Exception e) {
 			Log.d("bugs", "caught getRest");
 			e.printStackTrace();
-		}
-		
-		/* create map */
-		/* check we haven't instantiated the map already */
-		if (mMap == null) {
-			mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-			
-			if( mMap == null ) {
-				servicesDialog.show(getSupportFragmentManager(), "results_services_dialog");
-			} else {
-				//do something
-			}	
-		}		
+		}	
 		
 	}
 	
@@ -302,10 +291,29 @@ public class Results extends FragmentActivity {
 	        }
 
 	        	
-	        JsonArray jarr = jo.getAsJsonArray("result");
-	        
+	        JsonArray jarr = jo.getAsJsonArray("result");    
+	    	        
 	        if (list_result == null)
 	        /*final ArrayList<ResultContent>*/ list_result = new ArrayList<ResultContent>();
+	        
+			/* create map */
+			/* check we haven't instantiated the map already */
+			if (mMap == null) {
+				mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+				
+				if( mMap == null ) { //could not load map
+					servicesDialog.show(getSupportFragmentManager(), "results_services_dialog");
+				} else {
+					//set up map
+					CameraUpdate center = CameraUpdateFactory.newLatLng( new LatLng( Double.parseDouble( getIntent().getStringExtra("latitude")),  Double.parseDouble(getIntent().getStringExtra("longitude"))) );
+				    CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+
+				    mMap.moveCamera(center);
+				    mMap.animateCamera(zoom);
+				}	
+			}	
+	        	        
+	        
 	        for (int i = 0; i < jarr.size(); i++) {
 	        	JsonObject result = (JsonObject) jarr.get(i);
 

@@ -180,6 +180,11 @@ public class MainActivity extends Activity  {
     	Intent intent = new Intent(context, TopFoodActivity.class);
     	startActivity(intent);
     }
+    
+    public void startTopRestaurant(View view) {
+    	Intent intent = new Intent(context, TopRestaurantActivity.class);
+    	startActivity(intent);
+    }
 }
 
     

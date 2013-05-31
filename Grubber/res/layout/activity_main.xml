@@ -16,4 +16,9 @@
      android:text="Top 5 Food"
      android:onClick="startTopFood" />
     
+     <Button
+     android:layout_height="wrap_content"
+     android:layout_width="wrap_content"
+     android:text="Top 5 Restaurants"
+     android:onClick="startTopRestaurant" />
 </LinearLayout>

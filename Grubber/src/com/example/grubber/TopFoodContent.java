@@ -6,14 +6,18 @@ public class TopFoodContent {
 	String rest_name;
 	String comments;
 	String vote;
+	String description;
+	String rest_id;
 	
-	public TopFoodContent(String id, String fn, String rn, String c, String v)
+	public TopFoodContent(String id, String fn, String rn, String c, String v, String d, String r)
 	{
 		food_id = id;
 		food_name = fn;
 		rest_name = rn;
 		comments = c;
 		vote = v;
+		description = d;
+		rest_id = r;
 	}
 	
 	public String getFoodId()
@@ -39,5 +43,15 @@ public class TopFoodContent {
 	public String getComments()
 	{
 		return comments;
+	}
+	
+	public String getDescription()
+	{
+		return description;
+	}
+	
+	public String getRestId() 
+	{
+		return rest_id;
 	}
 }

@@ -241,7 +241,7 @@ public class MainActivity extends Activity  {
 	        	//set for adapter value
 	        	list_result.add(new TopFoodContent(result.get("food_id").getAsString(), result.get("food_name").getAsString(),
 						  result.get("rest_name").getAsString(), result.get("comments").getAsString(), 
-						  result.get("vote").getAsString()));
+						  result.get("vote").getAsString(), result.get("food_description").getAsString(), result.get("rest_id").getAsString()));
 	        }
 	        
 	        TopFoodAdapter radapter = new TopFoodAdapter(MainActivity.this, list_result);
@@ -254,8 +254,9 @@ public class MainActivity extends Activity  {
 	            	TopFoodContent tmp = list_result.get((int) id);
 	            	intent.putExtra("food_id", tmp.getFoodId());
 	            	intent.putExtra("name", tmp.getFoodName());
-	            	//intent.putExtra("description", tmp.getDescription());
+	            	intent.putExtra("description", tmp.getDescription());
 	            	intent.putExtra("total_vote", tmp.getVote());
+	            	intent.putExtra("rest_id", tmp.getRestId());
 	        		startActivity(intent);
 	            }
 	        });

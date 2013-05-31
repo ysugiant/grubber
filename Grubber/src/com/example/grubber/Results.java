@@ -59,6 +59,7 @@ public class Results extends Activity {
 	public final Context context = this;
 	//private View main_view;
 	private GoogleMap mMap;	
+	private Marker marker;
 	
 	int current_page = 0;
 	ArrayList<ResultContent> list_result = null;
@@ -320,8 +321,8 @@ public class Results extends Activity {
 						  result.get("votes").getAsString()));
 	        	
 	        	//setting up map markers	        	
-	        	Marker newMarker = mMap.addMarker(new MarkerOptions()
-	            .position(new LatLng(result.get("longitude").getAsDouble(), result.get("longitude").getAsDouble()))
+	        	marker = mMap.addMarker(new MarkerOptions()
+	            .position(new LatLng(result.get("latitude").getAsDouble(), result.get("longitude").getAsDouble()))
 	            .title(result.get("name").getAsString()));
 
 	        }

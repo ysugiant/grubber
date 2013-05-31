@@ -1,12 +1,20 @@
 package com.example.grubber;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -16,11 +24,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -34,9 +48,9 @@ public class NewFoodActivity extends Activity {
 	private EditText food_nameET;
 	private EditText food_descriptionET;
 	private Button submit_btn;
-	private Button picture_btn;
 	private ProgressDialog progDialog;
-
+	
+	private String image = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,29 +58,49 @@ public class NewFoodActivity extends Activity {
 		food_nameET = (EditText) findViewById(R.id.food_nameET);
 		food_descriptionET = (EditText) findViewById(R.id.food_descriptionET);
 		submit_btn = (Button) findViewById(R.id.submitBTN);
-		picture_btn= (Button) findViewById(R.id.pictureBTN);
-
 		
 	    submit_btn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					try {
+					startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), 3);
+					/*try {
 						addFood();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+					}*/
 				}
 			});
-	    
-	    picture_btn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+	   
 	}
+	
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode==3 && resultCode == Activity.RESULT_OK) {
+	        Uri selectedImage = data.getData();
+	        Bitmap bitmap = null;
+	        try {
+	        	bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+	        	ByteArrayOutputStream bao = new ByteArrayOutputStream();
+	            bitmap.compress(Bitmap.CompressFormat.JPEG, 10, bao);
+	            byte [] ba = bao.toByteArray();
+	            image = Base64.encodeToString(ba, Base64.DEFAULT);
+	            //upload file and add to the database
+	            try {
+					addFood();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        } catch (Exception e) {
+	        	// TODO Auto-generated catch block
+	        	e.printStackTrace();
+	        }
+	    }
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,7 +117,7 @@ public class NewFoodActivity extends Activity {
 		nameValuePair.add(new BasicNameValuePair("rest_id", getIntent().getStringExtra("rest_id")));
 		nameValuePair.add(new BasicNameValuePair("name", food_nameET.getText().toString()));
 		nameValuePair.add(new BasicNameValuePair("description", food_descriptionET.getText().toString()));
-
+		nameValuePair.add(new BasicNameValuePair("image", image));
 		
 		//Log.d("bug", getIntent().getStringExtra("address"));
 		// url with the post data

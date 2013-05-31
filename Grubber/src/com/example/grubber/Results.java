@@ -3,7 +3,6 @@ package com.example.grubber;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,22 +22,14 @@ import com.google.gson.JsonParser;
 
 import android.os.AsyncTask;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,27 +39,21 @@ import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.grubber.R;
-import com.example.grubber.R.layout;
-import com.example.grubber.R.menu;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.support.v4.app.*;
 
 
 
-public class Results extends FragmentActivity {
+public class Results extends Activity {
 	private ListView result_list;
 	private ProgressDialog progDialog; 
 	public final Context context = this;
@@ -305,19 +290,19 @@ public class Results extends FragmentActivity {
 			/* create map */
 			/* check we haven't instantiated the map already */
 			if (mMap == null) {
-				mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+				mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 				
 				if( mMap == null ) { //could not load map
-					servicesDialog.show(getSupportFragmentManager(), "results_services_dialog");
+					servicesDialog.show(getFragmentManager(), "results_services_dialog");
 				} else {
 					//set up map
 					CameraUpdate center = CameraUpdateFactory.newLatLng( new LatLng( Double.parseDouble( getIntent().getStringExtra("latitude")),  Double.parseDouble(getIntent().getStringExtra("longitude"))) );
-				    CameraUpdate zoom = CameraUpdateFactory.zoomTo(10);
+				    CameraUpdate zoom = CameraUpdateFactory.zoomTo(13);
 
 				    mMap.moveCamera(center);
 				    mMap.animateCamera(zoom);
 				    
-				    mMap.clear(); //reset any markers
+				    //mMap.clear(); //reset any markers
 				    
 				    
 				}	
@@ -335,7 +320,7 @@ public class Results extends FragmentActivity {
 						  result.get("votes").getAsString()));
 	        	
 	        	//setting up map markers	        	
-	        	mMap.addMarker(new MarkerOptions()
+	        	Marker newMarker = mMap.addMarker(new MarkerOptions()
 	            .position(new LatLng(result.get("longitude").getAsDouble(), result.get("longitude").getAsDouble()))
 	            .title(result.get("name").getAsString()));
 

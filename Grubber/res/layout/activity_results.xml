@@ -11,7 +11,7 @@
           android:id="@+id/map"
           android:layout_width="match_parent"
           android:layout_height="100dp"
-          android:name="com.google.android.gms.maps.SupportMapFragment"
+          android:name="com.google.android.gms.maps.MapFragment"
           android:enabled="true" />
     
     <ListView

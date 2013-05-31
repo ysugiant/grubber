@@ -60,10 +60,6 @@ public class MainActivity extends Activity  {
 	private Tracker mGaTracker;
 	private GoogleAnalytics mGaInstance;
 	public Location userLoc;
-	
-	private ListView foodListLV;
-	private ProgressDialog progDialog; 
-	private ArrayList<TopFoodContent> list_result = null;
 
 	//alerts
 	DialogFragment servicesDialog = new NeedServicesDialogFragment();
@@ -74,12 +70,6 @@ public class MainActivity extends Activity  {
         mGaInstance = GoogleAnalytics.getInstance(this);
         mGaTracker = mGaInstance.getTracker("UA-40885024-1");
         setContentView(R.layout.activity_main); 
-		foodListLV = (ListView)findViewById(R.id.topfoodListLV);
-        try {
-			getTopFood();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
         LocationResult locationResult = new LocationResult(){
             @Override
             public void gotLocation(Location location){
@@ -186,85 +176,10 @@ public class MainActivity extends Activity  {
       return true;
     } 
     
-	public void getTopFood() throws Exception {
-		progDialog = ProgressDialog.show( this, "Process ", "Loading Data...",true,true);
-
-		// url with the post data
-		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/topFood");
-
-		// Handles what is returned from the page
-		//ResponseHandler responseHandler = new BasicResponseHandler();
-		//Log.d("bugs", "execute request");
-		new GetHttpRequest().execute(httpost);
-	}
-	
-	private class GetHttpRequest extends AsyncTask<HttpPost, Void, String> {
-
-		@Override
-		protected String doInBackground(HttpPost... params) {
-			DefaultHttpClient httpclient = new DefaultHttpClient();
-			String json = "wrong";
-			try {
-				HttpResponse resp = httpclient.execute(params[0]);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent(), "UTF-8"));
-				json = reader.readLine();
-				return json;
-			} catch (Exception e) {
-				Log.d("bugs", "Catch in HTTPGETTER");
-			}
-			return null;
-		}
-
-		protected void onPostExecute(String json) {
-			try {
-				getFood(json);
-			} catch (Exception e) { 
-				Log.d("bugs","reader"); 
-				Toast.makeText(MainActivity.this, "Failed to get the data", Toast.LENGTH_SHORT).show();			
-			}
-			//stop progress bar
-			progDialog.dismiss();
-		}
-		
-		protected void getFood(String json)
-		{
-            JsonParser parser = new JsonParser();
-            JsonObject obj = (JsonObject) parser.parse(json);
-            JsonArray jarr = (JsonArray) obj.get("result");
-            
-            if (list_result == null)
-            	list_result = new ArrayList<TopFoodContent>();
-                        
-	        for (int i = 0; i < jarr.size(); i++) {
-	        	JsonObject result = (JsonObject) jarr.get(i);
-
-	        	//set for adapter value
-	        	list_result.add(new TopFoodContent(result.get("food_id").getAsString(), result.get("food_name").getAsString(),
-						  result.get("rest_name").getAsString(), result.get("comments").getAsString(), 
-						  result.get("vote").getAsString(), result.get("food_description").getAsString(), result.get("rest_id").getAsString()));
-	        }
-	        
-	        TopFoodAdapter radapter = new TopFoodAdapter(MainActivity.this, list_result);
-	        //Show the food list to ListView
-	        foodListLV.setAdapter(radapter);
-	        foodListLV.setOnItemClickListener(new OnItemClickListener() {
-	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
-	            {//set onClick and open RestaurantActivity page
-	            	Intent intent = new Intent(MainActivity.this, FoodPageActivity.class);
-	            	TopFoodContent tmp = list_result.get((int) id);
-	            	intent.putExtra("food_id", tmp.getFoodId());
-	            	intent.putExtra("name", tmp.getFoodName());
-	            	intent.putExtra("description", tmp.getDescription());
-	            	intent.putExtra("total_vote", tmp.getVote());
-	            	intent.putExtra("rest_id", tmp.getRestId());
-	        		startActivity(intent);
-	            }
-	        });
-	        
-	        int currentPosition = foodListLV.getFirstVisiblePosition();
-	        foodListLV.setSelectionFromTop(currentPosition,  0);
-		}
-	}
+    public void startTopFood(View view) {
+    	Intent intent = new Intent(context, TopFoodActivity.class);
+    	startActivity(intent);
+    }
 }
 
     

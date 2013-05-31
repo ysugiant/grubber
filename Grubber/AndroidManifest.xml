@@ -18,8 +18,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <!--
          The following two permissions are not required to use
-	     Google Maps Android API v2, but are recommended.
-
+	     Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -58,11 +57,10 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-			<meta-data
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.grubber.MainActivity" />            
+                android:value="com.example.grubber.MainActivity" />
         </activity>
-        
         <activity
             android:name="com.example.grubber.ProfileActivity"
             android:label="@string/title_activity_profile"
@@ -71,16 +69,16 @@
         <activity
             android:name="com.example.grubber.FoodPageActivity"
             android:label="@string/title_activity_food_page" >
-			<meta-data
-	               android:name="android.support.PARENT_ACTIVITY"
-	               android:value="com.example.grubber.MainActivity" />				
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.grubber.MainActivity" />
         </activity>
         <activity
             android:name="com.example.grubber.RestaurantActivity"
             android:label="@string/title_activity_restaurant" >
-			<meta-data
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.grubber.MainActivity" />			
+                android:value="com.example.grubber.MainActivity" />
         </activity>
         <activity
             android:name="com.example.grubber.ReviewActivity"
@@ -90,7 +88,6 @@
             android:name="com.example.grubber.ReviewSingleActivity"
             android:label="@string/title_activity_review_single" >
         </activity>
-
         <activity
             android:name="com.example.grubber.NewRestaurantActivity"
             android:label="@string/title_activity_new_restaurant" >
@@ -113,13 +110,16 @@
             android:label="Login or Register"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
-    
 
         <!-- Google Maps API -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyARCDAmiqO_jvHk1oAi2a9GN2SpN5ff29M" />    
-    
+            android:value="AIzaSyARCDAmiqO_jvHk1oAi2a9GN2SpN5ff29M" />
+
+        <activity
+            android:name="com.example.grubber.TopFoodActivity"
+            android:label="@string/title_activity_top_food">
+        </activity>
     </application>
 
 </manifest>

@@ -10,21 +10,10 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Top 5 Grub"
-        android:background="@drawable/back"
-        android:textSize="26sp" />
-
-    <ListView
-        android:id="@+id/topfoodListLV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addBTN"
-        android:layout_marginTop="12dp" >
-    </ListView>
+    <Button
+     android:layout_height="wrap_content"
+     android:layout_width="wrap_content"
+     android:text="Top 5 Food"
+     android:onClick="startTopFood" />
     
 </LinearLayout>

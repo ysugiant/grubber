@@ -40,5 +40,7 @@
     <string name="mi5">5 miles</string>
     <string name="mi10">10 miles</string>
     <string name="mi25">25 miles</string>
-	<string name="need_services">This application requires locations services and an internet connection. Please check your settings and try again.</string>
+    <string name="need_services">This application requires locations services and an internet connection. Please check your settings and try again.</string>
+    <string name="title_activity_top_food">Top 5</string>
+
 </resources>

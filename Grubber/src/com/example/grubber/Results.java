@@ -262,16 +262,6 @@ public class Results extends Activity {
 	        JsonObject jo = (JsonObject)jsonParser.parse(jsonString);
 	        if (list_result == null) {
 	        	totalResults = jo.get("total").getAsInt();
-	        	// do some total checks, then set button - goal is to do it once, when it is null
-	        	/*
-	        	if (totalResults == 0) {
-	        		// load "refresh" page
-	        		result_list.setVisibility(View.GONE); // trying this first
-	        		ImageView refresh = new ImageView
-	        	} 
-	        	else {
-	        		loadMore.setVisibility(View.VISIBLE);
-	        	}*/
         		loadMore.setVisibility(View.VISIBLE);
 
 	        }
@@ -282,11 +272,11 @@ public class Results extends Activity {
 	        	loadMore.setVisibility(View.GONE);
 	        }
 
-	        	
+	        Log.d("bug", "pass1");
 	        JsonArray jarr = jo.getAsJsonArray("result");    
 	    	        
 	        if (list_result == null)
-	        /*final ArrayList<ResultContent>*/ list_result = new ArrayList<ResultContent>();
+	        	list_result = new ArrayList<ResultContent>();
 	        
 			/* create map */
 			/* check we haven't instantiated the map already */
@@ -309,10 +299,10 @@ public class Results extends Activity {
 				}	
 			}	
 	        	        
-	        
+	        //Log.d("bug", jarr.toString());
 	        for (int i = 0; i < jarr.size(); i++) {
 	        	JsonObject result = (JsonObject) jarr.get(i);
-
+	        	Log.d("bug", result.toString());
 	        	//set for adapter value
 	        	list_result.add(new ResultContent(result.get("rest_id").getAsString(), result.get("name").getAsString(),
 						  result.get("address").getAsString(), result.get("city").getAsString(), result.get("state").getAsString(),
@@ -320,13 +310,15 @@ public class Results extends Activity {
 						  result.get("phone").getAsString(), result.get("website").getAsString(), result.get("distance").getAsString(),
 						  result.get("votes").getAsString()));
 	        	
-	        	//setting up map markers	        	
-	        	marker = mMap.addMarker(new MarkerOptions()
-	            .position(new LatLng(result.get("latitude").getAsDouble(), result.get("longitude").getAsDouble()))
+
+	        	//setting up map markers	 
+	        	Log.d("bug", result.get("latitude").getAsString());
+	        	mMap.addMarker(new MarkerOptions()
+	            .position(new LatLng(result.get("longitude").getAsDouble(), result.get("latitude").getAsDouble()))
 	            .title(result.get("name").getAsString()));
 
 	        }
-	        
+	        Log.d("bug", "pass3");
 	        int currentPosition = result_list.getFirstVisiblePosition();
 	        ResultAdapter radapter = new ResultAdapter(Results.this, list_result);
 
@@ -336,6 +328,7 @@ public class Results extends Activity {
 	        // set new scroll position
 	        result_list.setSelectionFromTop(currentPosition,  0);
 	        
+	        Log.d("bug", "pass4");
 	        result_list.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	            {//set onClick
@@ -353,6 +346,7 @@ public class Results extends Activity {
 	        		startActivity(intent);
 	            }
 	        });
+	        Log.d("bug", "pass5");
 		}
 	}	
 	

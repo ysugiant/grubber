@@ -1,9 +1,0 @@
-<resources>
-
-    <string name="title_activity_register">Register</string>
-
-    <string name="action_register">No Account? Register!</string>
-    <string name="action_sign_up">Sign Up</string>
-    
-
-</resources>

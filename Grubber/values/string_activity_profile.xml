@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="profile_myVoteTV">My Voted</string>
-    <string name="profile_nameTV">Name:</string>
-    <string name="title_activity_profile">profile</string>
-    <string name="profile_updateBtn">Update</string>
-    <string name="profile_newPwdTV">New Password:</string>
-    
-</resources>

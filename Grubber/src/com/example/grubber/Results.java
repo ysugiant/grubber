@@ -271,7 +271,6 @@ public class Results extends Activity {
 	        	loadMore.setVisibility(View.GONE);
 	        }
 
-	        Log.d("bug", "pass1");
 	        JsonArray jarr = jo.getAsJsonArray("result");    
 	    	        
 	        if (list_result == null)
@@ -311,11 +310,10 @@ public class Results extends Activity {
 	        	//setting up map markers	 
 	        	Log.d("bug", result.get("latitude").getAsString());
 	        	mMap.addMarker(new MarkerOptions()
-	            .position(new LatLng(result.get("longitude").getAsDouble(), result.get("latitude").getAsDouble()))
+	            .position(new LatLng(result.get("latitude").getAsDouble(), result.get("longitude").getAsDouble()))
 	            .title(result.get("name").getAsString()));
 
 	        }
-	        Log.d("bug", "pass3");
 	        int currentPosition = result_list.getFirstVisiblePosition();
 	        ResultAdapter radapter = new ResultAdapter(Results.this, list_result);
 
@@ -325,7 +323,6 @@ public class Results extends Activity {
 	        // set new scroll position
 	        result_list.setSelectionFromTop(currentPosition,  0);
 	        
-	        Log.d("bug", "pass4");
 	        result_list.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	            {//set onClick
@@ -343,7 +340,6 @@ public class Results extends Activity {
 	        		startActivity(intent);
 	            }
 	        });
-	        Log.d("bug", "pass5");
 		}
 	}	
 	

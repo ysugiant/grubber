@@ -40,6 +40,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -59,12 +60,14 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	private ImageView foodImg;
 	private TextView totalVoteTV;
 	private RatingBar rating;
-	private Button voteBtn;
+	private ImageButton voteBtn;
 	private TextView reviewUsrName;
 	private TextView reviewContent;
 	private EditText voteComment;
 	private ListView reviewLV;
-	private TextView reviewMoreTV;
+	private ImageLoader imageLoader = new ImageLoader (context);
+	private String food_id;
+	//private TextView reviewMoreTV;
 
 	
 	
@@ -154,10 +157,10 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		foodImg = (ImageView)findViewById(R.id.foogpage_foodimgIV);
 		totalVoteTV = (TextView) findViewById(R.id.foodpage_totalVoteNumTV);
 		//rating = (RatingBar) findViewById(R.id.foodpage_ratingRB);
-		voteBtn = (Button) findViewById(R.id.foodpage_voteBtn);
+		voteBtn = (ImageButton) findViewById(R.id.foodpage_voteBtn);
 		voteComment = (EditText) findViewById(R.id.foodpage_commentET);
 		reviewLV = (ListView) findViewById(R.id.foogpage_reviewList);
-		reviewMoreTV = (TextView) findViewById(R.id.foodpage_reviewMoreTV);
+		//reviewMoreTV = (TextView) findViewById(R.id.foodpage_reviewMoreTV);
 		
 		
 		
@@ -170,11 +173,15 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	  		voteComment.setEnabled(true);
 	  		voteBtn.setOnClickListener(this);
 	  	}
-		reviewMoreTV.setOnClickListener(this);  
+		//reviewMoreTV.setOnClickListener(this);  
 		
 		Log.d("bug", getIntent().getStringExtra("total_vote") );
-		foodName.setText( getIntent().getStringExtra("food_name"));
+		foodName.setText( getIntent().getStringExtra("name"));
 		totalVoteTV.setText(getIntent().getStringExtra("total_vote"));
+		
+		food_id = getIntent().getStringExtra("food_id");
+		String picurl = "http://cse190.myftp.org/picture/"+ food_id + ".jpg";
+		imageLoader.DisplayImage(picurl, foodImg);
 
 		  try {
 			getComment();
@@ -214,6 +221,7 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 			RegisterTask task = new RegisterTask();
 			task.execute((Void) null);
 		}
+		/*
 		if(v.getId() == R.id.foodpage_reviewMoreTV){
 		
 			Intent intent = new Intent(FoodPageActivity.this, ReviewActivity.class);
@@ -225,6 +233,7 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	    	startActivity(intent);	
 			
 		}
+		*/
 		
 	}
 	

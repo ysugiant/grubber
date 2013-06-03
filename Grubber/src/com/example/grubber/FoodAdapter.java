@@ -40,9 +40,9 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		imageLoader.DisplayImage(picurl, icon);
 
  		if (tname != null)
- 			if (tname.length() > 20)
+ 			if (tname.length() > 22)
  			{
- 				tname.setText(res.getName().substring(0, 20));
+ 				tname.setText(res.getName().substring(0, 22) + "...");
  			}
  			else
  			{

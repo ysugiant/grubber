@@ -93,7 +93,7 @@ public class RestaurantActivity extends Activity {
 		addBTN = (Button)findViewById(R.id.addBTN);
 		
 		//show picture
-		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ getIntent().getStringExtra("longitude")+","+getIntent().getStringExtra("latitude") +"&fov=90&heading=235&pitch=10&sensor=false";
+		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ getIntent().getStringExtra("latitude")+","+getIntent().getStringExtra("longitude") +"&fov=90&heading=235&pitch=10&sensor=false";
 		new DownloadImageTask((ImageView) findViewById(R.id.restImageIV)).execute(picurl);
 		
 		//set the textview
@@ -108,7 +108,7 @@ public class RestaurantActivity extends Activity {
 		//***Open navigation app when click on the address
 		restAddressTV.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
-				String uri = "google.navigation:q="+getIntent().getStringExtra("longitude")+","+getIntent().getStringExtra("latitude");
+				String uri = "google.navigation:q="+getIntent().getStringExtra("latitude")+","+getIntent().getStringExtra("longitude");
 			    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 			    startActivity(i); 
 			}

@@ -36,8 +36,8 @@ public class ResultAdapter extends ArrayAdapter<ResultContent>{
 		if (tname != null)
 		{
 			String n = res.getName();
-			if(n.length() > 20)
-				tname.setText(n.substring(0, 20));
+			if(n.length() > 22)
+				tname.setText(n.substring(0, 22) + "...");
 			else
 				tname.setText(n);
 		}

@@ -292,7 +292,7 @@ public class RestaurantActivity extends Activity {
             JsonObject obj = (JsonObject) parser.parse(json);
             JsonArray jarr = (JsonArray) obj.get("result");
             
-	        //final ArrayList<FoodContent> list_result = new ArrayList<FoodContent>();
+            
             if (list_result == null)
             	list_result = new ArrayList<FoodContent>();
             
@@ -319,6 +319,7 @@ public class RestaurantActivity extends Activity {
 	            	Intent intent = new Intent(RestaurantActivity.this, FoodPageActivity.class);
 	            	FoodContent tmp = list_result.get((int) id);
 	            	Log.d("bug", rest_id + tmp.getName() + tmp.getDescription() + tmp.getVote());
+	            	intent.putExtra("rest_id", rest_id);
 	            	intent.putExtra("food_id", tmp.getFoodId());
 	            	intent.putExtra("name", tmp.getName());
 	            	intent.putExtra("description", tmp.getDescription());

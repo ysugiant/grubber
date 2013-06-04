@@ -304,7 +304,7 @@ public class RestaurantActivity extends Activity {
             
 	        for (int i = 0; i < jarr.size(); i++) {
 	        	JsonObject result = (JsonObject) jarr.get(i);
-
+	        	Log.d("bug",result.toString());
 	        	//set for adapter value
 	        	list_result.add(new FoodContent(result.get("food_id").getAsString(), result.get("name").getAsString(),
 						  result.get("description").getAsString(), result.get("vote").getAsString()));

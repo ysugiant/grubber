@@ -41,12 +41,20 @@ public class TopFoodAdapter extends ArrayAdapter<TopFoodContent>{
 		String picurl = "http://cse190.myftp.org/picture/"+ res.getFoodId() + ".jpg";
 		imageLoader.DisplayImage(picurl, icon);
 
- 		if (tname != null)
-			 tname.setText(res.getFoodName());
-		
-		if (trestname != null)
-			 trestname.setText(res.getRestName());
-		
+ 		if (tname != null) {
+	 		String n = res.getFoodName();
+			if(n.length() > 22)
+				tname.setText(n.substring(0, 22) + "...");
+			else
+				tname.setText(n); 
+ 		}
+		if (trestname != null) {
+			String n = res.getRestName();
+			if(n.length() > 17)
+				trestname.setText(n.substring(0, 17) + "...");
+			else
+				trestname.setText(n); 
+		}
 		if (tvote != null) {
 			tvote.setText(res.getVote());
 		}	

@@ -55,11 +55,9 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	final int MAX = 3;
 	
 	private  ArrayList<Review> reviewList = new ArrayList<Review>();
-    private ArrayList<HashMap <String,String>> commetArrlist = new ArrayList<HashMap <String,String>>();
 	private TextView foodName;
 	private ImageView foodImg;
 	private TextView totalVoteTV;
-	private RatingBar rating;
 	private ImageButton voteBtn;
 	private TextView reviewUsrName;
 	private TextView reviewContent;
@@ -219,6 +217,7 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 				e.printStackTrace();
 			}
 			try {
+				reviewList = new ArrayList<Review>();
 				getComment();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -353,7 +352,7 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 			    JsonObject obj = (JsonObject) parser.parse(json);
 			    
 			    //wait for total implement
-				//totalVoteTV.setText(obj.get("total").toString());
+				totalVoteTV.setText(obj.get("total").getAsString());
 
 			    JsonArray results = (JsonArray) obj.get("result");
 			  

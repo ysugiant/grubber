@@ -61,7 +61,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener  {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		registerView = inflater.inflate(R.layout.activity_signup, container, false);
+		registerView = inflater.inflate(R.layout.fragment_signup, container, false);
 		
 		//getActionBar().setDisplayHomeAsUpEnabled(true);
 		

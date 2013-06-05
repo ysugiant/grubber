@@ -3,16 +3,18 @@ package com.example.grubber;
 import java.util.HashMap;
 import com.example.grubber.R;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.*;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;
 
-public class SignInTabsActivity extends FragmentActivity {
+public class SignInTabsActivity extends Activity {
 
 	//borrowed from http://thepseudocoder.wordpress.com/2011/10/04/android-tabs-the-fragment-way/
     private TabHost mTabHost;
@@ -65,7 +67,7 @@ public class SignInTabsActivity extends FragmentActivity {
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
         
         
-  		setContentView(R.layout.signin_tabbed);
+  		setContentView(R.layout.activity_signin_tabbed);
   		
         // setup TabHost
         initialiseTabHost(savedInstanceState);
@@ -100,7 +102,7 @@ public class SignInTabsActivity extends FragmentActivity {
         	public void onTabChanged(String tag) {
                 TabInfo newTab = (TabInfo) mapTabInfo.get(tag);
                 if (mLastTab != newTab) {
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
                     if (mLastTab != null) {
                         if (mLastTab.fragment != null) {
                             ft.detach(mLastTab.fragment);
@@ -121,7 +123,7 @@ public class SignInTabsActivity extends FragmentActivity {
          
                     mLastTab = newTab;
                     ft.commit();
-                    getSupportFragmentManager().executePendingTransactions();
+                    getFragmentManager().executePendingTransactions();
                 }
             }
         	});
@@ -144,12 +146,12 @@ public class SignInTabsActivity extends FragmentActivity {
         // Check to see if we already have a fragment for this tab, probably
         // from a previously saved state.  If so, deactivate it, because our
         // initial state is that a tab isn't shown.
-        tabInfo.fragment = activity.getSupportFragmentManager().findFragmentByTag(tag);
+        tabInfo.fragment = activity.getFragmentManager().findFragmentByTag(tag);
         if (tabInfo.fragment != null && !tabInfo.fragment.isDetached()) {
-            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = activity.getFragmentManager().beginTransaction();
             ft.detach(tabInfo.fragment);
             ft.commit();
-            activity.getSupportFragmentManager().executePendingTransactions();
+            activity.getFragmentManager().executePendingTransactions();
         }
  
         tabHost.addTab(tabSpec);
@@ -161,7 +163,7 @@ public class SignInTabsActivity extends FragmentActivity {
     public void onTabChanged(String tag) {
         TabInfo newTab = (TabInfo) this.mapTabInfo.get(tag);
         if (mLastTab != newTab) {
-            FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = this.getFragmentManager().beginTransaction();
             if (mLastTab != null) {
                 if (mLastTab.fragment != null) {
                     ft.detach(mLastTab.fragment);
@@ -182,7 +184,7 @@ public class SignInTabsActivity extends FragmentActivity {
  
             mLastTab = newTab;
             ft.commit();
-            this.getSupportFragmentManager().executePendingTransactions();
+            this.getFragmentManager().executePendingTransactions();
         }
     }
     

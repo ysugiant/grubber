@@ -74,7 +74,7 @@ public class LoginFragment extends Fragment {
             Bundle savedInstanceState) {
     	// Inflate the layout for this fragment
     	
-		loginView = inflater.inflate(R.layout.activity_login, container, false);
+		loginView = inflater.inflate(R.layout.fragment_login, container, false);
 		
 		mEmail = getActivity().getIntent().getStringExtra(EXTRA_EMAIL);
     	mEmailView = (EditText) loginView.findViewById(R.id.email);

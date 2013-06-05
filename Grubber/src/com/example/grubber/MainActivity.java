@@ -17,7 +17,6 @@ import com.example.grubber.Alerts.NeedServicesDialogFragment;
 import com.example.grubber.MyLocation.LocationResult;
 import com.example.grubber.R;
 import com.google.analytics.tracking.android.*;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

@@ -156,7 +156,6 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		foodName = (TextView) findViewById(R.id.foogpage_foodNameTV);
 		foodImg = (ImageView)findViewById(R.id.foogpage_foodimgIV);
 		totalVoteTV = (TextView) findViewById(R.id.foodpage_totalVoteNumTV);
-		//rating = (RatingBar) findViewById(R.id.foodpage_ratingRB);
 		voteBtn = (ImageButton) findViewById(R.id.foodpage_voteBtn);
 		voteComment = (EditText) findViewById(R.id.foodpage_commentET);
 		reviewLV = (ListView) findViewById(R.id.foogpage_reviewList);
@@ -183,14 +182,13 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		String picurl = "http://cse190.myftp.org/picture/"+ food_id + ".jpg";
 		imageLoader.DisplayImage(picurl, foodImg);
  
-		  try {
+		try {
 			getComment();
 		} catch (Exception e) {
-			
 			e.printStackTrace();
 		}
 		  
-		  reviewLV.setOnItemClickListener(new OnItemClickListener() {
+		reviewLV.setOnItemClickListener(new OnItemClickListener() {
 			  @Override
 			  public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 			  Object o = reviewLV.getItemAtPosition(position);
@@ -202,10 +200,7 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	   		  startActivityForResult(newIntent, 2 );
 			  //Toast.makeText(FoodPageActivity.this, "You have chosen : " + " " + obj_itemDetails.getName(), Toast.LENGTH_SHORT).show();
 			  } 
-			  });
-		  
-		  
-
+		});
 	}
 
 	@Override
@@ -220,6 +215,11 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		if(v.getId() == R.id.foodpage_voteBtn){
 			try {
 				setComment();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				getComment();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -309,7 +309,6 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 		// need to get the food_id from the resutrant page
 		
-		//Log.d("bug5", getIntent().getStringExtra("food_id"));
 		nameValuePair.add(new BasicNameValuePair("food_id", getIntent().getStringExtra("food_id")));
 		nameValuePair.add(new BasicNameValuePair("min", MIN+""));
 		nameValuePair.add(new BasicNameValuePair("max", MAX+""));
@@ -352,30 +351,18 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 				json = reader.readLine();
 				JsonParser parser = new JsonParser();
 			    JsonObject obj = (JsonObject) parser.parse(json);
+			    
+			    //wait for total implement
+				//totalVoteTV.setText(obj.get("total").toString());
+
 			    JsonArray results = (JsonArray) obj.get("result");
 			  
 			    //get the last 3 comment from the server
 			    for(int i =0; i < results.size(); i++ ){
-			    	
-			    	
 			    	JsonObject res = (JsonObject) results.get(i);
-			    
-			    	
-			    	HashMap <String,String> comment = new HashMap<String, String>();
-			    	/*Log.d("bug9", res.get("username").getAsString() );
-			    		comment.put("username", res.get("username").getAsString());    	
-			    		comment.put("comment", res.get("comment").getAsString());
-			    		comment.put("time", res.get("time").getAsString().split("\\s+")[0]);
-			    		*/
-			    	
-			    	commetArrlist.add(comment);
-			    	
+		        	reviewList.add(new Review(res.get("username").getAsString(),res.get("comment").getAsString(),res.get("time").getAsString().split("\\s+")[0]));
 			    }
-			
-			    
-		        for (int i = 0; i < results.size(); i++) {
-		        	reviewList.add(new Review(commetArrlist.get(i).get("username"),commetArrlist.get(i).get("comment"),commetArrlist.get(i).get("time")));
-		     	}
+
 		        reviewLV.setAdapter(new ReviewAdapter(context, R.layout.review_list_item, reviewList)); 
 			} catch (Exception e) { Log.d("bugs","reader"); }
 

@@ -150,7 +150,7 @@ public class MainActivity extends Activity  {
 
 	    	  break;
 	      case R.id.action_nearby:
-	    	  Intent intent2 = new Intent(this, Results.class);
+	    	  Intent intent2 = new Intent(this, ResultsTabsActivity.class);
 	    	  if (userLoc!=null) {
 	    		  intent2.putExtra("longitude", userLoc.getLongitude()+"");
 	    		  intent2.putExtra("latitude", userLoc.getLatitude()+"");

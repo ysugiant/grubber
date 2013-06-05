@@ -40,24 +40,22 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		imageLoader.DisplayImage(picurl, icon);
 
  		if (tname != null)
- 			if (tname.length() > 22)
- 			{
- 				tname.setText(res.getName().substring(0, 22) + "...");
- 			}
- 			else
- 			{
- 				tname.setText(res.getName());
- 			}
-		
+ 		{
+ 			String n = res.getName();
+			if(n.length() > 22)
+				tname.setText(n.substring(0, 22) + "...");
+			else
+				tname.setText(n); 	
+		}
+ 		
 		if (tdescription != null)
-			if (tdescription.length() > 40)
- 			{
- 				tdescription.setText(res.getDescription().substring(0, 40));
- 			}
- 			else
- 			{
- 				tdescription.setText(res.getDescription());
- 			}
+		{
+			String n = res.getDescription();
+			if(n.length() > 17)
+				tdescription.setText(n.substring(0, 17) + "...");
+			else
+				tdescription.setText(n);
+		}
 		
 		if (tvote != null) {
 			tvote.setText(res.getVote());

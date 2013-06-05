@@ -156,7 +156,6 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		foodName = (TextView) findViewById(R.id.foogpage_foodNameTV);
 		foodImg = (ImageView)findViewById(R.id.foogpage_foodimgIV);
 		totalVoteTV = (TextView) findViewById(R.id.foodpage_totalVoteNumTV);
-		//rating = (RatingBar) findViewById(R.id.foodpage_ratingRB);
 		voteBtn = (ImageButton) findViewById(R.id.foodpage_voteBtn);
 		voteComment = (EditText) findViewById(R.id.foodpage_commentET);
 		reviewLV = (ListView) findViewById(R.id.foogpage_reviewList);
@@ -175,22 +174,21 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	  	}
 		//reviewMoreTV.setOnClickListener(this);  
 		
-		Log.d("bug", getIntent().getStringExtra("total_vote") );
+		//("bug", getIntent().getStringExtra("total_vote") );
 		foodName.setText( getIntent().getStringExtra("name"));
 		totalVoteTV.setText(getIntent().getStringExtra("total_vote"));
 		
 		food_id = getIntent().getStringExtra("food_id");
 		String picurl = "http://cse190.myftp.org/picture/"+ food_id + ".jpg";
 		imageLoader.DisplayImage(picurl, foodImg);
-
-		  try {
+ 
+		try {
 			getComment();
 		} catch (Exception e) {
-			
 			e.printStackTrace();
 		}
 		  
-		  reviewLV.setOnItemClickListener(new OnItemClickListener() {
+		reviewLV.setOnItemClickListener(new OnItemClickListener() {
 			  @Override
 			  public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 			  Object o = reviewLV.getItemAtPosition(position);
@@ -202,10 +200,7 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	   		  startActivityForResult(newIntent, 2 );
 			  //Toast.makeText(FoodPageActivity.this, "You have chosen : " + " " + obj_itemDetails.getName(), Toast.LENGTH_SHORT).show();
 			  } 
-			  });
-		  
-		  
-
+		});
 	}
 
 	@Override
@@ -218,8 +213,16 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.foodpage_voteBtn){
-			RegisterTask task = new RegisterTask();
-			task.execute((Void) null);
+			try {
+				setComment();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				getComment();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		/*
 		if(v.getId() == R.id.foodpage_reviewMoreTV){
@@ -238,50 +241,63 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	}
 	
 	
-	
-	private class RegisterTask extends AsyncTask<Void, Void, Boolean> {
 
-		protected Boolean doInBackground(Void... params) {
-			
-			
-			final JsonObject obj = userVote(SaveSharedPreference.getUserId(context) + "", getIntent().getStringExtra("food_id") ,voteComment.getText().toString());
-	
-			if(obj != null){
-				runOnUiThread(new Runnable() {
-					public void run() {
-					   // Toast.makeText(FoodPageActivity.this, obj.get("message").toString(), Toast.LENGTH_SHORT).show();
-					    }
-					});
-				if(obj.get("result").getAsBoolean()){
-					finish();
-				}
-				return obj.get("result").getAsBoolean();
-			}
-			return false;
-		}
-
+	public void setComment() throws Exception {
+		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
+		// need to get the food_id from the resutrant page
 		
-		protected JsonObject userVote(String userid, String foodid, String comment){
-			URL url;
-			URLConnection uc;
-			BufferedReader data;
+		nameValuePair.add(new BasicNameValuePair("food_id", getIntent().getStringExtra("food_id")));
+		nameValuePair.add(new BasicNameValuePair("rest_id", getIntent().getStringExtra("rest_id")));
+		nameValuePair.add(new BasicNameValuePair("user_id", SaveSharedPreference.getUserId(context)+""));
+		nameValuePair.add(new BasicNameValuePair("comment", voteComment.getText().toString()));
+		
+		// url with the post data
+		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/createVote");
 
+		// sets the post request as the resulting string
+		httpost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+		// Handles what is returned from the page
+		//ResponseHandler responseHandler = new BasicResponseHandler();
+		
+		new setHttpRequest().execute(httpost);
+	}
+	
+	
+	
+	
+
+	private class setHttpRequest extends AsyncTask<HttpPost, Void, HttpResponse> {
+		
+		@Override
+		protected HttpResponse doInBackground(HttpPost... params) {
+			DefaultHttpClient httpclient = new DefaultHttpClient();
 			try {
-			
-				url = new URL("http://cse190.myftp.org:8080/cse190/createVote?user_id=" + userid + "&food_id=" + foodid + "&comment=" + comment);
-			
-				uc = url.openConnection();
-				data = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-				String inputLine = data.readLine();
-				JsonParser parser = new JsonParser();
-				return (JsonObject) parser.parse(inputLine);
-
+				HttpResponse resp = httpclient.execute(params[0]);
+				return resp;
 			} catch (Exception e) {
-				//No Connection
-				return null;
+				Log.d("bugs", "Catch in HTTPGETTER");
 			}
+			return null;
 		}
 
+		protected void onPostExecute(HttpResponse response) {
+			String json = "wrong";
+			try {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));		
+				json = reader.readLine();
+				JsonParser parser = new JsonParser();
+				JsonObject obj = (JsonObject) parser.parse(json);
+			    JsonObject result = (JsonObject) obj.get("result");
+			    if(result.getAsBoolean())
+			    	Toast.makeText(FoodPageActivity.this, "Success", Toast.LENGTH_SHORT).show();
+			    else
+			    	Toast.makeText(FoodPageActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+		    }
+			catch(Exception e)
+			{
+				Log.d("bugs", "reading http request failed");
+			}
+		}
 	}
 	
 	
@@ -293,7 +309,6 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 		// need to get the food_id from the resutrant page
 		
-		Log.d("bug5", getIntent().getStringExtra("food_id"));
 		nameValuePair.add(new BasicNameValuePair("food_id", getIntent().getStringExtra("food_id")));
 		nameValuePair.add(new BasicNameValuePair("min", MIN+""));
 		nameValuePair.add(new BasicNameValuePair("max", MAX+""));
@@ -330,48 +345,24 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		}
 
 		protected void onPostExecute(HttpResponse response) {
-		
-			Gson gson = new Gson();
 			String json = "wrong";
 			try {
-			
 				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-			
 				json = reader.readLine();
-				
 				JsonParser parser = new JsonParser();
-
 			    JsonObject obj = (JsonObject) parser.parse(json);
-			
-			    JsonArray results = (JsonArray) obj.get("result");
-			
-			    //JsonObject res = (JsonObject) results.get(0);
+			    
+			    //wait for total implement
+				//totalVoteTV.setText(obj.get("total").toString());
 
-			    //HashMap <String,String> comment;
+			    JsonArray results = (JsonArray) obj.get("result");
 			  
 			    //get the last 3 comment from the server
 			    for(int i =0; i < results.size(); i++ ){
-			    	
-			    	
 			    	JsonObject res = (JsonObject) results.get(i);
-			    
-			    	
-			    	HashMap <String,String> comment = new HashMap<String, String>();
-			    	Log.d("bug9", res.get("username").getAsString() );
-			    		comment.put("username", res.get("username").getAsString());    	
-			    		comment.put("comment", res.get("comment").getAsString());
-			    		comment.put("time", res.get("time").getAsString().split("\\s+")[0]);
-			    		
-			    	
-			    	commetArrlist.add(comment);
-			    	
+		        	reviewList.add(new Review(res.get("username").getAsString(),res.get("comment").getAsString(),res.get("time").getAsString().split("\\s+")[0]));
 			    }
-			
-			    
-		        for (int i = 0; i < results.size(); i++) {
-		        			
-		     	        	reviewList.add(new Review(commetArrlist.get(i).get("username"),commetArrlist.get(i).get("comment"),commetArrlist.get(i).get("time")));
-		     	}
+
 		        reviewLV.setAdapter(new ReviewAdapter(context, R.layout.review_list_item, reviewList)); 
 			} catch (Exception e) { Log.d("bugs","reader"); }
 

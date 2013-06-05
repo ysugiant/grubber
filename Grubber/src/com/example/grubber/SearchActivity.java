@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
 public class SearchActivity extends Activity {
@@ -128,6 +129,8 @@ public class SearchActivity extends Activity {
 		EditText address_box = (EditText) findViewById(R.id.edit_location);
 		String loc = address_box.getText().toString();
 		
+		
+		
 		Intent intent = new Intent(this, Results.class);
   	  	intent.putExtra("key", term);
   	  	intent.putExtra("radius", miles);
@@ -152,7 +155,10 @@ public class SearchActivity extends Activity {
   	  		intent.putExtra("latitude", String.valueOf(lat));
   	  		intent.putExtra("longitude", String.valueOf(longt));
 		}
-  	  	startActivity(intent);
+		if(loc.length() == 0)
+			Toast.makeText(this,"Please insert a valid address!",Toast.LENGTH_SHORT).show();
+		else
+			startActivity(intent);
 
 	}
 }

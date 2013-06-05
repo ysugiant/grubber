@@ -43,6 +43,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.grubber.R;
@@ -67,6 +68,7 @@ public class Results extends Activity {
 	ArrayList<ResultContent> list_result = null;
 	final int itemsPerPage = 10;
 	Button loadMore = null;
+	TextView noResults = null;
 	int totalResults = 0;
 
 	DialogFragment servicesDialog = new NeedServicesDialogFragment();
@@ -79,7 +81,14 @@ public class Results extends Activity {
 		result_list = (ListView) findViewById(R.id.restaurantLV);
 		loadMore = new Button(this);//(Button) findViewById(R.id.results_loadmore);//new Button(this); // style you later
 		loadMore.setText("Load More");
-		result_list.addFooterView(loadMore);		
+		result_list.addFooterView(loadMore);
+		
+		
+		noResults = new TextView(this);
+		noResults.setText("There are no results to display, please search again.");
+		result_list.addHeaderView(noResults);
+    	noResults.setVisibility(View.GONE);
+		
 		loadMore.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -93,6 +102,7 @@ public class Results extends Activity {
 				
 			}
 		});
+		
 		
 		loadMore.setVisibility(View.GONE);
 		
@@ -264,8 +274,11 @@ public class Results extends Activity {
 	        JsonObject jo = (JsonObject)jsonParser.parse(jsonString);
 	        if (list_result == null) {
 	        	totalResults = jo.get("total").getAsInt();
+	        	if(totalResults == 0)
+	        		noResults.setVisibility(View.VISIBLE);
+	        	else
+	        		noResults.setVisibility(View.GONE);
         		loadMore.setVisibility(View.VISIBLE);
-
 	        }
 	        
 			current_page += 1;
@@ -327,6 +340,7 @@ public class Results extends Activity {
 	        
 	        // set new scroll position
 	        result_list.setSelectionFromTop(currentPosition,  0);
+	        
 	        
 	        result_list.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 

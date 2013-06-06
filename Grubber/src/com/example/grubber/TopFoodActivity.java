@@ -41,9 +41,15 @@ public class TopFoodActivity extends Activity {
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		foodListLV = (ListView)findViewById(R.id.topfoodListLV);
+	}
+	
+	public void onResume() {
+		super.onResume();
+    	//Refresh the options menu when this activity comes in focus
+    	invalidateOptionsMenu();
         try {
-			getTopFood();
-		} catch (Exception e) {
+        	getTopFood();
+        } catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

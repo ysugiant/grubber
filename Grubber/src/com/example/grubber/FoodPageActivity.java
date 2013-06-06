@@ -32,13 +32,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -47,6 +50,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -192,14 +196,22 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		reviewLV.setOnItemClickListener(new OnItemClickListener() {
 			  @Override
 			  public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-			  Object o = reviewLV.getItemAtPosition(position);
-			  Review review = (Review)o;
-			  Intent newIntent= new Intent(FoodPageActivity.this, ReviewSingleActivity.class); 
-	   		  newIntent.putExtra("username", review.getName());
-	   		  newIntent.putExtra("comment", review.getContext());
-	   		  newIntent.putExtra("time", review.getTime());
-	   		  startActivityForResult(newIntent, 2 );
-			  //Toast.makeText(FoodPageActivity.this, "You have chosen : " + " " + obj_itemDetails.getName(), Toast.LENGTH_SHORT).show();
+				  Object o = reviewLV.getItemAtPosition(position);
+				  Review review = (Review)o;
+				  LayoutInflater inflater = (LayoutInflater)
+				       context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				  View pv = inflater.inflate(R.layout.activity_review_single, null, false);
+				  PopupWindow pw = new PopupWindow(pv, 450, 500, true);
+				
+				  pw.setBackgroundDrawable(new BitmapDrawable());
+				  pw.showAtLocation(v.getRootView(), Gravity.CENTER, 0, 0); 
+				  TextView userName = (TextView) pv.findViewById(R.id.reviewSingle_usernameTV);
+				  TextView userComment = (TextView) pv.findViewById (R.id.reviewSingle_userCommentTV);
+				  TextView time = (TextView) pv.findViewById (R.id.reviewSingle_timeTV);
+					
+				  userName.setText(review.getName() + " wrote:");
+				  userComment.setText(review.getContext());
+				  time.setText(review.getTime());
 			  } 
 		});
 	}

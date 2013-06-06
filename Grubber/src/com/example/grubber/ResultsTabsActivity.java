@@ -177,7 +177,7 @@ public class ResultsTabsActivity extends Activity {
                                     newTab.clss.getName(), newTab.args);
                             if(tag.equals("ResultsListFragment"))
                             	ft.add(R.id.results_tab, newTab.fragment, newTab.tag);
-                            else if(tag.equals("ResultsFragment"))
+                            else if(tag.equals("MapFragment"))
                             	ft.add(R.id.map_tab, newTab.fragment, newTab.tag);
                         } else {
                             ft.attach(newTab.fragment);

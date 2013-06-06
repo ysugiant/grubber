@@ -6,17 +6,22 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Results" >
+    tools:context=".ResultsTabsActivity" >
 
-    <include layout="@layout/fragment_map"
-        	 android:layout_height = "120dp" />
-    
+    <RelativeLayout 
+        android:id="@+id/fragment_map_wrap"
+        android:layout_width="match_parent"
+        android:layout_height = "120dp"  >
+   		
+   		<include layout="@layout/fragment_map"/>
+   
+   	</RelativeLayout>
     
     <ListView
         android:id="@+id/restaurantLV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/map" >
+        android:layout_below="@id/fragment_map_wrap" >
     </ListView>
 
 </RelativeLayout>

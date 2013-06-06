@@ -296,7 +296,10 @@ public class RestaurantActivity extends Activity {
             if (list_result == null)
             	list_result = new ArrayList<FoodContent>();
             
-            if (jarr.size() < 3)
+            int totalResults = obj.get("total").getAsInt();
+            Log.d("bug", current_page +"");
+            Log.d("bug", (totalResults/itemsPerPage) + "");
+            if (current_page + 1.0 >= ((float) totalResults/itemsPerPage))
             	loadMore.setVisibility(View.GONE);
             else
         		loadMore.setVisibility(View.VISIBLE);
@@ -330,7 +333,7 @@ public class RestaurantActivity extends Activity {
 	        
 	        int currentPosition = foodListLV.getFirstVisiblePosition();
 	        foodListLV.setSelectionFromTop(currentPosition,  0);
-	        current_page += 1;
+            current_page += 1;
 		}
 	}
 	

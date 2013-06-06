@@ -184,6 +184,14 @@ public class MainActivity extends Activity  {
     	Intent intent = new Intent(context, TopRestaurantActivity.class);
     	startActivity(intent);
     }
+    
+    public void startTrending(View view) {
+    	
+    }
+    
+    public void startAbout(View view) {
+    	
+    }
 }
 
     

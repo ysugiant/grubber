@@ -11,105 +11,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".RestaurantActivity" >
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".FoodPageActivity" >
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+     <ListView
+         android:id="@+android:id/foogpage_reviewList"
+         android:layout_width="match_parent"
+         android:layout_height="fill_parent"
+         android:paddingLeft="10dp"
+         android:paddingRight="10dp"/>
+    <TextView
+	     	android:id="@+id/foodpage_noentries"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
                 
-                <ImageView
-                    android:id="@+id/foogpage_foodimgIV"
-                    android:layout_width="120dp"
-					android:layout_height="120dp"
-					android:layout_gravity="center_vertical"
-					android:layout_alignParentLeft="true"
-        			android:layout_alignParentTop="true"
-					android:layout_marginLeft="20dp"
-        			android:layout_marginTop="20dp"
-                    android:src="@android:drawable/ic_input_add" />
-                    
-                <TextView
-                    android:id="@+id/foogpage_foodNameTV"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-        			android:layout_alignParentTop="true"
-        			android:layout_marginLeft="20dp"
-        			android:layout_marginTop="20dp"
-        			android:layout_toRightOf="@+id/foogpage_foodimgIV"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-                
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                	android:layout_height="wrap_content"
-                	android:layout_toRightOf="@+id/foogpage_foodimgIV"
-                	android:layout_below="@+id/foogpage_foodNameTV"
-                	android:layout_marginLeft="20dp"
-                	android:layout_marginTop="20dp">
-                	
-                    <TextView
-	                    android:id="@+id/foodpage_totalVoteNumTV"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_alignParentTop="true"
-	                    android:layout_alignParentLeft="true"
-	                    android:textAppearance="?android:attr/textAppearanceLarge"
-	                    android:text="123" />
-                    <TextView
-	                    android:id="@+id/foodpage_voteText"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_toRightOf="@+id/foodpage_totalVoteNumTV"
-	                    android:textAppearance="?android:attr/textAppearanceMedium"
-	                    android:text="votes" />
-                    <LinearLayout 
-                        android:layout_width="fill_parent"
-                		android:layout_height="wrap_content"
-                		android:layout_below="@+id/foodpage_totalVoteNumTV"
-                		android:orientation="horizontal"
-                        android:weightSum="1">
-	                    <EditText
-		                    android:id="@+id/foodpage_commentET"
-		                    android:layout_width="0dip"
-		                    android:layout_height="wrap_content"
-		                    android:layout_weight=".7"
-		                    android:text="" />
-	                    <ImageButton
-			                android:id="@+id/foodpage_voteBtn"
-			                android:layout_width="0dp"
-			                android:layout_height="wrap_content"
-			                android:layout_weight=".3"
-			                android:scaleType="centerInside"
-			                android:background="@android:color/transparent"
-			                android:layout_marginLeft="-5dip"
-			                android:src="@drawable/vote"/>
-                    </LinearLayout>
-                    
-                </RelativeLayout>
-	                
-                
-            </RelativeLayout>
-
-            
-            
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical"
-                android:layout_margin="15dip"
-                android:paddingTop="20dp" >
-                <TextView 
-                    android:id="@+id/reviewListLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_marginLeft="10dp"
-                    android:text="Reviews"/>
-
-                <ListView
-                    android:id="@+android:id/foogpage_reviewList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/reviewListLabel" />
-            </RelativeLayout>
 </LinearLayout>
+

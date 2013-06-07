@@ -156,7 +156,7 @@ public class ResultsTabsActivity extends Activity {
         TabInfo tabInfo = null;
         ResultsTabsActivity.addTab(this, this.mTabHost, this.mTabHost.newTabSpec("ResultsListFragment").setIndicator("List"), ( tabInfo = new TabInfo("ResultsListFragment", ResultsListFragment.class, args)));
         this.mapTabInfo.put(tabInfo.tag, tabInfo);
-        ResultsTabsActivity.addTab(this, this.mTabHost, this.mTabHost.newTabSpec("MapFragment").setIndicator("Map"), ( tabInfo = new TabInfo("MapFragment", MapFragment.class, args)));
+        ResultsTabsActivity.addTab(this, this.mTabHost, this.mTabHost.newTabSpec("ResultsMapFragment").setIndicator("Map"), ( tabInfo = new TabInfo("ResultsMapFragment", ResultsMapFragment.class, args)));
         this.mapTabInfo.put(tabInfo.tag, tabInfo);
         // Default to first tab
         this.onTabChanged("ResultsListFragment");
@@ -177,7 +177,7 @@ public class ResultsTabsActivity extends Activity {
                                     newTab.clss.getName(), newTab.args);
                             if(tag.equals("ResultsListFragment"))
                             	ft.add(R.id.results_tab, newTab.fragment, newTab.tag);
-                            else if(tag.equals("MapFragment"))
+                            else if(tag.equals("ResultsMapFragment"))
                             	ft.add(R.id.map_tab, newTab.fragment, newTab.tag);
                         } else {
                             ft.attach(newTab.fragment);

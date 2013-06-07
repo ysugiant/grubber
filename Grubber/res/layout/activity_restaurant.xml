@@ -8,6 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".RestaurantActivity" >
 
+
     <ImageView
         android:id="@+id/restImageIV"
         android:layout_width="wrap_content"
@@ -24,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="54dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="17dp"
         android:layout_toRightOf="@+id/restImageIV"
         android:text="Large Text"

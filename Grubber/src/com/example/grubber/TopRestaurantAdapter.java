@@ -44,17 +44,15 @@ public class TopRestaurantAdapter extends ArrayAdapter<TopRestaurantContent>{
 
  		if (tname != null) {
 	 		String n = res.getRestName();
+	 		/*
 			if(n.length() > 22)
 				tname.setText(n.substring(0, 22) + "...");
-			else
+			else*/
 				tname.setText(n); 
  		}
 		if (taddr != null) {
 			String n = res.getAddress() + ", " + res.getCity() + " " + res.getState();
-			if(n.length() > 22)
-				taddr.setText(n.substring(0, 22) + "...");
-			else
-				taddr.setText(n); 
+			taddr.setText(n);
 		}
 		if (tvote != null) {
 			tvote.setText(res.getVote());

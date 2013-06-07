@@ -191,7 +191,8 @@ public class MainActivity extends Activity  {
     }
     
     public void startAbout(View view) {
-    	
+    	Intent intent = new Intent(context, AboutActivity.class);
+    	startActivity(intent);    	
     }
 }
 

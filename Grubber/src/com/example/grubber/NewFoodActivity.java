@@ -63,12 +63,6 @@ public class NewFoodActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), 3);
-					/*try {
-						addFood();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
 				}
 			});
 	   

@@ -125,6 +125,10 @@
             android:label="@string/title_activity_top_restaurant" >
         </activity>
         <activity
+            android:name="com.example.grubber.TrendingFoodActivity"
+            android:label="@string/title_activity_trending" >
+        </activity>
+        <activity
             android:name="com.example.grubber.ResultsTabsActivity"
             android:label="@string/title_activity_top_restaurant" >
         </activity>

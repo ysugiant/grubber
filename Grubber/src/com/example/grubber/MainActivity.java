@@ -186,7 +186,8 @@ public class MainActivity extends Activity  {
     }
     
     public void startTrending(View view) {
-    	
+    	Intent intent = new Intent(context, TrendingFoodActivity.class);
+    	startActivity(intent);    	
     }
     
     public void startAbout(View view) {

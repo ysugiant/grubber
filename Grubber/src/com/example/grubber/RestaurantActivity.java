@@ -63,6 +63,10 @@ public class RestaurantActivity extends Activity {
 	private Button addBTN;
 	private ProgressDialog progDialog; 
 	
+	//No Result
+	TextView noResults = null;
+	Button backbtn = null;
+	
 	//load more
 	private int itemsPerPage = 3;
 	private int current_page = 0;
@@ -92,6 +96,11 @@ public class RestaurantActivity extends Activity {
 		foodListLV = (ListView)findViewById(R.id.foodListLV);
 		addBTN = (Button)findViewById(R.id.addBTN);
 		
+		//No Result
+		noResults = new TextView(this);
+		backbtn = new Button(this);
+		//set Activity Title
+		setTitle(getIntent().getStringExtra("name"));
 		//show picture
 		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ getIntent().getStringExtra("latitude")+","+getIntent().getStringExtra("longitude") +"&fov=90&heading=235&pitch=10&sensor=false";
 		new DownloadImageTask((ImageView) findViewById(R.id.restImageIV)).execute(picurl);
@@ -299,6 +308,25 @@ public class RestaurantActivity extends Activity {
             int totalResults = obj.get("total").getAsInt();
             Log.d("bug", current_page +"");
             Log.d("bug", (totalResults/itemsPerPage) + "");
+            if (totalResults == 0)
+            {
+            	if(totalResults == 0)
+	        	{
+	        		noResults.setText("There are no results to display, please search again.");
+	        		noResults.setTextSize(20);	 
+	        		foodListLV.addHeaderView(noResults);
+	        		
+	        		backbtn.setText("Back");
+	        		foodListLV.addHeaderView(backbtn);
+	        		backbtn.setOnClickListener(new View.OnClickListener() {
+	        			
+	        			@Override
+	        			public void onClick(View v) {
+	        				finish();
+	        			}
+	        		});
+	        	}
+            }
             if (current_page + 1.0 >= ((float) totalResults/itemsPerPage))
             	loadMore.setVisibility(View.GONE);
             else

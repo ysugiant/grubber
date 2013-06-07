@@ -30,21 +30,26 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class NewFoodActivity extends Activity {
-
+	public final Context context = this;
 	private EditText food_nameET;
 	private EditText food_descriptionET;
 	private Button submit_btn;
@@ -58,22 +63,23 @@ public class NewFoodActivity extends Activity {
 		food_nameET = (EditText) findViewById(R.id.food_nameET);
 		food_descriptionET = (EditText) findViewById(R.id.food_descriptionET);
 		submit_btn = (Button) findViewById(R.id.submitBTN);
-		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+
 	    submit_btn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), 3);
-					/*try {
-						addFood();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
 				}
 			});
 	   
 	}
 	
+	public void onResume() {
+    	super.onResume();
+    	//Refresh the options menu when this activity comes in focus
+    	invalidateOptionsMenu();
+    	//this.tracker.trackPageView("/TopTracksActivity");
+    }
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
@@ -106,8 +112,64 @@ public class NewFoodActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.new_food, menu);
-		return true;
-	}
+        //Change profile button to login/register if they are not logged in
+        if(SaveSharedPreference.getUserId(NewFoodActivity.this) == 0)
+        {
+            MenuItem profileItem = menu.findItem(R.id.action_profile);
+        	profileItem.setTitle(R.string.login);
+            //Toast.makeText(this,"Not logged in",Toast.LENGTH_SHORT).show();
+        }
+        else {
+        	MenuItem signout = menu.findItem(R.id.action_signout);
+        	signout.setVisible(true);
+            signout.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            	public boolean onMenuItemClick(MenuItem item) {            		        	
+        			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        			alertDialogBuilder.setTitle(R.string.logout_msg);
+        			alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        				public void onClick(DialogInterface dialog,int id) {            					    							
+							//int tempUserName = SaveSharedPreference.getUserId(context);    			        		
+			        		dialog.cancel();    			        		
+			        		SaveSharedPreference.setUserId(context, 0);
+        					Toast.makeText(context , "Logged out" , Toast.LENGTH_SHORT).show();
+        					invalidateOptionsMenu();
+						}    						
+					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+    					public void onClick(DialogInterface dialog,int id) {    						
+    						dialog.cancel();    					
+    					}}
+    				  );            		
+            		AlertDialog alertDialog = alertDialogBuilder.create();
+            		alertDialog.show();   
+            		return true;            		
+            	} 	
+            });        	
+        }        
+        return true;
+      } 
+	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+	      case R.id.action_profile:
+	    	  if(SaveSharedPreference.getUserId(NewFoodActivity.this) != 0){
+	    		  Intent intent3 = new Intent(context, ProfileActivity.class);
+	    		  startActivity(intent3);   
+	    	  } else {
+	    		  Intent intent3 = new Intent(context, SignInTabsActivity.class);
+	    		  startActivity(intent3);   
+	    	  }
+	          break;  
+			case android.R.id.home:
+				//NavUtils.navigateUpFromSameTask(this);
+				finish();
+				break;
+	      default:
+	    	  break;
+      }
+
+      return true;
+    } 
 	
 	public void addFood() throws Exception {
 		//start progress bar

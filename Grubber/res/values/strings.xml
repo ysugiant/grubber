@@ -43,5 +43,7 @@
     <string name="need_services">This application requires locations services and an internet connection. Please check your settings and try again.</string>
     <string name="title_activity_top_food">Top 5</string>
     <string name="title_activity_top_restaurant">Top Restaurants</string>
+    <string name="title_activity_trending">Trending Food</string>
+    <string name="title_activity_about">About</string>
 
 </resources>

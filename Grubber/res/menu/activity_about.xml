@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
+    
     <item
         android:id="@+id/action_profile"
         android:showAsAction="never"
@@ -10,6 +10,6 @@
         android:showAsAction="never"
         android:orderInCategory="3"    
         android:title="@string/signout" 
-        android:visible="false" />      
-    
+        android:visible="false" />  
+
 </menu>

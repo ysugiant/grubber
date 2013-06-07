@@ -31,7 +31,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.support.v4.app.NavUtils;
 
-public class TopFoodActivity extends Activity {
+public class TrendingFoodActivity extends Activity {
 	public final Context context = this;
 	private ListView foodListLV;
 	private ProgressDialog progDialog; 
@@ -51,7 +51,7 @@ public class TopFoodActivity extends Activity {
     	//Refresh the options menu when this activity comes in focus
     	invalidateOptionsMenu();
         try {
-        	getTopFood();
+        	getTrendingFood();
         } catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -62,7 +62,7 @@ public class TopFoodActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_top_food, menu);
         //Change profile button to login/register if they are not logged in
-        if(SaveSharedPreference.getUserId(TopFoodActivity.this) == 0)
+        if(SaveSharedPreference.getUserId(TrendingFoodActivity.this) == 0)
         {
             MenuItem profileItem = menu.findItem(R.id.action_profile);
         	profileItem.setTitle(R.string.login);
@@ -101,7 +101,7 @@ public class TopFoodActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 	      case R.id.action_profile:
-	    	  if(SaveSharedPreference.getUserId(TopFoodActivity.this) != 0){
+	    	  if(SaveSharedPreference.getUserId(TrendingFoodActivity.this) != 0){
 	    		  Intent intent3 = new Intent(context, ProfileActivity.class);
 	    		  startActivity(intent3);   
 	    	  } else {
@@ -116,11 +116,11 @@ public class TopFoodActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void getTopFood() throws Exception {
+	public void getTrendingFood() throws Exception {
 		progDialog = ProgressDialog.show( this, "Process ", "Loading Data...",true,true);
 
 		// url with the post data
-		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/topFood");
+		HttpPost httpost = new HttpPost("http://cse190.myftp.org:8080/cse190/trendingFood");
 
 		// Handles what is returned from the page
 		//ResponseHandler responseHandler = new BasicResponseHandler();
@@ -150,7 +150,7 @@ public class TopFoodActivity extends Activity {
 				getFood(json);
 			} catch (Exception e) { 
 				Log.d("bugs","reader"); 
-				Toast.makeText(TopFoodActivity.this, "Failed to get the data", Toast.LENGTH_SHORT).show();			
+				Toast.makeText(TrendingFoodActivity.this, "Failed to get the data", Toast.LENGTH_SHORT).show();			
 			}
 			//stop progress bar
 			progDialog.dismiss();
@@ -173,13 +173,13 @@ public class TopFoodActivity extends Activity {
 						  result.get("vote").getAsString(), result.get("food_description").getAsString(), result.get("rest_id").getAsString()));
 	        }
 	        
-	        TopFoodAdapter radapter = new TopFoodAdapter(TopFoodActivity.this, list_result);
+	        TopFoodAdapter radapter = new TopFoodAdapter(TrendingFoodActivity.this, list_result);
 	        //Show the food list to ListView
 	        foodListLV.setAdapter(radapter);
 	        foodListLV.setOnItemClickListener(new OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
 	            {//set onClick and open RestaurantActivity page
-	            	Intent intent = new Intent(TopFoodActivity.this, FoodPageActivity.class);
+	            	Intent intent = new Intent(TrendingFoodActivity.this, FoodPageActivity.class);
 	            	TopFoodContent tmp = list_result.get((int) id);
 	            	intent.putExtra("food_id", tmp.getFoodId());
 	            	intent.putExtra("name", tmp.getFoodName());

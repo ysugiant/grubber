@@ -29,6 +29,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,7 +56,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FoodPageActivity extends Activity implements View.OnClickListener {
+public class FoodPageActivity extends Activity {
 
 	Context context = this;
 
@@ -76,6 +77,8 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	private ListView reviewLV;
 	private ImageLoader imageLoader = new ImageLoader (context);
 	private String food_id;
+	private ProgressDialog progDialog; 
+
 	//private TextView reviewMoreTV;
 
 	private int current_page;
@@ -201,15 +204,6 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 */
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		if(SaveSharedPreference.getUserId(context) == 0){
-	  		voteBtn.setClickable(false);
-	  		voteComment.setEnabled(false);
-
-	  	}else{
-	  		voteBtn.setClickable(true);
-	  		voteComment.setEnabled(true);
-	  		voteBtn.setOnClickListener(this);
-	  	}
 		//reviewMoreTV.setOnClickListener(this);  
 
 		//("bug", getIntent().getStringExtra("total_vote") );
@@ -274,12 +268,37 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 	              time.setText(review.getTime());
 			  } 
 		});
+		
+		voteBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					setComment();
+					voteComment.clearFocus();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					getComment();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			
+			}
+		});
 	}
 
 	public void onResume() {
     	super.onResume();
     	//Refresh the options menu when this activity comes in focus
     	invalidateOptionsMenu();
+    	if(SaveSharedPreference.getUserId(context) == 0){
+	  		voteBtn.setClickable(false);
+	  		voteComment.setEnabled(false);
+	  	}else{
+	  		voteBtn.setClickable(true);
+	  		voteComment.setEnabled(true);
+	  	}
     }
 
 	@Override
@@ -306,6 +325,8 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 			        		dialog.cancel();    			        		
 			        		SaveSharedPreference.setUserId(context, 0);
         					Toast.makeText(context , "Logged out" , Toast.LENGTH_SHORT).show();
+        					voteBtn.setClickable(false);
+        			  		voteComment.setEnabled(false);
         					invalidateOptionsMenu();
 						}    						
 					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -340,40 +361,6 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	@Override
-	public void onClick(View v) {
-		if(v.getId() == R.id.foodpage_voteBtn){
-			try {
-				
-				setComment();
-				voteComment.clearFocus();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				reviewList = new ArrayList<Review>();
-				getComment();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		/*
-		if(v.getId() == R.id.foodpage_reviewMoreTV){
-		
-			Intent intent = new Intent(FoodPageActivity.this, ReviewActivity.class);
-        	
-        	intent.putExtra("rest_id", getIntent().getStringExtra("rest_id"));
-        	intent.putExtra("food_id", getIntent().getStringExtra("food_id"));
-        	intent.putExtra("total_vote", getIntent().getStringExtra("total_vote"));
-       
-	    	startActivity(intent);	
-			
-		}
-		*/
-
-	}
-
 
 
 	public void setComment() throws Exception {
@@ -492,15 +479,14 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 			    //wait for total implement
 				totalVotes = Integer.parseInt(obj.get("total").getAsString());
 				String voteString = totalVotes > 1 ? " votes" : " vote";
-				totalVoteTV.setText(obj.get("total").getAsString());
+				totalVoteTV.setText(obj.get("total").getAsString());		    
+			    
+				if (current_page == 0)
+					reviewList = new ArrayList<Review>();
 
-			    
-			    //if (loadMoreBtn.getVisibility() == View.VISIBLE) {
-			    	//current_page += 1;
-			    
-				    if (current_page >= ((int)totalVotes/(int)itemsPerPage)) {
-				    	loadMoreBtn.setVisibility(View.GONE);
-				    }
+				if (current_page >= ((int)totalVotes/(int)itemsPerPage)) {
+					loadMoreBtn.setVisibility(View.GONE);
+				}
 			    
 
 			    JsonArray results = (JsonArray) obj.get("result");
@@ -521,15 +507,8 @@ public class FoodPageActivity extends Activity implements View.OnClickListener {
 			    }
 			    else
 			    	reviewLV.setAdapter(new ArrayAdapter<String>(context, R.layout.food_misc, new String[] {"No reviews yet."}));
-		        
-		        
-
-			    //}
 
 			} catch (Exception e) { Log.d("bugs","reader"); }
-
-
-
 		    }
 		}
 

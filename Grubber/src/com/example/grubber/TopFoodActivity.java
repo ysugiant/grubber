@@ -15,13 +15,16 @@ import com.google.gson.JsonParser;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -58,12 +61,54 @@ public class TopFoodActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_top_food, menu);
-		return true;
-	}
+        //Change profile button to login/register if they are not logged in
+        if(SaveSharedPreference.getUserId(TopFoodActivity.this) == 0)
+        {
+            MenuItem profileItem = menu.findItem(R.id.action_profile);
+        	profileItem.setTitle(R.string.login);
+            //Toast.makeText(this,"Not logged in",Toast.LENGTH_SHORT).show();
+        }
+        else {
+        	MenuItem signout = menu.findItem(R.id.action_signout);
+        	signout.setVisible(true);
+            signout.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            	public boolean onMenuItemClick(MenuItem item) {            		        	
+        			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        			alertDialogBuilder.setTitle(R.string.logout_msg);
+        			alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        				public void onClick(DialogInterface dialog,int id) {            					    							
+							//int tempUserName = SaveSharedPreference.getUserId(context);    			        		
+			        		dialog.cancel();    			        		
+			        		SaveSharedPreference.setUserId(context, 0);
+        					Toast.makeText(context , "Logged out" , Toast.LENGTH_SHORT).show();
+        					invalidateOptionsMenu();
+						}    						
+					}).setNegativeButton("No", new DialogInterface.OnClickListener() {
+    					public void onClick(DialogInterface dialog,int id) {    						
+    						dialog.cancel();    					
+    					}}
+    				  );            		
+            		AlertDialog alertDialog = alertDialogBuilder.create();
+            		alertDialog.show();   
+            		return true;            		
+            	} 	
+            });        	
+        }        
+        return true;
+      }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+	      case R.id.action_profile:
+	    	  if(SaveSharedPreference.getUserId(TopFoodActivity.this) != 0){
+	    		  Intent intent3 = new Intent(context, ProfileActivity.class);
+	    		  startActivity(intent3);   
+	    	  } else {
+	    		  Intent intent3 = new Intent(context, SignInTabsActivity.class);
+	    		  startActivity(intent3);   
+	    	  }
+	          break;				
 		case android.R.id.home:
 			finish();
 			return true;

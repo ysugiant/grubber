@@ -69,6 +69,7 @@ public class Results extends Activity {
 	final int itemsPerPage = 10;
 	Button loadMore = null;
 	TextView noResults = null;
+	Button backbtn = null;
 	int totalResults = 0;
 
 	DialogFragment servicesDialog = new NeedServicesDialogFragment();
@@ -83,11 +84,8 @@ public class Results extends Activity {
 		loadMore.setText("Load More");
 		result_list.addFooterView(loadMore);
 		
-		
 		noResults = new TextView(this);
-		noResults.setText("There are no results to display, please search again.");
-		result_list.addHeaderView(noResults);
-    	noResults.setVisibility(View.GONE);
+		backbtn = new Button(this);
 		
 		loadMore.setOnClickListener(new View.OnClickListener() {
 			
@@ -272,12 +270,27 @@ public class Results extends Activity {
 		{
 	        JsonParser jsonParser = new JsonParser();
 	        JsonObject jo = (JsonObject)jsonParser.parse(jsonString);
+	        
+	        //No Result
 	        if (list_result == null) {
 	        	totalResults = jo.get("total").getAsInt();
 	        	if(totalResults == 0)
-	        		noResults.setVisibility(View.VISIBLE);
-	        	else
-	        		noResults.setVisibility(View.GONE);
+	        	{
+	        		noResults.setText("There are no results to display, please search again.");
+	        		noResults.setTextSize(20);	 
+	        		result_list.addHeaderView(noResults);
+	        		
+	        		backbtn.setText("Back");
+	        		result_list.addHeaderView(backbtn);
+	        		backbtn.setOnClickListener(new View.OnClickListener() {
+	        			
+	        			@Override
+	        			public void onClick(View v) {
+	        				finish();
+	        			}
+	        		});
+	        	}
+	 
         		loadMore.setVisibility(View.VISIBLE);
 	        }
 	        

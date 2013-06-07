@@ -45,7 +45,6 @@ public class ProfileActivity extends Activity {
 	private EditText emailET;
 	private EditText userNameET;
 	private EditText pwdET;
-	private ListView myVoteLV;	
 	
 	/*static final String[] FRUITS = new String[] { "Apple", "Avocado", "Banana",
 		"Blueberry", "Coconut", "Durian", "Guava", "Kiwifruit",
@@ -67,19 +66,6 @@ public class ProfileActivity extends Activity {
 		lastNameET = (EditText)findViewById(R.id.profile_lastNameET);
 		emailET = (EditText)findViewById(R.id.profile_emailET);
 		pwdET = (EditText) findViewById(R.id.profile_newPwdET);
-		myVoteLV = (ListView)findViewById(R.id.profile_myVoteLV);
-		
-		
-		//UserInfoHelper user = UserInfoHelper.getInstance();
-		
-		/*ArrayList<String> userVote_info = new ArrayList<String>();
-		for(int i = 0; i < FRUITS.length -1 ;i ++ ){
-			userVote_info.add(FRUITS[i]);
-		}
-		
-		ArrayAdapter<String> arrayAdapter;
-		arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userVote_info);
-		myVoteLV.setAdapter(arrayAdapter); */
 		
 			
 		try {
@@ -88,41 +74,6 @@ public class ProfileActivity extends Activity {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		/*boolean errorCheck = false;
-		if(!isValidEmail( emailET.getText().toString())){
-			//emailET.setError(noValid);
-			errorCheck = true;
-		}
-		 if(firstNameET.length() == 0 ){
-			//firstNameET.setError(firstnameError);
-			errorCheck = true;
-		}
-		if(lastNameET.length() == 0 ){
-			//lastNameET.setError(lastnameError);
-			errorCheck = true;
-		}
-		if(userNameET.length() == 0){
-			//usernameET.setError(usernameError);
-			errorCheck = true;
-		}
-		/*if(pwdET.length() < pwdToShort ){
-			//pwdET.setError(pwdToShortError);
-			errorCheck = true;
-		}
-	    if(!pwdET.getText().toString().equals(reenterpwdET.getText().toString())){
-			//reenterpwdET.setError(pwdDiffError);
-			errorCheck = true;
-		}
-	   
-	   //error the input text
-		if(!errorCheck){
-			try {
-				getUser();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
 			
 		
 		final Button button = (Button) findViewById(R.id.profile_updateBtn);

@@ -117,8 +117,7 @@ public class TopRestaurantActivity extends Activity {
             JsonObject obj = (JsonObject) parser.parse(json);
             JsonArray jarr = (JsonArray) obj.get("result");
 
-            if (list_result == null)
-            	list_result = new ArrayList<TopRestaurantContent>();
+            list_result = new ArrayList<TopRestaurantContent>();
 	        for (int i = 0; i < jarr.size(); i++) {
 	        	JsonObject result = (JsonObject) jarr.get(i);
 	        	//set for adapter value

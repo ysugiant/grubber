@@ -39,7 +39,7 @@ public class TopRestaurantAdapter extends ArrayAdapter<TopRestaurantContent>{
 		ImageView icon = (ImageView) row.findViewById(R.id.rest_icon);
 
 		//show picture
-		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ res.getLongitude()+","+res.getLatitude() +"&fov=90&heading=235&pitch=10&sensor=false";
+		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ res.getLatitude()+","+res.getLongitude() +"&fov=90&heading=235&pitch=10&sensor=false";
 		imageLoader.DisplayImage(picurl, icon);
 
  		if (tname != null) {

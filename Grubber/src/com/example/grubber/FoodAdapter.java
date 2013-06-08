@@ -42,19 +42,13 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
  		if (tname != null)
  		{
  			String n = res.getName();
-			if(n.length() > 22)
-				tname.setText(n.substring(0, 22) + "...");
-			else
-				tname.setText(n); 	
+			tname.setText(n); 	
 		}
  		
 		if (tdescription != null)
 		{
 			String n = res.getDescription();
-			if(n.length() > 17)
-				tdescription.setText(n.substring(0, 17) + "...");
-			else
-				tdescription.setText(n);
+			tdescription.setText(n);
 		}
 		
 		if (tvote != null) {

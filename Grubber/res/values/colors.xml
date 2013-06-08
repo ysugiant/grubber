@@ -2,4 +2,5 @@
 <resources>
     <color name="gray">#999</color> 
     <color name="frame_bg">#f7f7f7</color>
+    <color name="orange">#f89737</color>
 </resources>

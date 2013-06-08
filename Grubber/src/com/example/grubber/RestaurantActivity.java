@@ -110,10 +110,10 @@ public class RestaurantActivity extends Activity {
 		restAddressTV.setText(getIntent().getStringExtra("address"));
 		restCityTV.setText(getIntent().getStringExtra("city"));
 		if (getIntent().getStringExtra("website").equals(""))
-			restWebsiteTV.setText("-");
+			restWebsiteTV.setText("Website: " + "-");
 		else
-			restWebsiteTV.setText(getIntent().getStringExtra("website"));
-		restPhoneTV.setText(getIntent().getStringExtra("phone"));
+			restWebsiteTV.setText("Website: " + getIntent().getStringExtra("website"));
+		restPhoneTV.setText("Phone: " + getIntent().getStringExtra("phone"));
 		//***Open navigation app when click on the address
 		restAddressTV.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){

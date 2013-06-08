@@ -8,16 +8,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".RestaurantActivity" >
 
-
-    <ImageView
-        android:id="@+id/restImageIV"
+	<RelativeLayout
+	    android:id="@+id/restLayoutOuter"
+	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/restLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="19dp"
-        android:layout_marginTop="22dp"
-        android:src="@drawable/ic_launcher" />
+        android:layout_alignParentTop="true">
+      	<ImageView
+	        android:id="@+id/restImageIV"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="10dp"
+	        android:src="@drawable/ic_launcher"/>
+	        <Button
+	        android:id="@+id/addBTN"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Add Food"
+	        android:layout_marginBottom="-5dp"
+	        android:layout_marginTop="-5dp"
+	        android:textSize="10dp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/restNameTV"
@@ -27,7 +45,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="17dp"
-        android:layout_toRightOf="@+id/restImageIV"
+        android:layout_toRightOf="@+id/restLayout1"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -48,7 +66,7 @@
         android:layout_below="@+id/restNameTV"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
+<!--  
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
@@ -66,7 +84,7 @@
         android:layout_alignBaseline="@+id/restWebsiteTV"
         android:layout_alignBottom="@+id/restWebsiteTV"
         android:layout_alignLeft="@+id/textView1"
-        android:text="Website :" />
+        android:text="Website :" />-->
 
     <TextView
         android:id="@+id/restPhoneTV"
@@ -85,21 +103,16 @@
         android:layout_below="@+id/restPhoneTV"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
 
-    <Button
-        android:id="@+id/addBTN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/restCityTV"
-        android:layout_below="@+id/restWebsiteTV"
-        android:text="Add" />
+
 
     <ListView
         android:id="@+id/foodListLV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/addBTN"
-        android:layout_marginTop="22dp" >
+        android:layout_below="@+id/restLayoutOuter"
+        android:layout_marginTop="15dp" >
     </ListView>
 
 </RelativeLayout>

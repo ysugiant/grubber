@@ -157,7 +157,7 @@ public class FoodPageActivity extends Activity {
 	            if (review != null) {
 	                reviewHolder.name.setText(review.getName());
 	                reviewHolder.content.setText(review.getContext());
-	                reviewHolder.time.setText(review.getTime());
+	                reviewHolder.time.setText("•  " +review.getTime());
 	            }
 
 	            return v;

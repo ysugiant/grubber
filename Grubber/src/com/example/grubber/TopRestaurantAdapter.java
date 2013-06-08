@@ -39,22 +39,20 @@ public class TopRestaurantAdapter extends ArrayAdapter<TopRestaurantContent>{
 		ImageView icon = (ImageView) row.findViewById(R.id.rest_icon);
 
 		//show picture
-		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ res.getLongitude()+","+res.getLatitude() +"&fov=90&heading=235&pitch=10&sensor=false";
+		String picurl = "http://maps.googleapis.com/maps/api/streetview?size=150x150&location="+ res.getLatitude()+","+res.getLongitude() +"&fov=90&heading=235&pitch=10&sensor=false";
 		imageLoader.DisplayImage(picurl, icon);
 
  		if (tname != null) {
 	 		String n = res.getRestName();
+	 		/*
 			if(n.length() > 22)
 				tname.setText(n.substring(0, 22) + "...");
-			else
+			else*/
 				tname.setText(n); 
  		}
 		if (taddr != null) {
 			String n = res.getAddress() + ", " + res.getCity() + " " + res.getState();
-			if(n.length() > 22)
-				taddr.setText(n.substring(0, 22) + "...");
-			else
-				taddr.setText(n); 
+			taddr.setText(n);
 		}
 		if (tvote != null) {
 			tvote.setText(res.getVote());

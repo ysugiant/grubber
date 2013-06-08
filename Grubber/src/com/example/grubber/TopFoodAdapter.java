@@ -43,16 +43,14 @@ public class TopFoodAdapter extends ArrayAdapter<TopFoodContent>{
 
  		if (tname != null) {
 	 		String n = res.getFoodName();
+	 		/*
 			if(n.length() > 22)
 				tname.setText(n.substring(0, 22) + "...");
-			else
+			else*/
 				tname.setText(n); 
  		}
 		if (trestname != null) {
 			String n = res.getRestName();
-			if(n.length() > 17)
-				trestname.setText(n.substring(0, 17) + "...");
-			else
 				trestname.setText(n); 
 		}
 		if (tvote != null) {

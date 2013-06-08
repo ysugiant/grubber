@@ -3,20 +3,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:padding="10dp"
+    android:padding="6dp"
     android:orientation="vertical"
     >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/review_content"
+        android:singleLine="true" 
+        android:layout_marginLeft="10dp"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:layout_marginTop="3dp">
 
         <TextView
             android:id="@+id/review_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true" 
-            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/review_time"
+            android:textColor="@color/gray"
              />
           <TextView
             android:id="@+id/review_time"
@@ -30,12 +39,6 @@
         
 
     </RelativeLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/review_content"
-        android:singleLine="true" 
-        android:layout_marginLeft="10dp"
-        />
+
 
 </LinearLayout>

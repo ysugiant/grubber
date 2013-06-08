@@ -43,6 +43,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -274,7 +275,12 @@ public class FoodPageActivity extends Activity {
 			public void onClick(View v) {
 				try {
 					setComment();
+					// reset vote comment 
 					voteComment.clearFocus();
+					voteComment.getText().clear();
+					getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(voteComment.getWindowToken(), 0);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

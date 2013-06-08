@@ -234,7 +234,7 @@ public class ResultsListFragment extends Fragment {
 				mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 				
 				if( mMap == null ) { //could not load map
-					servicesDialog.show(getFragmentManager(), "results_services_dialog");
+					servicesDialog.show(getChildFragmentManager(), "results_services_dialog");
 				} else {
 					//set up map
 					CameraUpdate center = CameraUpdateFactory.newLatLng( new LatLng( Double.parseDouble( getActivity().getIntent().getStringExtra("latitude")),  Double.parseDouble(getActivity().getIntent().getStringExtra("longitude"))) );

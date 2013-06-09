@@ -48,7 +48,17 @@ public class FoodAdapter extends ArrayAdapter<FoodContent>{
 		if (tdescription != null)
 		{
 			String n = res.getDescription();
-			tdescription.setText(n);
+			
+			// get last whole word + ...
+			int maxchars = 80;
+			if(n.length() > maxchars) {
+				int lastIndex = (n.substring(0, maxchars)).lastIndexOf(" ");
+				if (lastIndex < 0) lastIndex = maxchars;
+				tdescription.setText(n.substring(0, lastIndex)  + "...");
+			}
+			
+			else
+				tdescription.setText(n);
 		}
 		
 		if (tvote != null) {

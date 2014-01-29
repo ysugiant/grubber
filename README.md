@@ -7,10 +7,13 @@ This App is a Yelp-styled food review software on Android platform that helps us
 * List Top 3 popular food for each restaurant
 
 ## APIs
-* Google Map, Factual
+* Google Map, Google Analytics, Factual
 
 ## Technology
 * Android 4.4
 * Java
 * HTTP programming
-* Json response
+* Json
+* 
+
+

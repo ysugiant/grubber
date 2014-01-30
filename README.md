@@ -20,4 +20,6 @@ This App is a Yelp-styled food review software on Android platform that helps us
 * [TopFoodActivity.java](https://github.com/ysugiant/grubber/blob/master/Grubber/src/com/example/grubber/TopFoodActivity.java)
 * [Results.java](https://github.com/ysugiant/grubber/blob/master/Grubber/src/com/example/grubber/Results.java)
 * [FoodPageActivity.java](https://github.com/ysugiant/grubber/blob/master/Grubber/src/com/example/grubber/FoodPageActivity.java)
+* [ReviewActivity.java](https://github.com/ysugiant/grubber/blob/085c94c94c11ceeb39c41b81232de8d497d2f10d/Grubber/src/com/example/grubber/ReviewActivity.java)
+* [TopRestaurantActivity.java](https://github.com/ysugiant/grubber/blob/master/Grubber/src/com/example/grubber/TopRestaurantActivity.java)
 

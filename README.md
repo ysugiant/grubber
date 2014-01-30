@@ -4,7 +4,9 @@ This App is a Yelp-styled food review software on Android platform that helps us
 ## Functionality
 * Users are able to vote for their favorite food, post new food and share reviews on every restaurant
 * Search and view restaurants by category
-* List Top 3 popular food for each restaurant
+* Detect user location
+* List Top 3 popular food for each restaurant, Top 3 popular restaurants in each category
+* New user register, existing user login
 
 ## APIs
 * Google Map, Google Analytics, Factual
